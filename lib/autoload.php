@@ -30,11 +30,6 @@ function __autoload($className){
 		
 		if( is_file("../$dir/$file") )
 			include_once("../$dir/$file");
-		else{
-			echo "can not read file ../$dir/$file";
-			die();
-		}
-			
 	}
 	else if( strcmp($className, 'Smarty') == 0){
 		include_once("../lib/smarty/Smarty.class.php");
@@ -43,10 +38,6 @@ function __autoload($className){
 		$file = strtolower($className);
 		if( is_file("../lib/$file.php") )
 			include_once("../lib/$file.php");
-		else{
-			echo "can not read file ../lib/$file.php";
-			die();
-		}
 	}
 }
 ?>
