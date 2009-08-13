@@ -65,7 +65,7 @@ class ErrorController extends BaseController{
 				break;
 		}
 		
-		$this->view()->display($file);
+		$this->smarty()->display($file);
 	}
 	 
 	/*--------------------------------------------
