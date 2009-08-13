@@ -49,13 +49,13 @@ class BaseController{
 	/*--------------------------------------------
 	 * ■ Public ■
 	 *--------------------------------------------
-	 * - view
+	 * - smarty
 	 * - location
 	 * - check
 	 * - sendmail
 	 *--------------------------------------------*/
 	//viewはSmartyの機能をそのまま利用
-	public function view(){
+	public function smarty(){
 		if(!$this->smarty){
 			$this->_setSmarty();
 		}

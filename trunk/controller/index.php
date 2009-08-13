@@ -47,7 +47,7 @@ class IndexController extends BaseController{
 	 * - index
 	 *--------------------------------------------*/
 	public function index(){
-		$this->view()->display('index.html');
+		$this->smarty()->display('index.html');
 	}
 
 	 
