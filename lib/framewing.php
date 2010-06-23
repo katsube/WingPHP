@@ -92,7 +92,7 @@ class framewing{
 		//-----------------------
 		if( array_key_exists('_q', $_REQUEST) ){
 			$query = $_REQUEST['_q'];
-			$arr   = split('/', $query);
+			$arr   = explode('/', $query);
 		}
 		else{
 			$arr = array();

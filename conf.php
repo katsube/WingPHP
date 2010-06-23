@@ -24,25 +24,25 @@
  */
 
 $Conf = array(
-	//¡ƒf[ƒ^ƒx[ƒXÝ’è
+	//â– ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹è¨­å®š
 	'DB' => array(
 			  'DSN'  =>'mysql:dbname=test;host=localhost'		//PDO
 			, 'USER' => 'username'
 			, 'PASSWORD' => 'password'
 	)
 	
-	//¡”é–§Œ®
-	//“K“–‚È•¶Žš—ñ‚É•ÏX‚µ‚Ä‚­‚¾‚³‚¢B
+	//â– ç§˜å¯†éµ
+	//é©å½“ãªæ–‡å­—åˆ—ã«å¤‰æ›´ã—ã¦ãã ã•ã„ã€‚
 	, 'Secret' => array(
 			'key' => 'aqwsdertyhjiolpzsxcfvgbnjmk,l.;/:'
 	)
 
-	//¡ƒZƒbƒVƒ‡ƒ“Ý’è
+	//â– ã‚»ãƒƒã‚·ãƒ§ãƒ³è¨­å®š
 	, 'Session' => array(
 			'name' => 'SESSID'
 	)
 	
-	//¡ViewÝ’è
+	//â– Viewè¨­å®š
 	, 'Smarty' => array(
 		  'tmpl'   => '../view/'
 		, 'tmpl_c' => '../lib/smarty/templates_c/'
@@ -51,7 +51,7 @@ $Conf = array(
 		
 		, 'is_cache'   => false
 		, 'cache_life' => 0
-		//, 'cache_life' => 60 * 60	//•b
+		//, 'cache_life' => 60 * 60	//ç§’
 	)
 );
 ?>
