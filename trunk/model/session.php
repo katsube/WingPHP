@@ -58,7 +58,10 @@ class SessionModel extends BaseModel{
 	// 各データ処理
 	//--------------------------------------------
 	public function get($name){
-		return( $_SESSION[$name] );
+		if(array_key_exists($name, $_SESSION))
+			return( $_SESSION[$name] );
+		else
+			return( null );
 	}
 
 	public function set($name, $value){
@@ -78,7 +81,9 @@ class SessionModel extends BaseModel{
 	// セッションを破棄
 	//--------------------------------------------
 	public function destroy(){
-		session_destroy();
+		if( session_id() !== "" )
+			session_destroy();
+		
 		$_SESSION = array();
 	}
 	
