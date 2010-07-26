@@ -23,22 +23,39 @@
  * THE SOFTWARE.
  */
 
+/**
+ * QueryModelクラス
+ * 
+ * クエリーをやりとりする。$_REQUESTのラッパーのようなもの。
+ * 将来的な変更などを考えてこのクラス経由でクエリーの操作を行う
+ * ことが望ましい。
+ *
+ * @package    QueryModel
+ * @copyright  2010 WingPHP
+ * @author     M.Katsube < katsubemakito@gmail.com >
+ * @license    The MIT License
+ * @access     public
+ */
 class QueryModel extends BaseModel{
 	//--------------------------------------------
 	// メンバ変数
 	//--------------------------------------------
 	private $q;
 	
-	//--------------------------------------------
-	// コンストラクタ
-	//--------------------------------------------
+	/**
+	 * コンストラクタ
+	 *
+	 * @access public
+	 */
 	function __construct(){
 		$this->q = $_REQUEST;
 	}
 
-	//--------------------------------------------
-	// デストラクタ
-	//--------------------------------------------
+	/**
+	 * デストラクタ
+	 *
+	 * @access public
+	 */
 	function __destruct(){
 		;
 	}
@@ -50,9 +67,17 @@ class QueryModel extends BaseModel{
 	 * - data
 	 *--------------------------------------------*/
 
-	//--------------------------------------------
-	// データ返却
-	//--------------------------------------------
+	/**
+	 * クエリー返却
+	 *
+	 * 指定されたクエリーを返却する。
+	 * 存在しない場合はfalseを、未指定の場合は全ての
+	 * クエリーを返却する。
+	 *
+	 * @param  string  $name
+	 * @return mixed
+	 * @access public
+	 */
 	public function data($name=false){
 		if(! $name )
 			return( $this->q );
