@@ -14,27 +14,20 @@ class SessionModelTest extends PHPUnit_Framework_TestCase{
 	}
 
 	/**
-	 * @dataProvider provider
+	 * テストケースを実行する際に毎回実行：前
 	 */
-	function testSet($a, $b){
-		$s = new SessionModel();
-		$s->set($a, $b);
-	}
-
-	function provider(){
-		return(array(
-			  array('age',        30)
-			, array('weight',     78)
-			, array('name',       'katsube')
-			, array('birthday',   '1979-10-05')
-			, array('love beer?', 'Yes!')
-		));
+	protected function setUp(){
+		$_SESSION = array(
+			  'age'        => 30
+			, 'weight'     => 78
+			, 'name'       => 'katsube'
+			, 'birthday'   => '1979-10-05'
+			, 'love beer?' => 'Yes!'
+		);
 	}
 
 	/**
 	 * 取得する
-	 *
-     * @depends testSet
      */
 	function testGet(){
 		$s = new SessionModel();
@@ -48,8 +41,6 @@ class SessionModelTest extends PHPUnit_Framework_TestCase{
 
 	/**
 	 * 削除する
-	 *
-     * @depends testSet
      */
 	function testDel(){
 		$s = new SessionModel();
@@ -61,8 +52,6 @@ class SessionModelTest extends PHPUnit_Framework_TestCase{
 
 	/**
 	 * 存在確認
-	 *
-     * @depends testSet
      */
 	function testExistkey(){
 		$s = new SessionModel();
@@ -71,13 +60,11 @@ class SessionModelTest extends PHPUnit_Framework_TestCase{
 		$this->assertTrue($s->exists('name'));
 
 		//存在しない
-		$this->assertFalse($s->exists('age'));
+		$this->assertFalse($s->exists('foooooobaaaaaaaaaaar'));
 	}
 	
 	/**
 	 * セッション破棄
-	 *
-     * @depends testSet
      */
 	function testDestroy(){
 		$s = new SessionModel();
@@ -87,6 +74,20 @@ class SessionModelTest extends PHPUnit_Framework_TestCase{
 		$this->assertEquals($s->get('name'),     null);
 		$this->assertEquals($s->get('birthday'), null);
 		$this->assertEquals($s->get('weight'),   null);
+	}
+
+	/**
+	 * 一度に挿入する機能
+     */
+	function testSetArray(){
+		$s = new SessionModel();
+		$s->set(array(
+			  'apple'  => 'りんご'
+			, 'orange' => 'レンジ'
+		));
+
+		$this->assertEquals($s->get('apple'), 'りんご');
+		$this->assertEquals($s->get('orange'), 'レンジ');
 	}
 }
 ?>
