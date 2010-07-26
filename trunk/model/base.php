@@ -22,23 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+ 
+/**
+ * BaseModelクラス
+ * 
+ * 各モデルのスーパークラス。
+ * 以下のような処理を受け持つ。
+ *  - DBへの接続
+ *  - SQLの実行、返却
+ *
+ * @package    BaseModel
+ * @copyright  2010 WingPHP
+ * @author     M.Katsube < katsubemakito@gmail.com >
+ * @license    The MIT License
+ * @access     public
+ */
 class BaseModel{
 	//--------------------------------------------
 	// メンバ変数
 	//--------------------------------------------
 	private $dbh = false;
 
-	//--------------------------------------------
-	// コンストラクタ
-	//--------------------------------------------
+	/**
+	 * コンストラクタ
+	 *
+	 * @access public
+	 */
 	function __construct(){
 		;
 	}
 
-	//--------------------------------------------
-	// デストラクタ
-	//--------------------------------------------
+	/**
+	 * デストラクタ
+	 *
+	 * @access public
+	 */
 	function __destruct(){
 		;
 	}
@@ -56,34 +74,68 @@ class BaseModel{
 	//--------------------------------------------
 	// SQL実行
 	//--------------------------------------------
-	//------------
-	//全件返却
-	//------------
+	/**
+	 * SELECT句実行 全返却
+	 *
+	 * 指定されたSELECT句を実行し、結果のすべて返却する。
+	 *   ※巨大なデータになることが予測される場合は
+	 *     必ずoffsetなどを利用すること。
+	 *
+	 * @param  string $sql   SQL文を直書き。
+	 * @param  array  $bind  SQL文内でプレースホルダを利用して
+	 *                       いる場合は配列で渡す。順番考慮。
+	 * @return array  array(
+	 *                     array(col1=>'foo', col2=>'bar')
+	 *                   , array(col1=>'hoge',col2=>'fuga')  )
+	 * @access public
+	 */
 	public function select($sql, $bind=array()){
 		return( $this->_runsql($sql, $bind, 'all') );
 	}
 
-	//------------
-	//1件返却
-	//------------
+	/**
+	 * SELECT句実行 一件返却
+	 *
+	 * 指定されたSELECT句を実行し、結果の最初の1行目を返却する。
+	 *
+	 * @param  string $sql   SQL文を直書き。
+	 * @param  array  $bind  SQL文内でプレースホルダを利用して
+	 *                       いる場合は配列で渡す。順番考慮。
+	 * @return array  array(col1=>'foo', col2=>'bar')
+	 * @access public
+	 */
 	public function select1($sql, $bind=array()){
 		return( $this->_runsql($sql, $bind, 'one') );
 	}
 
-	//------------
-	//更新
-	//------------
-	public function exec($sql, $bind=array()){
+	/**
+	 * UPDATE,INSERT,DELETE句実行
+	 *
+	 * データ更新系のSQLを実行する。
+	 *
+	 * @param  string $sql    SQL文を直書き。
+	 * @param  array  $bind   SQL文内でプレースホルダを利用して
+	 *                        いる場合は配列で渡す。順番考慮。
+	 * @param  bool   $is_tra トランザクションを利用する場合はtrue
+	 * @return bool
+	 * @access public
+	 */
+	public function exec($sql, $bind=array(), $is_tra=true){
 		if(!$this->dbh)
 			$this->dbh = $this->_connect();
+	
+		if($is_tra){
+			//実行
+			$this->dbh->beginTransaction();
+			$ret = $this->_runsql($sql, $bind, 'exec');
 
-		//実行
-		$this->dbh->beginTransaction();
-		$ret = $this->_runsql($sql, $bind, 'exec');
-
-		//確定 or 巻戻し
-		if($ret) $this->dbh->commit();
-		else $this->dbh->rollBack();
+			//確定 or 巻戻し
+			if($ret) $this->dbh->commit();
+			else $this->dbh->rollBack();
+		}
+		else{
+			$ret = $this->_runsql($sql, $bind, 'exec');
+		}
 
 		return( $ret );
 	}
@@ -91,8 +143,25 @@ class BaseModel{
 	//--------------------------------------------
 	// SQL作成用 便利関数
 	//--------------------------------------------
-	//updateのsetを作成(bind考慮)
-	public function makeUpdateSet($arr){
+	/**
+	 * UPDATE句のsetを作成
+	 *
+	 * プレースホルダを考慮しupdate句のset部分を作成する。
+	 *
+	 * Example.<code>
+	 *   $ret = $this->makeUpdateSet(array(
+	 *              'name' => 'foo'
+	 *            , 'age'  => 19
+	 *            , 'addr' => '松江'
+	 *          ));
+	 *   // $ret === 'name=?, age=?, addr=?'
+	 * </code>
+	 *
+	 * @param  array   $arr  key-value
+	 * @return string
+	 * @access public
+	 */
+	 public function makeUpdateSet($arr){
 		$result = array();
 		foreach($arr as $key => $val){
 			array_push($result, sprintf('%s=?', $key));
@@ -101,7 +170,22 @@ class BaseModel{
 		return( join(', ', $result) );
 	}
 
-	//update set ～ のbind値を抜出し 
+	/**
+	 * UPDATE句のプレースホルダ用の配列を作成
+	 *
+	 * Example.<code>
+	 *   $ret = $this->makeUpdateSetBind(array(
+	 *              'name' => 'foo'
+	 *            , 'age'  => 19
+	 *            , 'addr' => '松江'
+	 *          ));
+	 *   // $ret === array('foo',19,'松枝')
+	 * </code>
+	 *
+	 * @param  array   $arr  key-value
+	 * @return array
+	 * @access public
+	 */
 	public function makeUpdateSetBind($arr){
 		$result = array();
 		foreach($arr as $key => $val){
@@ -117,10 +201,13 @@ class BaseModel{
 	 * - _connect
 	 * - _runsql
 	 *--------------------------------------------*/
-	//--------------------------------------------
-	// 接続
-	//--------------------------------------------
-	private function _connect(){
+	/**
+	 * DBに接続する
+	 *
+	 * @global $GLOBALS['Conf']
+	 * @access private
+	 */
+	 private function _connect(){
 		global $Conf;
 		
 		try{
@@ -139,9 +226,11 @@ class BaseModel{
 
 	}
 
-	//--------------------------------------------
-	// SQL実行
-	//--------------------------------------------
+	/**
+	 * SQL実行
+	 *
+	 * @access private
+	 */
 	private function _runsql($sql, $bind, $type){		
 		if(!$this->dbh)
 			$this->dbh = $this->_connect();
