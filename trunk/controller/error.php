@@ -23,21 +23,48 @@
  * THE SOFTWARE.
  */
 
+
+/**
+ * ErrorControllerクラス
+ * 
+ * 汎用エラー表示クラス。
+ * WingPHPでは何らかの *致命的な* エラーが生じた際に、特定のURLへ遷移させる
+ * ことで処理を簡素化させている。
+ *
+ * Attention.
+ *   Apacheのデフォルトの設定で /error/ がすでに定義されているケースがある。
+ *   404などが出るなどうまく動作しない場合は httpd.conf など設定ファイルを
+ *   確認する。
+ *
+ * Example.
+ *   404 Not Found → /error/msg/404
+ *   共通エラー    → /error/msg/common
+ * 
+ * @package    ErrorController
+ * @copyright  2010 WingPHP
+ * @author     M.Katsube < katsubemakito@gmail.com >
+ * @license    The MIT License
+ * @access     public
+ */
 class ErrorController extends BaseController{
 	//--------------------------------------------
 	// メンバ変数
 	//--------------------------------------------
 
-	//--------------------------------------------
-	// コンストラクタ
-	//--------------------------------------------
+	/**
+	 * コンストラクタ
+	 *
+	 * @access public
+	 */
 	function __construct(){
 		parent::__construct();
 	}
 
-	//--------------------------------------------
-	// デストラクタ
-	//--------------------------------------------
+	/**
+	 * デストラクタ
+	 *
+	 * @access public
+	 */
 	function __destruct(){
 		;
 	}
@@ -48,26 +75,41 @@ class ErrorController extends BaseController{
 	 * - index
 	 * - msg
 	 *--------------------------------------------*/
+	/**
+	 * エラートップ
+	 *
+	 * @access public
+	 */
 	public function index(){
 		$this->location('/error/msg/common');
 	}
 
+	/**
+	 * エラー表示
+	 *
+	 * @access public
+	 */
 	public function msg($argv){
 		$code = $argv[0];
 		$file = '';
+		$status = '200 OK';
 
 		switch($code){
 			case '404':
-				$file = 'error/404.html';
+				$file   = 'error/404.html';
+				$status = '404 Not Found';
 				break;
 			default:
-				$file = 'error/common.html';
+				$file   = 'error/common.html';
+				$status = '500 Internal Server Error';
 				break;
 		}
 		
+		header("HTTP/1.1 $status");
 		$this->smarty()->display($file);
 	}
-	 
+
+
 	/*--------------------------------------------
 	 * ■ Private ■
 	 *--------------------------------------------
