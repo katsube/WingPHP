@@ -87,6 +87,7 @@ class ErrorController extends BaseController{
 	/**
 	 * エラー表示
 	 *
+	 * @param  array   $argv   $argv[0] ... 404|common
 	 * @access public
 	 */
 	public function msg($argv){
