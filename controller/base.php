@@ -23,6 +23,22 @@
  * THE SOFTWARE.
  */
 
+/**
+ * BaseControllerクラス
+ * 
+ * 各コントローラーのスーパークラス。
+ * 以下のような処理を受け持つ。
+ *  - ビュー周りの処理
+ *  - リダイレクトなどHTTPヘッダ周り
+ *  - バリデーション
+ *  - メール送信
+ *
+ * @package    BaseController
+ * @copyright  2010 WingPHP
+ * @author     M.Katsube < katsubemakito@gmail.com >
+ * @license    The MIT License
+ * @access     public
+ */
 class BaseController{
 	//--------------------------------------------
 	// メンバ変数
@@ -31,16 +47,20 @@ class BaseController{
 	private $utilview = null;
 	private $run_validation = false;
 	
-	//--------------------------------------------
-	// コンストラクタ
-	//--------------------------------------------
+	/**
+	 * コンストラクタ
+	 *
+	 * @access public
+	 */
 	function __construct(){
 		$this->utilview = new utilview();
 	}
 
-	//--------------------------------------------
-	// デストラクタ
-	//--------------------------------------------
+	/**
+	 * デストラクタ
+	 *
+	 * @access public
+	 */
 	function __destruct(){
 		;
 	}
@@ -54,7 +74,12 @@ class BaseController{
 	 * - check
 	 * - sendmail
 	 *--------------------------------------------*/
-	//viewはSmartyの機能をそのまま利用
+	/**
+	 * view用のSmartyオブジェクトを返却
+	 *
+	 * @return mixed Smartyオブジェクト
+	 * @access public
+	 */
 	public function smarty(){
 		if(!$this->smarty){
 			$this->_setSmarty();
@@ -63,21 +88,76 @@ class BaseController{
 		return($this->smarty);
 	}
 	
-	//移動
-	public function location($url){
-		$head = sprintf('Location: %s', $url);
-		header($head);
+	/**
+	 * 指定URL(パス)へ遷移する 
+	 *
+	 * HTTPヘッダがまだ送信されていない場合はLocationヘッダで、
+	 * すでに送信されている場合はmeta要素を出力する
+	 *
+	 * @param  string  $url   URL(パス)
+	 * @param  int     $sec   遷移までの秒数(meta出力時のみ有効)
+	 * @access public
+	 */
+	public function location($url, $sec=0){
+		if( ! headers_sent() ){
+			$head = sprintf('Location: %s', $url);
+			header($head);
+		}
+		else{
+			$meta = sprintf('<meta http-equiv="refresh" content="%d;url=%s">', $sec, $url);
+			echo $meta;
+		}
 	}
 
-	//validation
+	/**
+	 * バリデーションを行う 
+	 *
+	 * key-value型の配列のvalueに対してバリデーションを実施する。
+	 * 第二引数 $ruleも同様にkey-value型の配列であり、このvalueにルールを
+	 * 記述する。
+	 *   ※つまり第一引数と第二引数のキーはリンクしている
+	 *
+	 * Example. <code>
+	 *   $q   = new QueryModel();
+	 *   $ret = $this->check(
+	 *               $q->data()
+	 *             , array('key1'=>'ALNUM', 'key2'=>'/^([0-9a-zA-Z]{1,})$/')
+	 *          );
+	 *
+	 *   $this->smarty()->assign('validation', $ret);
+	 * </code>
+	 *
+	 * @param  array  $data  array(key1=>'value1', key2=>'value2' ...)
+	 * @param  array  $rule  array(key1=>'ALNUM',  key2=>'/^([0-9a-zA-Z]{1,})$/' ...)
+	 * @return array  array( result=>true|false, data=>array( key1=>true|false, key2=>true|false ... ) )
+	 * @access public
+	 */
 	public function check($data, $rule){
-		$v = new validation();
+		$v = new validation();				// lib/validation.php
 		$this->utilview->run_valid();
 		
-		return( $v->check($data, $rule) );		//{ 'result'=>true|false, 'data'=>{'name1'=>true|false, 'name2'=>true|false, ...} }
+		return( $v->check($data, $rule) );
 	}
-	
-	//メール送信
+
+
+	/**
+	 * メール送信ラッパー
+	 *
+	 * mb_send_mailの簡易ラッパー。将来的にもろもろ拡張予定。
+	 *
+	 * Example. <code>
+	 *   $this->sendmail(array(
+	 *        'subject' => 'メールの件名'
+	 *      , 'from'    => 'from@example.com'
+	 *      , 'to'      => 'to@example.com'
+	 *      , 'body'    => $body
+	 *	));
+	 * </code>
+	 *
+	 * @param  array  $data  array('subject'=>'件名', 'from'=>'送信者', 'to'=>'宛先', 'body'=>'本文')
+	 * @return bool
+	 * @access public
+	 */
 	public function sendmail($data){
 		$subject = $data['subject'];
 		$from    = $data['from'];
@@ -98,6 +178,15 @@ class BaseController{
 	 *--------------------------------------------
 	 * - _setSmarty
 	 *--------------------------------------------*/
+
+	/**
+	 * Smartyインスタンスを作成、設定を行う 
+	 *
+	 * Smartyインスタンスを作成し、$GLOBALS['Conf']の内容に
+	 * したがって各種設定を反映する。
+	 *
+	 * @access private
+	 */
 	private function _setSmarty(){
 		global $Conf;
 		$smarty = new Smarty;
