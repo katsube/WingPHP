@@ -23,11 +23,18 @@
  * THE SOFTWARE.
  */
 
+
+ /**
+  * システム全体で使用する設定変数
+  *
+  * @global array $GLOBALS['Conf']
+  * @name $Conf
+  */
 $Conf = array(
 	//■データベース設定
 	'DB' => array(
-			  'DSN'  =>'mysql:dbname=test;host=localhost'		//PDO
-			, 'USER' => 'username'
+			  'DSN'      =>'mysql:dbname=test;host=localhost'		//PDO
+			, 'USER'     => 'username'
 			, 'PASSWORD' => 'password'
 	)
 	
