@@ -27,6 +27,27 @@ class SessionModelTest extends PHPUnit_Framework_TestCase{
 	}
 
 	/**
+	 * セットする
+     */
+	function testSet(){
+		$s = new SessionModel();
+		
+		//セットする
+		$s->set('foobar', 'ふーばー');
+		$s->set('name', 'makito');			//上書き
+		
+		//存在する
+		$this->assertEquals($s->get('age'), 30);
+		$this->assertEquals($s->get('foobar'), 'ふーばー');
+		$this->assertEquals($s->get('name'), 'makito');			//上書きされてる
+		
+		//存在しない
+		$this->assertEquals($s->get('hogehoge'), null);
+	}
+
+
+
+	/**
 	 * 取得する
      */
 	function testGet(){
