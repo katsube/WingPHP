@@ -22,21 +22,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+/**
+ * IndexControllerクラス
+ * 
+ * サイト総合トップ
+ *
+ * @package    IndexController
+ * @copyright  2010 WingPHP
+ * @author     M.Katsube < katsubemakito@gmail.com >
+ * @license    The MIT License
+ * @access     public
+ */
 class IndexController extends BaseController{
 	//--------------------------------------------
 	// メンバ変数
 	//--------------------------------------------
 
-	//--------------------------------------------
-	// コンストラクタ
-	//--------------------------------------------
+	/**
+	 * コンストラクタ
+	 *
+	 * @access public
+	 */
 	function __construct(){
 		parent::__construct();
 	}
 
-	//--------------------------------------------
-	// デストラクタ
-	//--------------------------------------------
+	/**
+	 * デストラクタ
+	 *
+	 * @access public
+	 */
 	function __destruct(){
 		;
 	}
@@ -46,6 +62,11 @@ class IndexController extends BaseController{
 	 *--------------------------------------------
 	 * - index
 	 *--------------------------------------------*/
+	/**
+	 * トップ表示
+	 *
+	 * @access public
+	 */
 	public function index(){
 		$this->smarty()->display('index.html');
 	}
