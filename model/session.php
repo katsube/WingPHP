@@ -23,25 +23,41 @@
  * THE SOFTWARE.
  */
 
+/**
+ * SessionModelクラス
+ * 
+ * セッション値をやりとりする。$_SESSIONのラッパーのようなもの。
+ * 将来的な変更などを考えてこのクラス経由でデータの操作を行う
+ * ことが望ましい。
+ *
+ * @package    QueryModel
+ * @copyright  2010 WingPHP
+ * @author     M.Katsube < katsubemakito@gmail.com >
+ * @license    The MIT License
+ * @access     public
+ */
 class SessionModel extends BaseModel{
 	//--------------------------------------------
 	// メンバ変数
 	//--------------------------------------------
 
-	//--------------------------------------------
-	// コンストラクタ
-	//--------------------------------------------
+	/**
+	 * コンストラクタ
+	 *
+	 * @access public
+	 */
 	function __construct(){
 		;
 	}
 
-	//--------------------------------------------
-	// デストラクタ
-	//--------------------------------------------
+	/**
+	 * デストラクタ
+	 *
+	 * @access public
+	 */
 	function __destruct(){
 		;
 	}
-
 
 
 	/*--------------------------------------------
@@ -54,9 +70,16 @@ class SessionModel extends BaseModel{
 	 * - destroy
 	 *--------------------------------------------*/
 
-	//--------------------------------------------
-	// 各データ処理
-	//--------------------------------------------
+	/**
+	 * セッション値の取得
+	 *
+	 * 指定されたセッション値を返却する。
+	 * 存在しない場合は null を返却する。
+	 *
+	 * @param  string  $name
+	 * @return mixed
+	 * @access public
+	 */
 	public function get($name){
 		if(array_key_exists($name, $_SESSION))
 			return( $_SESSION[$name] );
@@ -64,14 +87,42 @@ class SessionModel extends BaseModel{
 			return( null );
 	}
 
+	/**
+	 * セッション値を保存する
+	 *
+	 * 指定されたセッション値を保存する。
+	 * すでに存在する場合は上書きされる。
+	 *
+	 * @param  string  $name
+	 * @access public
+	 */
 	public function set($name, $value){
 		$_SESSION[$name] = $value;
 	}
 
+	/**
+	 * セッション値を削除する
+	 *
+	 * 指定されたセッション値を削除する。
+	 * 存在しない場合は何もしない。
+	 *
+	 * @param  string  $name
+	 * @access public
+	 */
 	public function del($name){
-		unset($_SESSION[$name]);
+		if( array_key_exists($name, $_SESSION))
+			unset($_SESSION[$name]);
 	}
 	
+	/**
+	 * セッション名が存在するか確認する
+	 *
+	 * 指定されたセッション名が存在するか確認する
+	 *
+	 * @param  string  $name
+	 * @return bool
+	 * @access public
+	 */
 	public function exists($name){
 		return( array_key_exists($name, $_SESSION) );
 	}
@@ -80,6 +131,11 @@ class SessionModel extends BaseModel{
 	//--------------------------------------------
 	// セッションを破棄
 	//--------------------------------------------
+	/**
+	 * セッションを破棄する
+	 *
+	 * @access public
+	 */
 	public function destroy(){
 		if( session_id() !== "" )
 			session_destroy();
