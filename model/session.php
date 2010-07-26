@@ -90,14 +90,20 @@ class SessionModel extends BaseModel{
 	/**
 	 * セッション値を保存する
 	 *
-	 * 指定されたセッション値を保存する。
-	 * すでに存在する場合は上書きされる。
+	 * 指定されたセッション値を保存する。すでに存在する場合は
+	 * 上書きされる。第一引数に連想配列がセットされた場合は、
+	 * 一度にセットされる。
 	 *
 	 * @param  string  $name
+	 * @param  string  $value
 	 * @access public
 	 */
-	public function set($name, $value){
-		$_SESSION[$name] = $value;
+	public function set($name, $value=null){
+		if(is_array($name))
+			foreach($name as $key => $val)
+				$_SESSION[$key] = $val;
+		else
+			$_SESSION[$name] = $value;
 	}
 
 	/**
