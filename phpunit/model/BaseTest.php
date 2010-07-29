@@ -1,5 +1,5 @@
 <?php
-require_once 'PHPUnit/Framework.php';
+require_once('PHPUnit/Framework.php');
 require_once('../../model/base.php');
 
 class BaseModelTest extends PHPUnit_Framework_TestCase{
