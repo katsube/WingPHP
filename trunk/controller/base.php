@@ -70,6 +70,7 @@ class BaseController{
 	 * ■ Public ■
 	 *--------------------------------------------
 	 * - smarty
+	 * - set
 	 * - location
 	 * - check
 	 * - sendmail
@@ -81,13 +82,43 @@ class BaseController{
 	 * @access public
 	 */
 	public function smarty(){
-		if(!$this->smarty){
+		if(!$this->smarty)
 			$this->_setSmarty();
-		}
 		
 		return($this->smarty);
 	}
 	
+	/**
+	 * view(Smarty)に値をセットする
+	 *
+	 * @param  mixed   $key
+	 * @param  string  $value
+	 * @access public
+	 */
+	public function set($key, $value=null){
+		if(!$this->smarty)
+			$this->_setSmarty();
+		
+		if(is_array($key))
+			$this->smarty->assign($key);
+		else
+			$this->smarty->assign($key, $value);
+	}
+
+	/**
+	 * viewを出力する
+	 * 
+	 * @param  string  
+	 * @access public
+	 * @todo   キャッシュ関連の対応を行う。
+	 */
+	public function display($file){
+		if(!$this->smarty)
+			$this->_setSmarty();
+		
+		$this->smarty->display($file);
+	}
+
 	/**
 	 * 指定URL(パス)へ遷移する 
 	 *
