@@ -1,6 +1,6 @@
 <?php
 /* [WingPHP]
- *  - global configuration file.
+ *  - lib/global.php
  *  
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
@@ -23,47 +23,28 @@
  * THE SOFTWARE.
  */
 
-
- /**
-  * システム全体で使用する設定変数
-  *
-  * @global array $GLOBALS['Conf']
-  * @name $Conf
-  */
-$Conf = array(
-	//■データベース設定
-	'DB' => array(
-		  'DSN'      =>'mysql:dbname=test;host=localhost'		//PDO
-		, 'USER'     => 'username'
-		, 'PASSWORD' => 'password'
-	)
+/**
+ * ライブラリを明示的に読み込む
+ * 
+ * example.
+ *   uselib('Math');					// == require_once('../lib/Math.php');
+ *   uselib('stdio', 'stdlib');			// == require_once('../lib/stdio.php'); 
+ *										//    require_once('../lib/stdlib.php');
+ * @param string ライブラリ名
+ */
+function uselib(){
+	global $Conf;
+	$dir  = $Conf['Lib']['dir'];
+	$args = func_get_args();
 	
-	//■秘密鍵
-	//適当な文字列に変更してください。
-	, 'Secret' => array(
-		'key' => 'aqwsdertyhjiolpzsxcfvgbnjmk,l.;/:'
-	)
-
-	//■セッション設定
-	, 'Session' => array(
-		'name' => 'SESSID'
-	)
-	
-	//■ライブラリ
-	, 'Lib' => array(
-		'dir' => '../lib/'
-	)
-	
-	//■View設定
-	, 'Smarty' => array(
-		  'tmpl'   => '../view/'
-		, 'tmpl_c' => '../lib/smarty/templates_c/'
-		, 'config' => '../lib/smarty/configs/'
-		, 'cache'  => '../lib/smarty/cache/'
-		
-		, 'is_cache'   => false
-		, 'cache_life' => 0
-		//, 'cache_life' => 60 * 60	//秒
-	)
-);
+	foreach ($args as $file){
+		$path = sprintf('%s/%s.php', $dir, $file);
+		if( is_file($path) ){
+			require_once($path);
+		}
+		else{
+			die();
+		}
+	}
+}
 ?>
