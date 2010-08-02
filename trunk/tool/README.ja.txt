@@ -1,28 +1,28 @@
 -----------------------------------------------------------------------------
-toolƒfƒBƒŒƒNƒgƒŠ“à‚ÌŽæˆµ‚¢à–¾‘
+toolãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã®å–æ‰±ã„èª¬æ˜Žæ›¸
 -----------------------------------------------------------------------------
-QQQQQQQQQQQQQQQQQQQQQQQQ
-1. makedoc.bat - ƒhƒLƒ…ƒƒ“ƒg¶¬—pƒoƒbƒ`
-PPPPPPPPPPPPPPPPPPPPPPPP
-  ›‚±‚ê‚Í‰½H
-    Ephpdoc‚ðŽÀs‚·‚éƒoƒbƒ`ƒtƒ@ƒCƒ‹‚Å‚·B
-	EŽÀs‚·‚é‚Æ [WingPHPƒ‹[ƒg]/doc “à‚ÉƒhƒLƒ…ƒƒ“ƒg‚ðo—Í‚µ‚Ü‚·B
+ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿ï¼¿
+1. makedoc.bat - ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆç”Ÿæˆç”¨ãƒãƒƒãƒ
+ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£ï¿£
+  â—‹ã“ã‚Œã¯ä½•ï¼Ÿ
+    ãƒ»phpdocã‚’å®Ÿè¡Œã™ã‚‹ãƒãƒƒãƒãƒ•ã‚¡ã‚¤ãƒ«ã§ã™ã€‚
+	ãƒ»å®Ÿè¡Œã™ã‚‹ã¨ [WingPHPãƒ«ãƒ¼ãƒˆ]/doc å†…ã«ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚’å‡ºåŠ›ã—ã¾ã™ã€‚
   
-  ›ƒCƒ“ƒXƒg[ƒ‹
-    E“®ì‚É‚Í phpDocumentor ‚ª•K—v‚Å‚·B
-    EphpDocumentor‚ÌƒCƒ“ƒXƒg[ƒ‹•û–@‚ÍˆÈ‰º‚Å‚·B
+  â—‹ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
+    ãƒ»å‹•ä½œã«ã¯ phpDocumentor ãŒå¿…è¦ã§ã™ã€‚
+    ãƒ»phpDocumentorã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«æ–¹æ³•ã¯ä»¥ä¸‹ã§ã™ã€‚
        $ pear install phpdocumentor
-	EƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚©‚ç phpdoc ƒRƒ}ƒ“ƒh‚ð’@‚«Usage‚ª•\Ž¦‚³‚ê‚é‚©Šm”F‚µ‚Ü‚·B
-	  ‚à‚µ‚³‚ê‚È‚¢ê‡‚ÍPATH‚ª’Ê‚Á‚Ä‚¢‚é‚©Šm”F‚ðB
-	EWindowsŠÂ‹«‚Å‚Í‚±‚êˆÈã“Á‚É‚·‚é‚±‚Æ‚Í‚ ‚è‚Ü‚¹‚ñB
-	EUNIXƒ‰ƒCƒN‚ÈOS‚Å‚ÍAŠg’£Žq‚ð•ÏXAŽÀsŒ ŒÀ‚ð•t—^A1s–Ú‚É #!/bin/sh
-	  ‚ð’Ç‰Á‚µ‚Ü‚·B
+	ãƒ»ã‚³ãƒžãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‹ã‚‰ phpdoc ã‚³ãƒžãƒ³ãƒ‰ã‚’å©ãUsageãŒè¡¨ç¤ºã•ã‚Œã‚‹ã‹ç¢ºèªã—ã¾ã™ã€‚
+	  ã‚‚ã—ã•ã‚Œãªã„å ´åˆã¯PATHãŒé€šã£ã¦ã„ã‚‹ã‹ç¢ºèªã‚’ã€‚
+	ãƒ»Windowsç’°å¢ƒã§ã¯ã“ã‚Œä»¥ä¸Šç‰¹ã«ã™ã‚‹ã“ã¨ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚
+	ãƒ»UNIXãƒ©ã‚¤ã‚¯ãªOSã§ã¯ã€æ‹¡å¼µå­ã‚’å¤‰æ›´ã€å®Ÿè¡Œæ¨©é™ã‚’ä»˜ä¸Žã€1è¡Œç›®ã« #!/bin/sh
+	  ã‚’è¿½åŠ ã—ã¾ã™ã€‚
 
-  ›ŽÀs
-    EWindowsŠÂ‹«‚Å‚Íƒ_ƒuƒ‹ƒNƒŠƒbƒNA‚à‚µ‚­‚ÍƒRƒ}ƒ“ƒhƒvƒƒ“ƒvƒg‚©‚ç
-	  ƒtƒ@ƒCƒ‹–¼‚ðŽw’è‚µ‚ÄŽÀs‚µ‚Ü‚·B
-	EUNIXƒ‰ƒCƒN‚ÈOS‚Å‚à“¯—l‚Å‚·B
+  â—‹å®Ÿè¡Œ
+    ãƒ»Windowsç’°å¢ƒã§ã¯ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã€ã‚‚ã—ãã¯ã‚³ãƒžãƒ³ãƒ‰ãƒ—ãƒ­ãƒ³ãƒ—ãƒˆã‹ã‚‰
+	  ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®šã—ã¦å®Ÿè¡Œã—ã¾ã™ã€‚
+	ãƒ»UNIXãƒ©ã‚¤ã‚¯ãªOSã§ã‚‚åŒæ§˜ã§ã™ã€‚
 
-  ›‚»‚Ì‘¼
-	EphpDocumentorŒöŽ®
+  â—‹ãã®ä»–
+	ãƒ»phpDocumentorå…¬å¼
       http://www.phpdoc.org/
