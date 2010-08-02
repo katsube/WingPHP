@@ -1,26 +1,26 @@
 -----------------------------------------------------------------------------
-phpunitƒfƒBƒŒƒNƒgƒŠ“à‚ÌŽæˆµ‚¢à–¾‘
+phpunitãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã®å–æ‰±ã„èª¬æ˜Žæ›¸
 -----------------------------------------------------------------------------
-  ›‚±‚ê‚Í‰½H
-    EPHPUnit‚ð—p‚¢‚½ƒ†ƒjƒbƒgƒeƒXƒg‚ðs‚¤Û‚Ìƒtƒ@ƒCƒ‹‚ð’u‚¢‚Ä‚¨‚­
-      ƒfƒBƒŒƒNƒgƒŠ‚Å‚·B
+  â—‹ã“ã‚Œã¯ä½•ï¼Ÿ
+    ãƒ»PHPUnitã‚’ç”¨ã„ãŸãƒ¦ãƒ‹ãƒƒãƒˆãƒ†ã‚¹ãƒˆã‚’è¡Œã†éš›ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç½®ã„ã¦ãŠã
+      ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã§ã™ã€‚
 
-  ›ƒCƒ“ƒXƒg[ƒ‹
-    E“®ì‚É‚Í PHPUnit ‚ª•K—v‚Å‚·B
-    EPHPUnit‚ÌƒCƒ“ƒXƒg[ƒ‹•û–@‚ÍˆÈ‰º‚Å‚·B
+  â—‹ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
+    ãƒ»å‹•ä½œã«ã¯ PHPUnit ãŒå¿…è¦ã§ã™ã€‚
+    ãƒ»PHPUnitã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«æ–¹æ³•ã¯ä»¥ä¸‹ã§ã™ã€‚
 
-        # ”z•z‚³‚ê‚Ä‚¢‚éƒ`ƒƒƒ“ƒlƒ‹‚ð’Ç‰Á
+        # é…å¸ƒã•ã‚Œã¦ã„ã‚‹ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¿½åŠ 
         $ pear channel-discover pear.phpunit.de
         $ pear channel-discover pear.symfony-project.com
 
-        # PEAR‚ÅƒCƒ“ƒXƒg[ƒ‹
+        # PEARã§ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
         $ pear install phpunit/PHPUnit
       
-      ¦ŽQÆ
+      â€»å‚ç…§
         http://www.phpunit.de/manual/3.4/ja/installation.html
 
-  ›ƒeƒXƒg•û–@
-    EˆÈ‰º‚Ì‚æ‚¤‚ÉŽÀs‚µ‚Ü‚·B
+  â—‹ãƒ†ã‚¹ãƒˆæ–¹æ³•
+    ãƒ»ä»¥ä¸‹ã®ã‚ˆã†ã«å®Ÿè¡Œã—ã¾ã™ã€‚
 
         $ cd phpunit/model
         $ phpunit 
@@ -30,13 +30,13 @@ phpunitƒfƒBƒŒƒNƒgƒŠ“à‚ÌŽæˆµ‚¢à–¾‘
 
         OK (2 tests, 3 assertions)
 
-    EÚ‚µ‚¢ŽÀs•û–@‚ÍPHPUnit‚ÌƒhƒLƒ…ƒƒ“ƒg‚ðŽQÆ‚­‚¾‚³‚¢B
-    Emodel/BaseTest.php ‚Íƒtƒ@ƒCƒ‹–`“ª‚ÅDB‚Ö‚ÌÚ‘±Ý’è‚ðs‚Á‚Ä
-      ‚¢‚Ü‚·Bconf.php‚Æ‚Í•Ê‚ÉÝ’è‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B
+    ãƒ»è©³ã—ã„å®Ÿè¡Œæ–¹æ³•ã¯PHPUnitã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚’å‚ç…§ãã ã•ã„ã€‚
+    ãƒ»model/BaseTest.php ã¯ãƒ•ã‚¡ã‚¤ãƒ«å†’é ­ã§DBã¸ã®æŽ¥ç¶šè¨­å®šã‚’è¡Œã£ã¦
+      ã„ã¾ã™ã€‚conf.phpã¨ã¯åˆ¥ã«è¨­å®šã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
 
-  ›‚»‚Ì‘¼
-    EPHPUnitŒöŽ®
+  â—‹ãã®ä»–
+    ãƒ»PHPUnitå…¬å¼
       http://www.phpunit.de/
 
-    EPHPUnit“ú–{ŒêƒhƒLƒ…ƒƒ“ƒg(3.4)
+    ãƒ»PHPUnitæ—¥æœ¬èªžãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆ(3.4)
       http://www.phpunit.de/manual/3.4/ja/automating-tests.html
