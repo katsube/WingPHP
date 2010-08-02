@@ -24,20 +24,18 @@
  */
 
 function __autoload($className){
-	if( preg_match('/^(.*)(Model|Controller)$/', $className, $match) ){
+	if( preg_match('/^(.*)(Model|Controller)$/', $className, $match) > 0 ){
 		$file = strtolower($match[1]) . '.php';
 		$dir  = strtolower($match[2]);
 		
 		if( is_file("../$dir/$file") )
 			include_once("../$dir/$file");
 	}
-	else if( strcmp($className, 'Smarty') == 0){
-		include_once("../lib/smarty/Smarty.class.php");
+	else if( strcmp($className, 'Smarty') === 0){
+		uselib("smarty/Smarty.class");
 	}
 	else{
-		$file = strtolower($className);
-		if( is_file("../lib/$file.php") )
-			include_once("../lib/$file.php");
+		uselib($className);
 	}
 }
 ?>
