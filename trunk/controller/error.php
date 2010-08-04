@@ -107,7 +107,7 @@ class ErrorController extends BaseController{
 		}
 		
 		header("HTTP/1.1 $status");
-		$this->set('file', $file);
+		$this->assign('file', $file);
 		$this->display($file);
 	}
 

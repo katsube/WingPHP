@@ -95,7 +95,7 @@ class BaseController{
 	 * @param  string  $value
 	 * @access public
 	 */
-	public function set($key, $value=null){
+	public function assign($key, $value=null){
 		if(!$this->smarty)
 			$this->_setSmarty();
 		
