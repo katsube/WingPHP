@@ -24,9 +24,9 @@
  */
  
 /**
- * ShortenURLAPI �C���^�[�t�F�[�X
+ * ShortenURLAPI インターフェース
  * 
- * ShortenURL�z���̃N���X���K���󂯎��@�\�̒�`�B
+ * ShortenURL配下のクラスが必ず受け持つ機能の定義。
  *
  * @package    ShortenURLAPI
  * @copyright  2010 WingPHP
