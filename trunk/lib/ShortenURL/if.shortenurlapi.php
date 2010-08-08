@@ -1,6 +1,6 @@
 <?php
 /* [WingPHP]
- *  - lib/global.php
+ *  - lib/ShortenURL/if.shortenurlapi.php
  *  
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
@@ -22,37 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
  
 /**
- * æ­£è¦è¡¨ç¾ï¼šURL
- */
-define('REGEX_URL', '/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/');
-
-
-/**
- * ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’æ˜ç¤ºçš„ã«èª­ã¿è¾¼ã‚€
+ * ShortenURLAPI ƒCƒ“ƒ^[ƒtƒF[ƒX
  * 
- * example.
- *   uselib('Math');					// == require_once('../lib/Math.php');
- *   uselib('stdio', 'stdlib');			// == require_once('../lib/stdio.php'); 
- *										//    require_once('../lib/stdlib.php');
- * @param string ãƒ©ã‚¤ãƒ–ãƒ©ãƒªå
+ * ShortenURL”z‰º‚ÌƒNƒ‰ƒX‚ª•K‚¸ó‚¯‚Â‹@”\‚Ì’è‹`B
+ *
+ * @package    ShortenURLAPI
+ * @copyright  2010 WingPHP
+ * @author     M.Katsube < katsubemakito@gmail.com >
+ * @license    The MIT License
+ * @access     public
  */
-function uselib(){
-	global $Conf;
-	$dir  = $Conf['Lib']['dir'];
-	$args = func_get_args();
-	
-	foreach ($args as $file){
-		$path = sprintf('%s/%s.php', $dir, $file);
-		if( is_file($path) ){
-			require_once($path);
-		}
-		else{
-			die();
-		}
-	}
+interface ShortenURLAPI{
+	function shorten($url);
 }
-
 ?>
