@@ -83,7 +83,7 @@ class Bitly implements ShortenURLAPI{
 				);
 		
 		//取得
-		$buff = file_get_contents($url);
+		$buff = @file_get_contents($url);
 		if($buff === false )
 			return($false);
 	
