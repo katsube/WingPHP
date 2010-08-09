@@ -27,11 +27,24 @@
  * GoogleSearchクラス
  * 
  * Google AJAX Search APIのラッパークラス。
+ * メソッド名を web|local|video|blogs|news|books|images|patent から選択することで
+ * サーチャーを変更できる。
+ *   ※引数などはどれも同じ。
+ *
+ * 任意ではあるがGoogleに登録しAPIキーを取得。指定することが望ましい。
+ * 参照元(REFERER)の指定はドキュメント上は必須とされている。
+ *
  * example.<code>
  *     uselib('Google/Search');
  *
- *     $gsearch = GoogleSearch('http://wingphp.net/', 'youre google api key (optional)');
- *     $ret     = $gsearch->web('検索ワード');
+ *     $referer = 'http://wingphp.net/';  					//参照元
+ *     $apikey  = 'youre google api key (optional)';		//APIキー
+ *
+ *     $gsearch = GoogleSearch($referer, $apikey);
+ *     $ret     = $gsearch->web(
+ *						  '検索ワード'
+ *						, array('hl'=>'ja', 'start'=>10)	//日本語で10件目から取得(オプション)
+ *                );
  * </code>
  *
  * @package    GoogleSearch
