@@ -48,9 +48,9 @@ require_once('if.shortenurlapi.php');
  * @see        http://code.google.com/p/bitly-api/wiki/ApiDocumentation
  */
 class Bitly implements ShortenURLAPI{
-	private $id;
-	private $apikey;
-	private $use_curl;
+	private $id;			//ユーザーID
+	private $apikey;		//APIキー
+	private $use_curl;		//cURL利用フラグ
 
 	/**
 	 * コンストラクタ
@@ -66,6 +66,10 @@ class Bitly implements ShortenURLAPI{
 		$this->use_curl = $curl;
 	}
 
+
+	//---------------------------------------------------------
+	// Public
+	//---------------------------------------------------------
 	/**
 	 * URL短縮
 	 *
@@ -104,13 +108,15 @@ class Bitly implements ShortenURLAPI{
 	}
 	
 
-
+	//---------------------------------------------------------
+	// Private
+	//---------------------------------------------------------
 	/**
 	 * 指定URLの内容を取得
 	 *
 	 * @param  string $url APIのURL
 	 * @return string 取得したURLを文字列で返却。失敗時はfalse。
-	 * @access public
+	 * @access private
 	 */
 	private function _fetchUrl($url){
 		$ch = curl_init();
