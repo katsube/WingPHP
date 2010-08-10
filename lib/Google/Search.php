@@ -59,6 +59,7 @@ class GoogleSearch{
 	//--------------------------------------------
 	private $base_url = "http://ajax.googleapis.com/ajax/services/search/";
 	private $ver      = '1.0';
+	private $use_curl = true;		//cURL利用フラグ
 	private $referer;
 	private $apikey;
 
@@ -108,11 +109,19 @@ class GoogleSearch{
 	 * @access public
 	 */
 	function request($type, $q, $opt=array()){
-		$url     = $this->_makeUrl($type, $q, $opt);
-		$context = $this->_getContext();
+		//URL作成
+		$url = $this->_makeUrl($type, $q, $opt);
 
 		//取得
-		$ret = @file_get_contents($url, false, $context);
+		if( $this->use_curl ){
+			$ret = $this->_fetchUrl($url, $this->referer);
+		}
+		else{
+			$context = $this->_getContext();
+			$ret = @file_get_contents($url, false, $context);
+		}
+		
+		//エラーチェック
 		if($ret === false )
 			return( false );
 		
@@ -124,6 +133,15 @@ class GoogleSearch{
 			return(false);
 	}
 
+	/**
+	 * cURL利用有無変更
+	 *
+	 * @param  bool   $flag  trueなら利用、falseならfile_get_contents
+	 * @access public
+	 */	
+	function curl_use($flag){
+		$this->use_curl = $flag;
+	}
 
 
 	//--------------------------------------------
@@ -177,6 +195,27 @@ class GoogleSearch{
 			)
 		);
 	}
-}
 
+	/**
+	 * 指定URLの内容を取得
+	 *
+	 * @param  string $url     APIのURL
+	 * @param  string $referer REFERER
+	 * @return string 取得したURLを文字列で返却。失敗時はfalse。
+	 * @access private
+	 */
+	private function _fetchUrl($url, $referer){
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_REFERER, $referer);
+		
+		$ret = curl_exec($ch);
+		if(curl_errno($ch))
+			return(false);	//メッセージはcurl_error($ch);
+		curl_close($ch);
+	
+		return($ret);
+	}
+}
 ?>
