@@ -50,17 +50,20 @@ require_once('if.shortenurlapi.php');
 class Bitly implements ShortenURLAPI{
 	private $id;
 	private $apikey;
+	private $use_curl;
 
 	/**
 	 * コンストラクタ
 	 *
 	 * @param  string   $id       bit.ly ユーザーID
 	 * @param  string   $apikey   bit.ly APIキー
+	 * @param  bool     $curl     cURLを利用するか。falseだとfile_get_contents。
 	 * @access public
 	 */
-	function __construct($id, $apikey){
-		$this->id     = $id;
-		$this->apikey = $apikey;
+	function __construct($id, $apikey, $curl=true){
+		$this->id       = $id;
+		$this->apikey   = $apikey;
+		$this->use_curl = $curl;
 	}
 
 	/**
@@ -72,8 +75,8 @@ class Bitly implements ShortenURLAPI{
 	 */
 	public function shorten($url){
 		//URLチェック
-		if( empty($url) || preg_match(REGEX_URL, $url) === 0 )
-			return(false);
+		//if( empty($url) || preg_match(REGEX_URL, $url) === 0 )
+		//	return(false);
 	
 		//URL作成
 		$url = sprintf('http://api.bit.ly/v3/shorten?login=%s&apiKey=%s&longUrl=%s&format=json'
@@ -83,9 +86,14 @@ class Bitly implements ShortenURLAPI{
 				);
 		
 		//取得
-		$buff = @file_get_contents($url);
+		if($this->use_curl)
+			$buff = $this->_fetchUrl($url);
+		else
+			$buff = @file_get_contents($url);
+		
+		//エラーチェック
 		if($buff === false )
-			return($false);
+			return(false);
 	
 		//URL取出し
 		$buff_j = json_decode($buff, true);
@@ -94,6 +102,27 @@ class Bitly implements ShortenURLAPI{
 		
 		return( $buff_j['data']['url'] );
 	}
-}
+	
 
+
+	/**
+	 * 指定URLの内容を取得
+	 *
+	 * @param  string $url APIのURL
+	 * @return string 取得したURLを文字列で返却。失敗時はfalse。
+	 * @access public
+	 */
+	private function _fetchUrl($url){
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		$ret = curl_exec($ch);
+		if(curl_errno($ch))
+			return(false);	//メッセージはcurl_error($ch);
+		curl_close($ch);
+	
+		return($ret);
+	}
+}
 ?>
