@@ -38,7 +38,7 @@
  *     echo $xml->Result[0]->Title;
  * </code>
  *
- * @package    GoogleSearch
+ * @package    YahooJapanSearch
  * @copyright  2010 WingPHP
  * @author     M.Katsube < katsubemakito@gmail.com >
  * @license    The MIT License
