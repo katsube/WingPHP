@@ -23,8 +23,8 @@
  * THE SOFTWARE.
  */
 
-require_once('if.shortenurlapi.php');
-
+uselib('ShortenURL/if.shortenurlapi');
+uselib('Util/Net');
  
 /**
  * bit.ly API ラッパー
@@ -91,7 +91,7 @@ class Bitly implements ShortenURLAPI{
 		
 		//取得
 		if($this->use_curl)
-			$buff = $this->_fetchUrl($url);
+			$buff = net_fetchUrl($url);
 		else
 			$buff = @file_get_contents($url);
 		
@@ -106,29 +106,6 @@ class Bitly implements ShortenURLAPI{
 		
 		return( $buff_j['data']['url'] );
 	}
-	
 
-	//---------------------------------------------------------
-	// Private
-	//---------------------------------------------------------
-	/**
-	 * 指定URLの内容を取得
-	 *
-	 * @param  string $url APIのURL
-	 * @return string 取得したURLを文字列で返却。失敗時はfalse。
-	 * @access private
-	 */
-	private function _fetchUrl($url){
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		
-		$ret = curl_exec($ch);
-		if(curl_errno($ch))
-			return(false);	//メッセージはcurl_error($ch);
-		curl_close($ch);
-	
-		return($ret);
-	}
 }
 ?>
