@@ -22,6 +22,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+ 
+uselib('Util/Net');		//net_fetchurl, net_getContext
 
 /**
  * YahooJapanSearchクラス
@@ -90,7 +92,6 @@ class YahooJapanSearch{
 	//--------------------------------------------
 	// Public
 	//--------------------------------------------
-
 	/**
 	 * APIへリクエストし結果返却
 	 *
@@ -106,13 +107,10 @@ class YahooJapanSearch{
 		$url = $this->_makeUrl($type, $q, $opt);
 
 		//取得
-		if( $this->use_curl ){
-			$ret = $this->_fetchUrl($url);
-		}
-		else{
-			$context = $this->_getContext();
-			$ret = @file_get_contents($url, false, $context);
-		}
+		if( $this->use_curl )
+			$ret = net_fetchUrl($url);
+		else
+			$ret = @file_get_contents($url, false, net_getContext(array('method'=>'GET')) );
 		
 		//エラーチェック
 		if($ret === false )
@@ -136,26 +134,9 @@ class YahooJapanSearch{
 		$this->use_curl = $flag;
 	}
 
-
 	//--------------------------------------------
 	// Private
 	//--------------------------------------------
-	/**
-	 * HTTPヘッダ作成
-	 *
-	 * @return Object コンテキスト
-	 * @access public
-	 */
-	private function _getContext(){
-		return(
-			stream_context_create(array(
-						'http' => array(
-							  'method'  => 'GET'
-						))
-			)
-		);
-	}
-	
 	/**
 	 * リクエスト用URL作成
 	 *
@@ -184,26 +165,6 @@ class YahooJapanSearch{
 						, $query
 			)
 		);
-	}
-
-	/**
-	 * 指定URLの内容を取得
-	 *
-	 * @param  string $url     APIのURL
-	 * @return string 取得したURLを文字列で返却。失敗時はfalse。
-	 * @access private
-	 */
-	private function _fetchUrl($url){
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		
-		$ret = curl_exec($ch);
-		if(curl_errno($ch))
-			return(false);	//メッセージはcurl_error($ch);
-		curl_close($ch);
-	
-		return($ret);
 	}
 }
 ?>
