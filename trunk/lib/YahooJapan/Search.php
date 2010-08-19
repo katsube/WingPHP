@@ -110,7 +110,7 @@ class YahooJapanSearch{
 		if( $this->use_curl )
 			$ret = net_fetchUrl($url);
 		else
-			$ret = @file_get_contents($url, false, net_getContext(array('method'=>'GET')) );
+			$ret = @file_get_contents($url);
 		
 		//エラーチェック
 		if($ret === false )
