@@ -23,6 +23,8 @@
  * THE SOFTWARE.
  */
 
+uselib('Util/Net'); 	//net_fetchUrl, net_getContext
+
 /**
  * GoogleSearchクラス
  * 
@@ -114,11 +116,16 @@ class GoogleSearch{
 
 		//取得
 		if( $this->use_curl ){
-			$ret = $this->_fetchUrl($url, $this->referer);
+			$ret = net_fetchUrl($url, $this->referer);
 		}
 		else{
-			$context = $this->_getContext();
-			$ret = @file_get_contents($url, false, $context);
+			$ret = @file_get_contents($url, false
+								, net_getContext(array(
+										  'method' => 'GET'
+										, 'header' => sprintf('Referer: %s', $this->referer)
+									)
+								)
+					);
 		}
 		
 		//エラーチェック
@@ -146,24 +153,7 @@ class GoogleSearch{
 
 	//--------------------------------------------
 	// Private
-	//--------------------------------------------
-	/**
-	 * HTTPヘッダ作成
-	 *
-	 * @return Object コンテキスト
-	 * @access public
-	 */
-	private function _getContext(){
-		return(
-			stream_context_create(array(
-						'http' => array(
-							  'method'  => 'GET'
-							, 'header'  => sprintf('Referer: %s', $this->referer)
-						))
-			)
-		);
-	}
-	
+	//--------------------------------------------	
 	/**
 	 * リクエスト用URL作成
 	 *
@@ -194,28 +184,6 @@ class GoogleSearch{
 						, $query
 			)
 		);
-	}
-
-	/**
-	 * 指定URLの内容を取得
-	 *
-	 * @param  string $url     APIのURL
-	 * @param  string $referer REFERER
-	 * @return string 取得したURLを文字列で返却。失敗時はfalse。
-	 * @access private
-	 */
-	private function _fetchUrl($url, $referer){
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_REFERER, $referer);
-		
-		$ret = curl_exec($ch);
-		if(curl_errno($ch))
-			return(false);	//メッセージはcurl_error($ch);
-		curl_close($ch);
-	
-		return($ret);
 	}
 }
 ?>
