@@ -51,7 +51,7 @@ uselib('Cache/Strage/if.cachestrage.php');
  * @license    The MIT License
  * @access     public
  */
-class FileCacheStrage implements CacheStrage{
+class FileCacheStrage implements CacheStrageIF{
 	public $path   = null;
 	public $expire = 0;
 

@@ -32,7 +32,7 @@
  * @license    The MIT License
  * @access     public
  */
- interface CacheStrage{
+ interface CacheStrageIF{
 	public function set($id, $value);
 	public function get($id);
 	public function del($id);
