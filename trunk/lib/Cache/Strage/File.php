@@ -98,7 +98,11 @@ class FileCacheStrage implements CacheStrageIF{
 	public function get($id){
 		//ファイル名
 		$file = $this->_getfilename($id);
-
+		
+		//存在チェック
+		if( ! is_file($file) )
+			return(null);
+		
 		//有効期限チェック
 		if( ! $this->_is_expire($file) ){
 			unlink($file);
@@ -117,7 +121,8 @@ class FileCacheStrage implements CacheStrageIF{
 	 */
 	public function del($id){
 		$file = $this->_getfilename($id);
-		unlink($file);
+		if( is_file($file) )
+			unlink($file);
 	}
 
 	/**
