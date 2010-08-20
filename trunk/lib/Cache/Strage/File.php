@@ -103,14 +103,17 @@ class FileCacheStrage implements CacheStrageIF{
 		if( ! is_file($file) )
 			return(null);
 		
+		//ファイル取得
+		$contents = $this->_readfile($file);
+
 		//有効期限チェック
-		if( ! $this->_is_expire($file) ){
+		if( ! $this->_is_expire($contents['head']) ){
 			unlink($file);
 			return(null);
 		}
 		
 		//値を返却
-		return( $this->_readfile($file) );
+		return( $contents['body'] );
 	}
 
 	/**
@@ -136,7 +139,8 @@ class FileCacheStrage implements CacheStrageIF{
 		$file = $this->_getfilename($id);
 
 		if( is_file( $file ) ){
-			if( $this->_is_expire($file) )
+			$head = $this->_gethead($file);
+			if( $this->_is_expire($head) )
 				return(true);
 
 			unlink($file);
@@ -221,6 +225,7 @@ class FileCacheStrage implements CacheStrageIF{
 		rewind($fp);			//ポインタを先頭へ
 		
 		//保存
+		fwrite($fp, implode("\t", array(time(), $this->expire)) . "\n");		//現在時間、有効期限
 		fwrite($fp, $value);
 		
 		//閉じる
@@ -234,29 +239,68 @@ class FileCacheStrage implements CacheStrageIF{
 	 * @param  string  $file ファイルパス
 	 * @access private
 	 */
-	private function _is_expire($file){
-		$expire = $this->expire;
-	
-		//ゼロ＝期間なし
-		if($expire === 0)
+	private function _is_expire($val){
+		$expire = $val['expire'];
+
+		//ゼロ＝無期限
+		if( $expire === 0 )
 			return(true);
 		
 		//期間チェック
-		$mtime = filemtime($file);
+		$mtime = $val['mtime'];
 		$now   = time();
 
 		return( (($now - $mtime) <= $expire) );
 	}
-	
+
 	/**
 	 * ファイルの内容を返却する
 	 *
 	 * @param  string  $file ファイルパス
+	 * @return array   ヘッダ部とボディーに分けて返却
 	 * @access private
 	 */
 	private function _readfile($file){
-		$buff = file_get_contents($file);
-		return(unserialize($buff));
+		$fp   = fopen($file, 'r');
+		$head = fgets($fp);
+		$body = stream_get_contents($fp);
+		fclose($fp);
+		
+		$head = rtrim($head,"\n");
+		list($mtime, $expire) = explode("\t", $head);
+
+		return(
+			array(
+				  'head' => array(
+								  'mtime'  => (int)$mtime
+								, 'expire' => (int)$expire )
+
+				, 'body' => unserialize($body)
+			)
+		);
+	}
+
+	/**
+	 * ファイルのヘッダ部分のみ返却する
+	 *
+	 * @param  string  $file ファイルパス
+	 * @return array   ヘッダ部を返却
+	 * @access private
+	 */
+	private function _gethead($file){
+		$fp   = fopen($file, 'r');
+		$head = fgets($fp);
+		fclose($fp);
+
+		$head = rtrim($head,"\n");
+		list($mtime, $expire) = explode("\t", $head);
+
+		return(
+			array(
+				  'mtime'  => (int)$mtime
+				, 'expire' => (int)$expire
+			)
+		);
 	}
 }
 ?>
