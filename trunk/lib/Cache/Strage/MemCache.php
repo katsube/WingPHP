@@ -138,6 +138,9 @@ class MemCacheStrage implements CacheStrageIF{
 	public function flush(){
 		$this->memcache->flush();
 	}
+	public function balus(){
+		$this->flush();
+	}
 
 	/**
 	 * 有効期限をセットする
