@@ -163,6 +163,9 @@ class FileCacheStrage implements CacheStrageIF{
 			unlink($files[$i]);
 		}
 	}
+	public function balus(){
+		$this->flush();
+	}
 
 	/**
 	 * 有効期限をセットする
