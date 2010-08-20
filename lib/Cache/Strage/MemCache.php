@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
  
-uselib('Cache/Strage/if.cachestrage.php');
+uselib('Cache/Strage/if.cachestrage');
 
 /**
  * MemCacheStrageクラス
