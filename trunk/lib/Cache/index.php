@@ -30,7 +30,7 @@
  *     uselib('Cache');
  *
  *     $cache = Cache('File');
- *     $cache->expire = 60 * 60;           //キャッシュの有効時間を1時間に
+ *     $cache->expire(60 * 60);           //キャッシュの有効時間を1時間に
  *
  *     if(!$cache->exists('name'))
  *         $cache->set('name', $value);   //保存
