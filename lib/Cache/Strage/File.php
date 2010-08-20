@@ -160,6 +160,15 @@ class FileCacheStrage implements CacheStrageIF{
 		}
 	}
 
+	/**
+	 * 有効期限をセットする
+	 *
+	 * @access public
+	 */
+	public function expire($sec){
+		$this->expire = $sec;
+	}
+
 
 
 	//--------------------------------------------
