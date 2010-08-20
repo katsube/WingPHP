@@ -62,7 +62,10 @@ class MemCacheStrage implements CacheStrageIF{
 	 * @param  array  $server  memcached可動サーバ。複数渡すことも可。
 	 * @access public
 	 */
-	public function __construct($server=array('localhost'=>11211)){
+	public function __construct($server=null){
+		if( $server === null )
+			$server = array( 'localhost' => 11211 );
+
 		$memcache = new Memcache();
 		foreach($server as $host => $port)
 			$memcache->addServer($host, $port);
