@@ -33,10 +33,15 @@ define('REGEX_URL', '/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$
 /**
  * ライブラリを明示的に読み込む
  * 
- * example.
+ * example.<code>
  *   uselib('Math');					// == require_once('../lib/Math.php');
  *   uselib('stdio', 'stdlib');			// == require_once('../lib/stdio.php'); 
  *										//    require_once('../lib/stdlib.php');
+ *   //以下の二つは同じ意味。
+ *   uselib('Net/index');
+ *   uselib('Net');						//indexは省略可能。Net.phpがある場合はそっちを優先。
+ *</code>
+ *
  * @param string ライブラリ名
  */
 function uselib(){
@@ -45,13 +50,22 @@ function uselib(){
 	$args = func_get_args();
 	
 	foreach ($args as $file){
+		//通常
 		$path = sprintf('%s/%s.php', $dir, $file);
 		if( is_file($path) ){
 			require_once($path);
+			continue;
 		}
-		else{
-			die();
+		
+		//ディレクトリ指定
+		$path  = sprintf('%s/%s', $dir, $file);		
+		$path2 = sprintf('%s/index.php', $path);
+		if( is_dir($path) && is_file($path2)){
+			require_once($path2);
+			continue;
 		}
+
+		die("Can not open library $file");
 	}
 }
 
