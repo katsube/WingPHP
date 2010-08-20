@@ -38,5 +38,6 @@
 	public function del($id);
 	public function exists($id);
 	public function flush();
+	public function expire($sec);
 }
 ?>
