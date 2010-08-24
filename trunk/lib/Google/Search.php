@@ -116,7 +116,7 @@ class GoogleSearch{
 
 		//取得
 		if( $this->use_curl ){
-			$ret = net_fetchUrl($url, $this->referer);
+			$ret = net_fetchUrl($url, array(CURLOPT_REFERER => $this->referer) );
 		}
 		else{
 			$ret = @file_get_contents($url, false
