@@ -87,13 +87,14 @@ class validation{
 	 * - _getreg
 	 *--------------------------------------------*/
 	private function _setreg(){
+		uselib('Util/Regex');
 		return(array(
-			  'POST_CD' => '/^[0-9]{3}-?[0-9]{4}$/'
-			, 'EMAIL'   => '/^([a-zA-Z0-9\.\_\-\/]+)@([a-zA-Z0-9\._\-]+)\.([a-zA-Z]+)$/'
-			, 'URL'     => '/^s?https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+$/g'		//Thanx! http://www.din.or.jp/~ohzaki/perl.htm
-			, 'NUM'     => '/^([0-9]+)$/'
-			, 'ALPHA'   => '/^([a-zA-Z]+)$/'
-			, 'ALNUM'   => '/^([a-zA-Z0-9]+)$/'
+			  'POST_CD' => Regex::POST
+			, 'EMAIL'   => Regex::EMAIL
+			, 'URL'     => Regex::URL
+			, 'NUM'     => Regex::NUM
+			, 'ALPHA'   => Regex::ALPHA
+			, 'ALNUM'   => Regex::ALNUM
 		));
 	 }
 	 
