@@ -79,8 +79,9 @@ class Bitly implements ShortenURLAPI{
 	 */
 	public function shorten($url){
 		//URLチェック
-		//if( empty($url) || preg_match(REGEX_URL, $url) === 0 )
-		//	return(false);
+		uselib('Util/Regex');
+		if( empty($url) || preg_match(Regex::URL, $url) === 0 )
+			return(false);
 	
 		//URL作成
 		$url = sprintf('http://api.bit.ly/v3/shorten?login=%s&apiKey=%s&longUrl=%s&format=json'

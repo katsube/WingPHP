@@ -1,6 +1,6 @@
 <?php
 /* [WingPHP]
- *  - lib/global.php
+ *  - lib/Util/Regex.php
  *  
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
@@ -24,43 +24,23 @@
  */
 
 /**
- * ライブラリを明示的に読み込む
+ * Regexクラス
  * 
- * example.<code>
- *   uselib('Math');					// == require_once('../lib/Math.php');
- *   uselib('stdio', 'stdlib');			// == require_once('../lib/stdio.php'); 
- *										//    require_once('../lib/stdlib.php');
- *   //以下の二つは同じ意味。
- *   uselib('Net/index');
- *   uselib('Net');						//indexは省略可能。Net.phpがある場合はそっちを優先。
- *</code>
+ * 正規表現を集めたクラス。
+ * preg_matchなどでそのまま利用することを想定して書かれています。
  *
- * @param  string ライブラリ名
- * @access private
+ * example.<code>
+ *     uselib('Util/Regex');
+ *     echo Regex::URL;
+ * </code>
+ *
+ * @package    Regex
+ * @copyright  2010 WingPHP
+ * @author     M.Katsube < katsubemakito@gmail.com >
+ * @license    The MIT License
+ * @access     public
  */
-function uselib(){
-	global $Conf;
-	$dir  = $Conf['Lib']['dir'];
-	$args = func_get_args();
-	
-	foreach ($args as $file){
-		//通常
-		$path = sprintf('%s/%s.php', $dir, $file);
-		if( is_file($path) ){
-			require_once($path);
-			continue;
-		}
-		
-		//ディレクトリ指定
-		$path  = sprintf('%s/%s', $dir, $file);		
-		$path2 = sprintf('%s/index.php', $path);
-		if( is_dir($path) && is_file($path2)){
-			require_once($path2);
-			continue;
-		}
-
-		die("Can not open library $file");
-	}
+class Regex{
+	const URL = '/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/';
 }
-
 ?>
