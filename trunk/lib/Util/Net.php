@@ -15,8 +15,7 @@ function net_fetchUrl($url, $opt=array()){
 	
 	//任意オプションセット
 	if( is_array($opt) && count($opt) > 0 )
-		foreach( $opt as $key => $val )
-			curl_setopt($ch, $key, $val);
+		curl_setopt_array($ch, $opt);
 	
 	//実行
 	$ret = curl_exec($ch);
