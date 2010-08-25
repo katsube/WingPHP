@@ -45,6 +45,7 @@ class BaseController{
 	//--------------------------------------------
 	private $smarty   = false;
 	private $layout   = null;
+	private $layout_marker = null;
 	private $utilview = null;
 	private $run_validation = false;
 	
@@ -95,8 +96,9 @@ class BaseController{
 	 * @param  string $file ファイルパス
 	 * @access public
 	 */
-	public function layout($file){
+	public function layout($file, $marker='CONTENT'){
 		$this->layout = $file;
+		$this->layout_marker = $marker;
 	}
 	
 	/**
@@ -133,7 +135,11 @@ class BaseController{
 		}
 		//layout使う
 		else{
-			$this->smarty->assign('CONTENT', $this->smarty->fetch($file));
+			$this->smarty->assign(
+					  $this->layout_marker
+					, $this->smarty->fetch($file)
+			);
+			
 			$this->smarty->display($this->layout);
 		}
 	}
