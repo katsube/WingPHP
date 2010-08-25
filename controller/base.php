@@ -44,6 +44,7 @@ class BaseController{
 	// メンバ変数
 	//--------------------------------------------
 	private $smarty   = false;
+	private $layout   = null;
 	private $utilview = null;
 	private $run_validation = false;
 	
@@ -89,6 +90,16 @@ class BaseController{
 	}
 	
 	/**
+	 * view(Smarty)のレイアウトファイルを指定
+	 *
+	 * @param  string $file ファイルパス
+	 * @access public
+	 */
+	public function layout($file){
+		$this->layout = $file;
+	}
+	
+	/**
 	 * view(Smarty)に値をセットする
 	 *
 	 * @param  mixed   $key
@@ -116,7 +127,15 @@ class BaseController{
 		if(!$this->smarty)
 			$this->_setSmarty();
 		
-		$this->smarty->display($file);
+		//layout使わない
+		if($this->layout === null){
+			$this->smarty->display($file);
+		}
+		//layout使う
+		else{
+			$this->smarty->assign('CONTENT', $this->smarty->fetch($file));
+			$this->smarty->display($this->layout);
+		}
 	}
 
 	/**
