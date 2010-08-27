@@ -176,6 +176,17 @@ class FileCacheStrage implements CacheStrageIF{
 		$this->expire = $sec;
 	}
 
+	/**
+	 * パスをセットする
+	 *
+	 * @access public
+	 */
+	public function path($path=null){
+		if($path === null)
+			return($this->path);
+		else
+			$this->path = $path;
+	}
 
 
 	//--------------------------------------------
