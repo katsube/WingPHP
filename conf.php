@@ -24,24 +24,23 @@
  */
 
 
- /**
-  * システム全体で使用する設定変数
-  *
-  * @global array $GLOBALS['Conf']
-  * @name $Conf
-  */
+/**
+ * システム全体で使用する設定変数
+ *
+ * @global array $GLOBALS['Conf']
+ * @name $Conf
+ */
 $Conf = array(
 	//■データベース設定
 	'DB' => array(
-		  'DSN'      =>'mysql:dbname=test;host=localhost'		//PDO
+		  'DSN'      => 'mysql:dbname=test;host=localhost'		//PDO
 		, 'USER'     => 'username'
 		, 'PASSWORD' => 'password'
 	)
 	
 	//■秘密鍵
-	//適当な文字列に変更してください。
 	, 'Secret' => array(
-		'key' => 'aqwsdertyhjiolpzsxcfvgbnjmk,l.;/:'
+		'key' => 'aqwsdertyhjiolpzsxcfvgbnjmk,l.;/:'			//適当な文字列に変更してください。
 	)
 
 	//■セッション設定
@@ -52,6 +51,12 @@ $Conf = array(
 	//■ライブラリ
 	, 'Lib' => array(
 		'dir' => '../lib/'
+	)
+	
+	//■キャッシュ
+	, 'Cache' => array(
+		  'strage' => 'File'			//'File' or 'MemCache'
+		, 'expire' => 0					//秒数を指定。 0=無期限
 	)
 	
 	//■View設定
@@ -66,4 +71,5 @@ $Conf = array(
 		//, 'cache_life' => 60 * 60	//秒
 	)
 );
+
 ?>
