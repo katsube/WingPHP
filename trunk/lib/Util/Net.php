@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 指定URLの内容を取得
  *
@@ -7,25 +8,64 @@
  * @access private
  */
 function net_fetchUrl($url, $opt=array()){
-	$ch = curl_init();
+	global $Conf;
+	$ret = null;
+	
+	//------------------------
+	// cURLで取得する
+	// (クロージャー)
+	//------------------------
+	$curl = function($url1, $opt1){
+		$ch = curl_init();
 
-	//必須オプションセット
-	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		//必須オプションセット
+		curl_setopt($ch, CURLOPT_URL, $url1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//任意オプションセット
+		if( is_array($opt1) && count($opt1) > 0 )
+			curl_setopt_array($ch, $opt1);
+
+		//実行
+		$buff = curl_exec($ch);
+		if(curl_errno($ch))
+			return(false);	//メッセージはcurl_error($ch);
 	
-	//任意オプションセット
-	if( is_array($opt) && count($opt) > 0 )
-		curl_setopt_array($ch, $opt);
-	
-	//実行
-	$ret = curl_exec($ch);
-	if(curl_errno($ch))
-		return(false);	//メッセージはcurl_error($ch);
-	
-	curl_close($ch);
+		curl_close($ch);
+		
+		return($buff);
+	};
+
+
+	//------------------------
+	// キャッシュ考慮
+	//------------------------
+	if($Conf['Cache']['api_use']){
+		uselib('Cache');
+		$cache = new Cache($Conf['Cache']['strage']);
+		$key   = sprintf('%s.%s', $Conf['Cache']['api_pre'], ($url . implode('=', $opt)) );
+		
+		if( $cache->exists($key) ){
+			$ret = $cache->get($key);
+		}
+		else{
+			$ret = $curl($url, $opt);
+			
+			//キャッシュにセット
+			$cache->expire($Conf['Cache']['expire']);
+			$cache->set($key, $ret);
+		}
+	}
+	//------------------------
+	// 強制取得
+	//------------------------
+	else{
+		$ret = $curl($url, $opt);
+	}
 
 	return($ret);
 }
+
 
 /**
  * HTTPヘッダ作成
