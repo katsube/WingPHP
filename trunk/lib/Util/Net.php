@@ -4,10 +4,12 @@
  * 指定URLの内容を取得
  *
  * @param  string $url     APIのURL
+ * @param  array  $opt     オプション
+ * @param  bool   $cache   キャッシュ機構を使うか
  * @return string 取得したURLを文字列で返却。失敗時はfalse。
  * @access private
  */
-function net_fetchUrl($url, $opt=array()){
+function net_fetchUrl($url, $opt=array(), $use_cache=true){
 	global $Conf;
 	$ret = null;
 	
@@ -36,11 +38,10 @@ function net_fetchUrl($url, $opt=array()){
 		return($buff);
 	};
 
-
 	//------------------------
 	// キャッシュ考慮
 	//------------------------
-	if($Conf['Cache']['api_use']){
+	if($use_cache === true && $Conf['Cache']['api_use']){
 		uselib('Cache');
 		$cache = new Cache($Conf['Cache']['strage']);
 		$key   = sprintf('%s.%s', $Conf['Cache']['api_pre'], ($url . implode('=', $opt)) );
