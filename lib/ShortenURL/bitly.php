@@ -102,7 +102,7 @@ class Bitly implements ShortenURLAPI{
 	
 		//URL取出し
 		$buff_j = json_decode($buff, true);
-		if($buff_j['status_code'] !== 200  ||  !array_key_exists('data', $buff_j) || !array_key_exists('url', $buff_j['data']) )
+		if( !is_array($buff_j) || $buff_j['status_code'] !== 200  ||  !array_key_exists('data', $buff_j) || !array_key_exists('url', $buff_j['data']) )
 			return(false);
 		
 		return( $buff_j['data']['url'] );
