@@ -156,7 +156,7 @@ class GoogleTranslation{
 		
 		//結果返却
 		$json = json_decode($ret, true);
-		if( array_key_exists('responseStatus', $json) && $json['responseStatus'] === 200 )
+		if( is_array($json) && array_key_exists('responseStatus', $json) && $json['responseStatus'] === 200 )
 			return($json);
 		else
 			return(false);
