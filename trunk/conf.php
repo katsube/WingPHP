@@ -33,14 +33,15 @@
 $Conf = array(
 	//■データベース設定
 	'DB' => array(
-		  'DSN'      => 'mysql:dbname=test;host=localhost'		//PDO
-		, 'USER'     => 'username'
-		, 'PASSWORD' => 'password'
+		  'DSN'         => 'mysql:dbname=test;host=localhost'		//PDO
+		, 'USER'        => 'username'
+		, 'PASSWORD'    => 'password'
+		, 'fetch_style' => PDO::FETCH_ASSOC							//http://www.php.net/manual/ja/pdostatement.fetch.php
 	)
 	
 	//■秘密鍵
 	, 'Secret' => array(
-		'key' => 'aqwsdertyhjiolpzsxcfvgbnjmk,l.;/:'			//適当な文字列に変更してください。
+		'key' => 'aqwsdertyhjiolpzsxcfvgbnjmk,l.;/:'				//適当な文字列に変更してください。
 	)
 
 	//■セッション設定
