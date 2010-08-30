@@ -9,17 +9,17 @@
  * @return string 取得した内容を返却。失敗時はfalse。
  * @access private
  */
-function net_fetchUrl($url, $opt=array(), $use_cache=true){
+function net_fetchUrl($url, $opt=array(), $use_cache=false){
 	global $Conf;
 	$ret = null;
 	
 	//------------------------
 	// キャッシュ考慮
 	//------------------------
-	if($use_cache === true && $Conf['Cache']['api_use']){
+	if($use_cache === true || $Conf['Cache']['api_use']){
 		uselib('Cache');
 		$cache = new Cache($Conf['Cache']['strage']);
-		$key   = sprintf('%s.%s', $Conf['Cache']['api_pre'], ($url . implode('=', $opt)) );
+		$key   = sprintf('%s.%s', $Conf['Cache']['api_pre'], sha1($url . implode('=', $opt)) );
 		
 		//キャッシュが存在するならそのまま返却
 		if( $cache->exists($key) ){
@@ -30,7 +30,7 @@ function net_fetchUrl($url, $opt=array(), $use_cache=true){
 			$ret = net_fetchcurl($url, $opt);
 			
 			//キャッシュにセット
-			$cache->expire($Conf['Cache']['expire']);
+			$cache->expire($Conf['Cache']['api_expire']);
 			$cache->set($key, $ret);
 		}
 	}
