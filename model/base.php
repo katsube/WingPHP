@@ -231,7 +231,9 @@ class BaseModel{
 	 *
 	 * @access private
 	 */
-	private function _runsql($sql, $bind, $type){		
+	private function _runsql($sql, $bind, $type){
+		global $Conf;
+	
 		if(!$this->dbh)
 			$this->dbh = $this->_connect();
 
@@ -239,8 +241,8 @@ class BaseModel{
 		$ret = $st->execute($bind);
 		
 		switch($type){
-			case 'all': return( $st->fetchAll() );
-			case 'one': return( $st->fetch() );
+			case 'all': return( $st->fetchAll($Conf['DB']['fetch_style']) );
+			case 'one': return( $st->fetch($Conf['DB']['fetch_style']) );
 			   default: return( $ret );
 		}
 	}
