@@ -55,8 +55,10 @@ $Conf = array(
 	
 	//■キャッシュ
 	, 'Cache' => array(
-		  'strage' => 'File'			//'File' or 'MemCache'
-		, 'expire' => 0					//秒数を指定。 0=無期限
+		  'strage'  => 'File'				//'File' or 'MemCache'
+		, 'expire'  => 0					//秒数を指定。 0=無期限
+		, 'api_use' => true				//WebAPI系ライブラリでキャッシュするか
+		, 'api_pre' => '__lib.netapicache'	//WebAPI系ライブラリのキャッシュIDの先頭文字列
 	)
 	
 	//■View設定
