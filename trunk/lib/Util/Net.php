@@ -19,7 +19,7 @@ function net_fetchUrl($url, $opt=array(), $use_cache=false){
 	if($use_cache === true || $Conf['Cache']['api_use']){
 		uselib('Cache');
 		$cache = new Cache($Conf['Cache']['strage']);
-		$key   = sprintf('%s.%s', $Conf['Cache']['api_pre'], ($url . serialize($opt)));
+		$key   = sprintf('%s.%s', $Conf['Cache']['api_pre'], sha1($url . (serialize($opt))));
 		
 		//キャッシュが存在するならそのまま返却
 		if( $cache->exists($key) ){
