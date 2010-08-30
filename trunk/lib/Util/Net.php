@@ -6,38 +6,13 @@
  * @param  string $url     APIのURL
  * @param  array  $opt     オプション
  * @param  bool   $cache   キャッシュ機構を使うか
- * @return string 取得したURLを文字列で返却。失敗時はfalse。
+ * @return string 取得した内容を返却。失敗時はfalse。
  * @access private
  */
 function net_fetchUrl($url, $opt=array(), $use_cache=true){
 	global $Conf;
 	$ret = null;
 	
-	//------------------------
-	// cURLで取得する
-	// (クロージャー)
-	//------------------------
-	$curl = function($url1, $opt1){
-		$ch = curl_init();
-
-		//必須オプションセット
-		curl_setopt($ch, CURLOPT_URL, $url1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		
-		//任意オプションセット
-		if( is_array($opt1) && count($opt1) > 0 )
-			curl_setopt_array($ch, $opt1);
-
-		//実行
-		$buff = curl_exec($ch);
-		if(curl_errno($ch))
-			return(false);	//メッセージはcurl_error($ch);
-	
-		curl_close($ch);
-		
-		return($buff);
-	};
-
 	//------------------------
 	// キャッシュ考慮
 	//------------------------
@@ -46,11 +21,13 @@ function net_fetchUrl($url, $opt=array(), $use_cache=true){
 		$cache = new Cache($Conf['Cache']['strage']);
 		$key   = sprintf('%s.%s', $Conf['Cache']['api_pre'], ($url . implode('=', $opt)) );
 		
+		//キャッシュが存在するならそのまま返却
 		if( $cache->exists($key) ){
 			$ret = $cache->get($key);
 		}
+		//キャッシュが無いなら新規に取得
 		else{
-			$ret = $curl($url, $opt);
+			$ret = net_fetchcurl($url, $opt);
 			
 			//キャッシュにセット
 			$cache->expire($Conf['Cache']['expire']);
@@ -61,12 +38,40 @@ function net_fetchUrl($url, $opt=array(), $use_cache=true){
 	// 強制取得
 	//------------------------
 	else{
-		$ret = $curl($url, $opt);
+		$ret = net_fetchcurl($url, $opt);
 	}
 
 	return($ret);
 }
 
+/**
+ * 指定URLの内容をcURLで取得
+ *
+ * @param  string $url     APIのURL
+ * @param  array  $opt     オプション
+ * @return string 取得した内容を返却。失敗時はfalse。
+ * @access private
+ */
+function net_fetchcurl($url, $opt){
+	$ch = curl_init();
+
+	//必須オプションセット
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	
+	//任意オプションセット
+	if( is_array($opt) && count($opt) > 0 )
+		curl_setopt_array($ch, $opt);
+
+	//実行
+	$ret = curl_exec($ch);
+	if(curl_errno($ch))
+		return(false);	//メッセージはcurl_error($ch);
+
+	curl_close($ch);
+	
+	return($ret);
+}
 
 /**
  * HTTPヘッダ作成
