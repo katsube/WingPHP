@@ -57,6 +57,12 @@ $Conf = array(
 	, 'Cache' => array(
 		  'strage'  => 'File'				//'File' or 'MemCache'
 		, 'expire'  => 3600					//秒数を指定。 0=無期限
+		
+		//DB系
+		, 'db_use' => false				//ModelのDB系メソッドでキャッシュするか
+		, 'db_pre' => '__lib.dbcache'		//ModelのDB系メソッドのキャッシュIDの先頭文字列
+		
+		//WebAPI系
 		, 'api_use' => false				//WebAPI系ライブラリでキャッシュするか
 		, 'api_pre' => '__lib.netapicache'	//WebAPI系ライブラリのキャッシュIDの先頭文字列
 	)
