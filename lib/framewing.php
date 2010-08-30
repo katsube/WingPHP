@@ -27,9 +27,9 @@ class framewing{
 	//--------------------------------------------
 	// メンバ変数
 	//--------------------------------------------
-	private $ctrl_name   = '';
-	private $method_name = '';
-	private $param = array();
+	public $ctrl_name   = '';
+	public $method_name = '';
+	public $param = array();
 	
 	//--------------------------------------------
 	// コンストラクタ
@@ -38,6 +38,12 @@ class framewing{
 		//パース
 		$this->_parse();
 		
+		// ルーティング
+		$rt = new Routing($this);
+		$this->ctrl_name   = $rt->ctrl;
+		$this->method_name = $rt->method;
+		$this->param       = $rt->param;
+
 		//セッション開始
 		global $Conf;
 		session_name($Conf['Session']['name']);

@@ -74,4 +74,34 @@ $Conf = array(
 	)
 );
 
+
+/**
+ * Routingクラス
+ * 
+ * ルーティングクラスです。
+ * ルーティングを行う場合は、直接このクラスを書き換えてください。
+ *
+ * コンストラクタの処理が終了後、最終的にプロパティctrl, method, paramに
+ * 入っている名称のクラスとメソッドが実行されます。
+ *
+ * (現状だと)uselibが使えないので、あくまでルーティングに徹し、複雑な処理は
+ * 他にまかせるような実装がオススメです。
+ *
+ * @package    Routing
+ * @copyright  2010 WingPHP
+ * @author     M.Katsube < katsubemakito@gmail.com >
+ * @license    The MIT License
+ * @access     public
+ */
+class Routing{
+	public $ctrl;		//コントローラー
+	public $method;	//メソッド
+	public $param;		//パラメーター
+	
+	function __construct(framewing $obj){
+		$this->ctrl   = $obj->ctrl_name;		//FoobarController
+		$this->method = $obj->method_name;		//index
+		$this->param  = $obj->param;			//array('huga1', 'huga2', ...)
+	}
+}
 ?>
