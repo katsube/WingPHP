@@ -89,8 +89,8 @@ class BaseModel{
 	 *                   , array(col1=>'hoge',col2=>'fuga')  )
 	 * @access public
 	 */
-	public function select($sql, $bind=array()){
-		return( $this->_runsql($sql, $bind, 'all') );
+	public function select($sql, $bind=array(), $use_cache=false){
+		return( $this->_select($sql, $bind, 'all', $use_cache) );
 	}
 
 	/**
@@ -104,8 +104,8 @@ class BaseModel{
 	 * @return array  array(col1=>'foo', col2=>'bar')
 	 * @access public
 	 */
-	public function select1($sql, $bind=array()){
-		return( $this->_runsql($sql, $bind, 'one') );
+	public function select1($sql, $bind=array(), $use_cache=false){
+		return( $this->_select($sql, $bind, 'one', $use_cache) );
 	}
 
 	/**
@@ -199,6 +199,7 @@ class BaseModel{
 	 * ■ Private ■
 	 *--------------------------------------------
 	 * - _connect
+	 * - _select
 	 * - _runsql
 	 *--------------------------------------------*/
 	/**
@@ -227,13 +228,46 @@ class BaseModel{
 	}
 
 	/**
+	 * select実行
+	 *
+	 * @access private
+	 */
+	private function _select($sql, $bind=array(), $type='all', $use_cache=false){
+		global $Conf;
+
+		if($use_cache === true || $Conf['Cache']['db_use']){
+			uselib('Cache');
+			$cache = new Cache($Conf['Cache']['strage']);
+			$key   = sprintf('%s.%s', $Conf['Cache']['db_pre'], sha1($sql . serialize($bind) . $type) );
+			
+			//キャッシュが存在するならそのまま返却
+			if( $cache->exists($key) ){
+				$ret = $cache->get($key);
+			}
+			//キャッシュが無いなら新規に取得
+			else{
+				$ret = $this->_runsql($sql, $bind, $type);
+			
+				//キャッシュにセット
+				$cache->expire($Conf['Cache']['db_expire']);
+				$cache->set($key, $ret);
+			}
+		}
+		else{
+			$ret = $this->_runsql($sql, $bind, $type);
+		}
+	
+		return($ret);
+	}
+
+	/**
 	 * SQL実行
 	 *
 	 * @access private
 	 */
 	private function _runsql($sql, $bind, $type){
 		global $Conf;
-	
+
 		if(!$this->dbh)
 			$this->dbh = $this->_connect();
 
