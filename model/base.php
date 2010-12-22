@@ -140,61 +140,6 @@ class BaseModel{
 		return( $ret );
 	}
 
-	//--------------------------------------------
-	// SQL作成用 便利関数
-	//--------------------------------------------
-	/**
-	 * UPDATE句のsetを作成
-	 *
-	 * プレースホルダを考慮しupdate句のset部分を作成する。
-	 *
-	 * Example.<code>
-	 *   $ret = $this->makeUpdateSet(array(
-	 *              'name' => 'foo'
-	 *            , 'age'  => 19
-	 *            , 'addr' => '松江'
-	 *          ));
-	 *   // $ret === 'name=?, age=?, addr=?'
-	 * </code>
-	 *
-	 * @param  array   $arr  key-value
-	 * @return string
-	 * @access public
-	 */
-	 public function makeUpdateSet($arr){
-		$result = array();
-		foreach($arr as $key => $val){
-			array_push($result, sprintf('%s=?', $key));
-		}
-		
-		return( join(', ', $result) );
-	}
-
-	/**
-	 * UPDATE句のプレースホルダ用の配列を作成
-	 *
-	 * Example.<code>
-	 *   $ret = $this->makeUpdateSetBind(array(
-	 *              'name' => 'foo'
-	 *            , 'age'  => 19
-	 *            , 'addr' => '松江'
-	 *          ));
-	 *   // $ret === array('foo',19,'松枝')
-	 * </code>
-	 *
-	 * @param  array   $arr  key-value
-	 * @return array
-	 * @access public
-	 */
-	public function makeUpdateSetBind($arr){
-		$result = array();
-		foreach($arr as $key => $val){
-			array_push($result, $val);
-		}
-		
-		return( $result );
-	}
-
 	/*--------------------------------------------
 	 * ■ Private ■
 	 *--------------------------------------------
