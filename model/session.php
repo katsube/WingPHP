@@ -46,8 +46,18 @@ class SessionModel extends BaseModel{
 	 *
 	 * @access public
 	 */
-	function __construct(){
-		;
+	function __construct($name=null){
+		global $Conf;
+
+		//セッション名を設定
+		if($name === null)
+			$name = $Conf['Session']['name'];
+		session_name($name);
+		
+		//セッションスタート
+		$ret = session_start();
+		if($ret === false)
+			die();
 	}
 
 	/**
