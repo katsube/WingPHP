@@ -254,7 +254,10 @@ class BaseModel{
 
 		$st  = $this->dbh->prepare($sql);
 		$ret = $st->execute($bind);
-		
+		if(!$ret){
+			die( print_r($st->errorInfo()) );
+		}
+
 		switch($type){
 			case 'all': return( $st->fetchAll($account['fetch_style']) );
 			case 'one': return( $st->fetch($account['fetch_style']) );
