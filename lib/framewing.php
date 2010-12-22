@@ -43,19 +43,13 @@ class framewing{
 		$this->ctrl_name   = $rt->ctrl;
 		$this->method_name = $rt->method;
 		$this->param       = $rt->param;
-
-		//セッション開始
-		global $Conf;
-		session_name($Conf['Session']['name']);
-		session_start();
 	}
 
 	//--------------------------------------------
 	// デストラクタ
 	//--------------------------------------------
 	function __destruct(){
-		//セッション閉じる
-		//session_write_close();
+		;
 	}
 
 
