@@ -42,6 +42,7 @@ class BaseModel{
 	// メンバ変数
 	//--------------------------------------------
 	private $dbh = false;
+	private $db_location = 'master';
 
 	/**
 	 * コンストラクタ
@@ -64,12 +65,46 @@ class BaseModel{
 	/*--------------------------------------------
 	 * ■ Public ■
 	 *--------------------------------------------
+	 * - usedb
 	 * - select
 	 * - select1
 	 * - exec
 	 * - makeUpdateSet
 	 * - makeUpdateSetBind
 	 *--------------------------------------------*/
+	//--------------------------------------------
+	// DBサーバー周りの設定
+	//--------------------------------------------
+	/**
+	 * DB接続先を切り替える
+	 *
+	 * 指定されたDBへ接続先を変更する。
+	 * 未指定の場合は'master' が呼び出される。Confに存在しない
+	 * 場合は強制終了する。
+	 *
+	 * @param  mixed $account 
+	 * @return void
+	 * @access public
+	 */
+	public function usedb($name='master'){
+		// 接続先を決定
+		$account = '';
+		if(is_array($name)){
+			$max = count($name) - 1;
+			$i   = rand(0, $max);
+			$account = $name[$i];
+		}
+		else{
+			$account = $name;
+		}
+
+		// メンバ変数にセットする
+		global $Conf;
+		if( array_key_exists($account, $Conf['DB']) )
+			$this->db_location = $account;
+		else
+			die();
+	}
 
 	//--------------------------------------------
 	// SQL実行
@@ -155,12 +190,13 @@ class BaseModel{
 	 */
 	 private function _connect(){
 		global $Conf;
-		
+		$account = $Conf['DB'][$this->db_location];
+
 		try{
 			$dbh = new PDO(
-						  $Conf['DB']['DSN']
-						, $Conf['DB']['USER']
-						, $Conf['DB']['PASSWORD']
+						  $account['DSN']
+						, $account['USER']
+						, $account['PASSWORD']
 					);
 			
 			return( $dbh );
@@ -180,6 +216,7 @@ class BaseModel{
 	private function _select($sql, $bind=array(), $type='all', $use_cache=false){
 		global $Conf;
 
+		$account = $Conf['DB'][$this->db_location];
 		if($use_cache === true || $Conf['Cache']['db_use']){
 			uselib('Cache');
 			$cache = new Cache($Conf['Cache']['strage']);
@@ -212,7 +249,8 @@ class BaseModel{
 	 */
 	private function _runsql($sql, $bind, $type){
 		global $Conf;
-
+		$account = $Conf['DB'][$this->db_location];
+		
 		if(!$this->dbh)
 			$this->dbh = $this->_connect();
 
@@ -220,8 +258,8 @@ class BaseModel{
 		$ret = $st->execute($bind);
 		
 		switch($type){
-			case 'all': return( $st->fetchAll($Conf['DB']['fetch_style']) );
-			case 'one': return( $st->fetch($Conf['DB']['fetch_style']) );
+			case 'all': return( $st->fetchAll($account['fetch_style']) );
+			case 'one': return( $st->fetch($account['fetch_style']) );
 			   default: return( $ret );
 		}
 	}

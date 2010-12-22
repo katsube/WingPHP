@@ -33,10 +33,26 @@
 $Conf = array(
 	//■データベース設定
 	'DB' => array(
-		  'DSN'         => 'mysql:dbname=test;host=localhost'		//PDO
-		, 'USER'        => 'username'
-		, 'PASSWORD'    => 'password'
-		, 'fetch_style' => PDO::FETCH_ASSOC							//http://www.php.net/manual/ja/pdostatement.fetch.php
+		'master' => array(
+			  'DSN'         => 'mysql:dbname=test;host=localhost'		//PDO
+			, 'USER'        => 'username'
+			, 'PASSWORD'    => 'password'
+			, 'fetch_style' => PDO::FETCH_ASSOC							//http://www.php.net/manual/ja/pdostatement.fetch.php
+		)
+
+		# 複数のDBを切替えて利用する場合は、あらかじめここで設定を行います。
+		#
+		# ■モデルでの利用例
+		#   $this->userdb('slave1');					//slave1にDB切替
+		#   $this->usedb(array('slave1', 'slave2'));	//slave1, slave2にランダム切替
+		#
+		# ■設定例
+		#, 'slave1' => array(
+		#	  'DSN'         => 'mysql:dbname=test2;host=localhost'
+		#	, 'USER'        => 'username'
+		#	, 'PASSWORD'    => 'password'
+		#	, 'fetch_style' => PDO::FETCH_ASSOC
+		#)
 	)
 	
 	//■秘密鍵
