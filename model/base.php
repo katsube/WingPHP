@@ -193,11 +193,9 @@ class BaseModel{
 		$account = $Conf['DB'][$this->db_location];
 
 		try{
-			$dbh = new PDO(
-						  $account['DSN']
-						, $account['USER']
-						, $account['PASSWORD']
-					);
+			$dbh = new PDO( $account['DSN'], $account['USER'], $account['PASSWORD']
+								, array( PDO::ATTR_PERSISTENT => $account['persistent'] )
+						);
 			
 			return( $dbh );
 		}

@@ -34,10 +34,11 @@ $Conf = array(
 	//■データベース設定
 	'DB' => array(
 		'master' => array(
-			  'DSN'         => 'mysql:dbname=test;host=localhost'		//PDO
+			  'DSN'         => 'mysql:dbname=test;host=localhost'	//PDO
 			, 'USER'        => 'username'
 			, 'PASSWORD'    => 'password'
-			, 'fetch_style' => PDO::FETCH_ASSOC							//http://www.php.net/manual/ja/pdostatement.fetch.php
+			, 'fetch_style' => PDO::FETCH_ASSOC		//http://www.php.net/manual/ja/pdostatement.fetch.php
+			, 'persistent'  => false				//http://php.net/manual/ja/pdo.connections.php
 		)
 
 		# 複数のDBを切替えて利用する場合は、あらかじめここで設定を行います。
@@ -52,6 +53,7 @@ $Conf = array(
 		#	, 'USER'        => 'username'
 		#	, 'PASSWORD'    => 'password'
 		#	, 'fetch_style' => PDO::FETCH_ASSOC
+		#	, 'persistent'  => false
 		#)
 	)
 	
