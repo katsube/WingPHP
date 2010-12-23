@@ -61,3 +61,50 @@ toolディレクトリ内の取扱い説明書
 	  $ php conv sha1 "apple"
       d0be2dc421be4fcd0172e5afceea3970e2f3d940
 
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+3. sqldo - SQL実行
+￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣
+ ※このツールはベータ版です。
+   将来的に仕様が大幅に変更になる可能性があります。
+
+  ○これは何？
+    ・WingPHPの設定に従ってSQLを実行します。
+
+  ○インストール
+    ・動作には コマンドライン版のPHP(5.3以上) が必要です。
+
+  ○実行
+    ・SQLを記録したファイルを所定の場所にセットします。
+	    ※wingphp/tool/sql/do 配下に設置します。
+		※テスト用のサンプルファイルがあるので参考に
+		  してください。
+	
+	・SQLファイルは次のようなネーミングルールに従います。
+	
+	    [グループ識別子]_ファイル名.sql
+
+
+    ・コマンドラインから以下のように実行します。
+      $ php sqldo [グループ識別子]
+
+	・実行例
+      $ php sqldo teststart
+      ----------------------------
+      *** SQL do
+      ----------------------------
+        Group:teststart
+      Account:master
+      ----------------------------
+      -- ./sql/do/teststart_createtable.sql
+      -- ./sql/do/teststart_insert.sql
+
+	  $php sqldo testend
+      ----------------------------
+      *** SQL do
+      ----------------------------
+        Group:testend
+      Account:master
+      ----------------------------
+      -- ./sql/do/testend_droptable.sql
+
