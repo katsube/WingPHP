@@ -1,0 +1,56 @@
+<?php
+#
+# ■値の変換
+#
+# ※このツールはベータ版です。
+#   将来的に仕様が大幅に変更になる可能性があります。
+#
+
+//--------------------------------------------
+// 処理開始
+//--------------------------------------------
+#-- 引数のチェック --#
+if( $argc < 3 ){
+	echo "Usage: shell> php conv {実行する処理名} {文字列}\n";
+	echo "\n";
+	echo "   ** 実行する処理名\n";
+	echo "       sha1\n";
+	echo "       md5\n";
+	echo "       base64_encode\n";
+	echo "       base64_decode\n";
+	echo "       urlencode\n";
+	echo "       urldecode\n";
+	echo "       html\n";
+	exit;
+}
+
+#-- 引数の取得 --#
+$com = $argv[1];
+$val = $argv[2];
+
+#-- 実行する --#
+switch($com){
+	case 'sha1':
+		echo sha1($val);
+		break;
+	case 'md5':
+		echo md5($val);
+		break;
+	case 'base64_encode':
+		echo base64_encode($val);
+		break;
+	case 'base64_decode':
+		echo base64_decode($val);
+		break;
+	case 'urlencode':
+		echo urlencode($val);
+		break;
+	case 'urldecode':
+		echo urldecode($val);
+		break;
+	case 'html':
+		echo htmlspecialchars($val, ENT_QUOTES);
+		break;
+}
+
+?>
