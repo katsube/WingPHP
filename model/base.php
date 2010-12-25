@@ -69,8 +69,9 @@ class BaseModel{
 	 * - select
 	 * - select1
 	 * - exec
-	 * - makeUpdateSet
-	 * - makeUpdateSetBind
+	 * - beginTransaction
+	 * - commit
+	 * - rollback
 	 *--------------------------------------------*/
 	//--------------------------------------------
 	// DBサーバー周りの設定
@@ -79,8 +80,7 @@ class BaseModel{
 	 * DB接続先を切り替える
 	 *
 	 * 指定されたDBへ接続先を変更する。
-	 * 未指定の場合は'master' が呼び出される。Confに存在しない
-	 * 場合は強制終了する。
+	 * 未指定の場合は'master' が呼び出される。Confに存在しない場合は強制終了する。
 	 *
 	 * @param  mixed $account 
 	 * @return void
@@ -100,10 +100,16 @@ class BaseModel{
 
 		// メンバ変数にセットする
 		global $Conf;
-		if( array_key_exists($account, $Conf['DB']) )
+		if( array_key_exists($account, $Conf['DB']) ){
+			//現在と異なるDBへ接続する場合、ハンドラをfalseにする
+			if( $this->db_location !== $account ){
+				$this->dbh = false;
+			}
+			
 			$this->db_location = $account;
+		}
 		else
-			die();
+			die();		//confに未登録のアカウントが指定された場合は死ぬ
 	}
 
 	//--------------------------------------------
@@ -148,32 +154,65 @@ class BaseModel{
 	 *
 	 * データ更新系のSQLを実行する。
 	 *
-	 * @param  string $sql    SQL文を直書き。
-	 * @param  array  $bind   SQL文内でプレースホルダを利用して
-	 *                        いる場合は配列で渡す。順番考慮。
-	 * @param  bool   $is_tra トランザクションを利用する場合はtrue
+	 * @param  string $sql       SQL文を直書き。
+	 * @param  array  $bind      SQL文内でプレースホルダを利用している場合は配列で渡す。順番考慮。
+	 * @param  bool   $is_tra    トランザクションを利用する場合はtrue
+	 * @param  bool   $is_commit 処理終了後にcommit(rollback)する場合はtrue
 	 * @return bool
 	 * @access public
 	 */
-	public function exec($sql, $bind=array(), $is_tra=true){
+	public function exec($sql, $bind=array(), $is_tra=true, $is_commit=true){
 		if(!$this->dbh)
 			$this->dbh = $this->_connect();
-	
-		if($is_tra){
-			//実行
-			$this->dbh->beginTransaction();
-			$ret = $this->_runsql($sql, $bind, 'exec');
+		
+		//トランザクションスタート
+		if($is_tra)
+			$this->beginTransaction();
+		
+		//SQL実行
+		$ret = $this->_runsql($sql, $bind, 'exec');
 
-			//確定 or 巻戻し
-			if($ret) $this->dbh->commit();
-			else $this->dbh->rollBack();
-		}
-		else{
-			$ret = $this->_runsql($sql, $bind, 'exec');
+		//確定 or 巻戻し
+		if($is_commit){
+			if($ret)
+				$this->commit();
+			else
+				$this->rollback();
 		}
 
 		return( $ret );
 	}
+	
+	/**
+	 * トランザクションを開始する
+	 *
+	 * @return bool
+	 * @access public
+	 */
+	public function beginTransaction(){
+		return( $this->dbh->beginTransaction() );
+	}
+	
+	/**
+	 * commitする
+	 *
+	 * @return bool
+	 * @access public
+	 */
+	public function commit(){
+		return( $this->dbh->commit() );
+	}
+
+	/**
+	 * rollbackする
+	 *
+	 * @return bool
+	 * @access public
+	 */
+	public function rollback(){
+		return( $this->dbh->rollBack() );
+	}
+	
 
 	/*--------------------------------------------
 	 * ■ Private ■
@@ -255,13 +294,14 @@ class BaseModel{
 		$st  = $this->dbh->prepare($sql);
 		$ret = $st->execute($bind);
 		if(!$ret){
-			die( print_r($st->errorInfo()) );
+			return(false);
 		}
-
-		switch($type){
-			case 'all': return( $st->fetchAll($account['fetch_style']) );
-			case 'one': return( $st->fetch($account['fetch_style']) );
-			   default: return( $ret );
+		else{
+			switch($type){
+				case 'all': return( $st->fetchAll($account['fetch_style']) );
+				case 'one': return( $st->fetch($account['fetch_style']) );
+				   default: return( $ret );
+			}	
 		}
 	}
 }
