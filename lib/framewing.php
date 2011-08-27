@@ -73,7 +73,8 @@ class framewing{
 			call_user_func(array($obj, $mthd), $this->param);
 		}
 		else{
-			header('Location: /error/msg/404');
+			// header('Location: /error/msg/404');
+			header("HTTP/1.1 404 Not Found");
 		}
 	}
 
