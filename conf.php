@@ -91,9 +91,9 @@ $Conf = array(
 	//■View設定
 	, 'Smarty' => array(
 		  'tmpl'   => '../view/'
-		, 'tmpl_c' => '../lib/smarty/templates_c/'
+		, 'tmpl_c' => '../temp/smarty/templates_c/'
 		, 'config' => '../lib/smarty/configs/'
-		, 'cache'  => '../lib/smarty/cache/'
+		, 'cache'  => '../temp/smarty/cache/'
 		
 		, 'is_cache'   => false
 		, 'cache_life' => 0
