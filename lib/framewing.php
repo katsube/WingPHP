@@ -94,6 +94,10 @@ class framewing{
 		if( array_key_exists('_q', $_REQUEST) ){
 			$query = $_REQUEST['_q'];
 			$arr   = explode('/', $query);
+			
+			// _qの冒頭に'/'がある場合、先頭の空配列を削除
+			if(count($arr)>1 && empty($arr[0]))
+				 array_splice($arr, 0, 1);
 		}
 		else{
 			$arr = array();
