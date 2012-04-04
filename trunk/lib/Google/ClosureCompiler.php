@@ -35,7 +35,6 @@ uselib('Util/Net'); 	//net_fetchUrl, net_getContext
  *    uselib('Google/ClosureCompiler');
  *
  *    $gcc = new GoogleClosureCompiler();
- *
  *    if( $gcc->request('(function(){alert(\'Hello\');})();') ){
  *        echo $gcc->getSourceLastRequest();
  *    }
