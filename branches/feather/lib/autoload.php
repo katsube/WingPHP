@@ -24,7 +24,7 @@
  */
 
 function __autoload($className){
-	if( preg_match('/^(.*)(Model|Controller)$/', $className, $match) > 0 ){
+	if( preg_match('/^(.*)(Model|Controller|Feather)$/', $className, $match) > 0 ){
 		$file = strtolower($match[1]) . '.php';
 		$dir  = strtolower($match[2]);
 		

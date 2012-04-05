@@ -64,7 +64,7 @@ class framewing{
 	public function go(){
 		$ctrl = $this->ctrl_name;
 		$mthd = $this->method_name;
-		
+
 		if( is_callable(array($ctrl, $mthd))								//存在チェック
 						&& (strcmp('BaseController', $ctrl) != 0)			//スーパークラスは直接実行しない
 						&& !preg_match('/^_/', $mthd)){						//先頭が _ で始まるメソッドは実行しない
@@ -89,7 +89,7 @@ class framewing{
 	//--------------------------------------------
 	private function _parse(){
 		//-----------------------
-		// パース
+		// '/'で分割
 		//-----------------------
 		if( array_key_exists('_q', $_REQUEST) ){
 			$query = $_REQUEST['_q'];
@@ -106,18 +106,28 @@ class framewing{
 		//-----------------------
 		// 実行内容確定
 		//-----------------------
-		//コントローラー
-		if(!empty($arr[0]))
-			$this->ctrl_name = ucfirst($arr[0]) . 'Controller';
-		else
+		//先頭が '!' ならFeather, それ以外ならController
+		if(!empty($arr[0])){
+			if( preg_match('/^!/', $arr[0]) === 1 ){
+				$arr[0] = substr($arr[0], 1);
+				$type   = 'Feather';
+			}
+			else{
+				$type = 'Controller';
+			}
+		
+			$this->ctrl_name = ucfirst($arr[0]) . $type;
+		}
+		else{
 			$this->ctrl_name = 'IndexController';
+		}
 
 		//メソッド
 		if(!empty($arr[1]))
 			$this->method_name = $arr[1];
 		else
 			$this->method_name = 'index';
-		
+	
 		//パラメーター
 		if(count($arr) > 1)
 			$this->param = array_slice($arr, 2);
