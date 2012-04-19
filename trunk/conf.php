@@ -83,17 +83,18 @@ $Conf = array(
 		, 'db_expire' => 3600					//キャッシュ寿命
 		
 		//WebAPI系
-		, 'api_use'    => false				//WebAPI系ライブラリでキャッシュするか
+		, 'api_use'    => false					//WebAPI系ライブラリでキャッシュするか
 		, 'api_pre'    => '__lib.netapicache'	//WebAPI系ライブラリのキャッシュIDの先頭文字列
 		, 'api_expire' => 3600					//キャッシュ寿命
 	)
 	
 	//■View設定
 	, 'Smarty' => array(
-		  'tmpl'   => '../view/'
-		, 'tmpl_c' => '../temp/smarty/templates_c/'
-		, 'config' => '../lib/smarty/configs/'
-		, 'cache'  => '../temp/smarty/cache/'
+		  'version' => '3.1'					//'2.6' or '3.1'
+		, 'tmpl'    => '../view/'
+		, 'tmpl_c'  => '../temp/smarty/templates_c/'
+		, 'config'  => '../lib/smarty/configs/'
+		, 'cache'   => '../temp/smarty/cache/'
 		
 		, 'is_cache'   => false
 		, 'cache_life' => 0
@@ -123,7 +124,7 @@ $Conf = array(
  */
 class Routing{
 	public $ctrl;		//コントローラー
-	public $method;	//メソッド
+	public $method;		//メソッド
 	public $param;		//パラメーター
 	
 	function __construct(framewing $obj){
