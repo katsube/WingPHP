@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 
-function __autoload($className){
+function _wingAutoload($className){
 	if( preg_match('/^(.*)(Model|Controller)$/', $className, $match) > 0 ){
 		$file = strtolower($match[1]) . '.php';
 		$dir  = strtolower($match[2]);
@@ -32,10 +32,12 @@ function __autoload($className){
 			include_once("../$dir/$file");
 	}
 	else if( strcmp($className, 'Smarty') === 0){
-		uselib("smarty/Smarty.class");
+		uselib("smarty");
 	}
 	else{
 		uselib($className);
 	}
 }
+
+spl_autoload_register('_wingAutoload');
 ?>
