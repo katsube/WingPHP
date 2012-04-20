@@ -31,8 +31,11 @@ function _wingAutoload($className){
 		if( is_file("../$dir/$file") )
 			include_once("../$dir/$file");
 	}
-	else if( strcmp($className, 'Smarty') === 0){
+	else if( $className === 'Smarty' ){
 		uselib("smarty");
+	}
+	else if( preg_match('/^Smarty_/', $className) > 0 ){		//Smarty3.1‘Î‰ž
+		return(false);
 	}
 	else{
 		uselib($className);
