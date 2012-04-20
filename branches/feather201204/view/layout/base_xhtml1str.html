@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+<title>{$PAGE_TITLE|escape:'html'}</title>
+
+{* 必要に応じて利用
+	<!-- [favicon] -->
+	<link rel="shortcut icon" href="xxx.ico" type="image/x-icon" />
+	
+	<!-- feed -->
+	<link rel="alternate" type="application/rss+xml" title="" href="" />
+
+	<!-- SEO系 -->
+	<meta name="robots" content="index,follow" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	
+	<!-- [Google] and more => http://code.google.com/intl/ja/apis/libraries/devguide.html -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+
+	<!-- [JavaScript] -->
+	<!-- JSは極力 </body> 直前に書いた方が描画が早くなる -->
+	<script type="text/javascript" src=""></script>
+	<script type="text/javascript"><!--
+		//code
+	//-->
+	</script>
+
+	<!-- [CSS] -->
+	<!-- CSSは極力 <head> 内に書いた方が描画が早くなる -->
+	<link type="text/css" rel="stylesheet" href="">
+	<style type="text/css"><!--
+	-->
+	</style>
+*}
+<body>
+
+{* コンテンツ挿入位置 *}
+{$CONTENT}
+
+</body>
+</html>
