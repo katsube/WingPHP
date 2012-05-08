@@ -252,6 +252,7 @@ class BaseController{
 		$smarty->compile_dir  = $Conf['Smarty']['tmpl_c'];
 		$smarty->config_dir   = $Conf['Smarty']['config'];
 		$smarty->cache_dir    = $Conf['Smarty']['cache'];
+		$smarty->plugins_dir  = $Conf['Smarty']['plugin'];
 		
 		//キャッシュ
 		$smarty->caching = $Conf['Smarty']['is_cache'];
