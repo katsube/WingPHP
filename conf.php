@@ -90,7 +90,7 @@ $Conf = array(
 	
 	//■View設定
 	, 'Smarty' => array(
-		  'version' => '3.1'					//'2.6' or '3.1'
+		  'version' => '3.1'					//'3.1'固定
 		, 'tmpl'    => '../view/'
 		, 'tmpl_c'  => '../temp/smarty/templates_c/'
 		, 'plugin'  => array('plugins', realpath('../lib/smarty/wingplugin'))

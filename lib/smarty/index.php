@@ -25,10 +25,6 @@
 
 global $Conf;
 switch( $Conf['Smarty']['version'] ){
-	case '2.6':
-		uselib('smarty/2.6/Smarty.class');
-		break;
-
 	case '3.1':
 	default:
 		uselib('smarty/3.1/libs/Smarty.class');
