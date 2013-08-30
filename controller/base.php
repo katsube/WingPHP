@@ -222,6 +222,15 @@ class BaseController{
 		$smarty->config_dir   = $Conf['Smarty']['config'];
 		$smarty->cache_dir    = $Conf['Smarty']['cache'];
 		$smarty->plugins_dir  = $Conf['Smarty']['plugin'];
+
+		switch($Conf['Smarty']['version']){
+			case '3.1':
+				$smarty->plugins_dir = array_merge(array(realpath('../lib/smarty/3.1/libs/plugins')), $Conf['Smarty']['plugin']);
+				break;
+			default:
+				$smarty->plugins_dir = $Conf['Smarty']['plugin'];
+				break;
+		}
 		
 		//キャッシュ
 		$smarty->caching = $Conf['Smarty']['is_cache'];
