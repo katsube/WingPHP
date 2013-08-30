@@ -46,7 +46,6 @@ class BaseController{
 	private $smarty   = false;
 	private $layout   = null;
 	private $layout_marker = null;
-	private $utilview = null;
 	private $run_validation = false;
 	
 	/**
@@ -55,7 +54,7 @@ class BaseController{
 	 * @access public
 	 */
 	function __construct(){
-		$this->utilview = new utilview();
+		;
 	}
 
 	/**
@@ -165,36 +164,6 @@ class BaseController{
 		}
 	}
 
-	/**
-	 * バリデーションを行う 
-	 *
-	 * key-value型の配列のvalueに対してバリデーションを実施する。
-	 * 第二引数 $ruleも同様にkey-value型の配列であり、このvalueにルールを
-	 * 記述する。
-	 *   ※つまり第一引数と第二引数のキーはリンクしている
-	 *
-	 * Example. <code>
-	 *   $q   = new QueryModel();
-	 *   $ret = $this->check(
-	 *               $q->data()
-	 *             , array('key1'=>'ALNUM', 'key2'=>'/^([0-9a-zA-Z]{1,})$/')
-	 *          );
-	 *
-	 *   $this->smarty()->assign('validation', $ret);
-	 * </code>
-	 *
-	 * @param  array  $data  array(key1=>'value1', key2=>'value2' ...)
-	 * @param  array  $rule  array(key1=>'ALNUM',  key2=>'/^([0-9a-zA-Z]{1,})$/' ...)
-	 * @return array  array( result=>true|false, data=>array( key1=>true|false, key2=>true|false ... ) )
-	 * @access public
-	 */
-	public function check($data, $rule){
-		$v = new validation();				// lib/validation.php
-		$this->utilview->run_valid();
-		
-		return( $v->check($data, $rule) );
-	}
-
 
 	/**
 	 * メール送信ラッパー
@@ -257,9 +226,6 @@ class BaseController{
 		//キャッシュ
 		$smarty->caching = $Conf['Smarty']['is_cache'];
 		$smarty->cache_lifetime = $Conf['Smarty']['cache_life'];
-		
-		//便利関数
-		$smarty->assign('view', $this->utilview);
 
 		//セット
 		$this->smarty = $smarty;
