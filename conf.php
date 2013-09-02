@@ -81,11 +81,6 @@ $Conf = array(
 		, 'db_use'    => false					//ModelのDB系メソッドでキャッシュするか
 		, 'db_pre'    => '__lib.dbcache'		//ModelのDB系メソッドのキャッシュIDの先頭文字列
 		, 'db_expire' => 3600					//キャッシュ寿命
-		
-		//WebAPI系
-		, 'api_use'    => false					//WebAPI系ライブラリでキャッシュするか
-		, 'api_pre'    => '__lib.netapicache'	//WebAPI系ライブラリのキャッシュIDの先頭文字列
-		, 'api_expire' => 3600					//キャッシュ寿命
 	)
 	
 	//■View設定
