@@ -88,7 +88,7 @@ $Conf = array(
 		  'version' => '3.1'					//'3.1'固定
 		, 'tmpl'    => '../view/'
 		, 'tmpl_c'  => '../temp/smarty/templates_c/'
-		, 'plugin'  => array('plugins', realpath('../lib/smarty/wingplugin'))
+		, 'plugin'  => array(realpath('../lib/smarty/wingplugin'))
 		, 'config'  => '../lib/smarty/configs/'
 		, 'cache'   => '../temp/smarty/cache/'
 		
