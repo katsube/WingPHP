@@ -2,28 +2,31 @@
 WingPHPのご利用ありがとうございます。
 このファイルはWingPHPの利用方法について簡単に説明したファイルです。
 
+  index. ------------------------------
+     1) How to install.
+     2) Directory
+     3) URL Rule 1 "Basic Rule"
+     4) URL Rule 2 "index Method"
+     5) URL Rule 3 "URL Arguments"
+     6) Controller
+     7) View
+     8) Model
+     9) autoload
+    10) FAQ
+  -------------------------------------
+
 WingPHPは「MVCモデル」を採用した軽量のフレームワークです。
 モデルにPDO, ViewにSmartyを利用することで、これまでの知識を再利用
 できる学習コストの低さを求めています。
 
-  index. ------------------------------
-    1) How to install.
-    2) Directory
-    3) URL Rule 1 "Basic Rule"
-    4) URL Rule 2 "index Method"
-    5) URL Rule 3 "URL Arguments"
-    6) Controller
-	7) View
-	8) Model
-	9) autoload
-  -------------------------------------
 
-
+------------------------
 1) How to install.
 ------------------------
  同梱されている INSTALL.*.txt をご覧ください。
 
 
+------------------------
 2) Directory
 ------------------------
  各ディレクトリは次のような意味を持ちます。
@@ -32,7 +35,7 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
   model ........ モデル用のクラス
   view ......... ビュー用のHTML(Smartyテンプレート)
     layout .....  layout機能を用いる際に利用
-	_common ....  共通パーツを保存する際に利用
+    _common ....  共通パーツを保存する際に利用
   temp ......... Smartyのキャッシュ置場
   lib .......... アプリ内で利用するクラス
   htdocs ....... ドキュメントルート
@@ -40,8 +43,9 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
                  ルーティングの設定を行うクラスの設定
 
 
+------------------------------
 3) URL Rule 1 "Basic Rule"
----------------------------
+------------------------------
  例えば以下のようなURLがあったとします。
 
    http://yourdomain/catalog/view/
@@ -50,22 +54,22 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
  このURLへアクセスがあった場合、WingPHPは次のような動作をします。
 
     1. htdocs/catalog/view/ のファイルの存在をチェック
-	  1.1 ファイルがある場合 → その内容を返却し終了
-	  1.2 ファイルがない場合 → 2へ進む
+      1.1 ファイルがある場合 → その内容を返却し終了
+      1.2 ファイルがない場合 → 2へ進む
 
     2. controllerを実行
       2.1 controller/catalog.phpをinclude する
-	  2.2 class CatalogController のインスタンスを生成、viewメソッドを実行し終了
-	        
-			// 以下はイメージです
-			include_once('controller/catalog.php');
-		    
-			$obj = new CatalogController();
-		    $obj->view();
+      2.2 class CatalogController のインスタンスを生成、viewメソッドを実行し終了
+            
+            // 以下はイメージです
+            include_once('controller/catalog.php');
+            
+            $obj = new CatalogController();
+            $obj->view();
 
-	  2.3 もし上記のファイルやクラス、メソッドが存在しない場合は、
-	      次の「404エラー」を出力するURLへリダイレクトされます。
-		  http://yourdomain/error/msg/404
+      2.3 もし上記のファイルやクラス、メソッドが存在しない場合は、
+          次の「404エラー」を出力するURLへリダイレクトされます。
+          http://yourdomain/error/msg/404
 
 
  つまり、URLは次のような意味を持つことになります。
@@ -74,6 +78,7 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
 
 
 
+------------------------------
 4) URL Rule 2 "index method"
 -----------------------------
  メソッド名は省略することが可能です。
@@ -88,6 +93,7 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
 
 
 
+------------------------------
 5) URL Rule 3 "URL Arguments"
 -----------------------------
  次のURLの場合は、コントローラーに対しURLから引数を渡すことが可能です。
@@ -105,18 +111,19 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
  値はスラッシュ(/)で区切られ、いくつでも渡すことが可能です。
    ※URLの最大長がブラウザやサーバに依存しますので、
     あまりに長大になる場合はPOSTメソッドのクエリーを
-	用いてください。
+    用いてください。
 
  実際にメソッド内で利用する際には、以下のようなコードを
  記述します。
    public function view($argv){
      $id   = $argv[0];  //12345
-	 $mode = $argv[1];  //"simple"
+     $mode = $argv[1];  //"simple"
  
    }
 
- 
+  
 
+-----------------------------
 6) Controller
 -----------------------------
  コントローラー作成時の注意点は3つです。
@@ -126,22 +133,19 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
    2. ファイル名は controller/(クラス名を小文字).php 
    3. クラス名は (クラス名)Controller とする。
 
- このフレームワークのお作法ですので、ここまでは必ず守って
- いただく必要があります。
-
+ これはフレームワークのお作法ですので、必ず守っていただく必要があります。
 
  例えば catalog という名前のコントローラーを作成する場合は
  次のようになります。
 
    // controller/catalog.php
    class CatalogController extends BaseController{
-	   public function index(){
-	     echo "helloworld";
-	   }
+       public function index(){
+         echo "helloworld";
+       }
    }
 
- 実際に上記のファイルを作成したら、ブラウザからアクセスして
- みてください。
+ 実際に上記のファイルを作成したら、ブラウザからアクセスしてみてください。
    http://yourdomain/catalog
    http://yourdomain/catalog/index
 
@@ -152,19 +156,20 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
    れません。仮に呼ばれても404になります。
 
     class CatalogController extends BaseController{
-	   // 呼び出せます
-	   public function callable(){
-	     echo "callable";
-	   }
+       // 呼び出せます
+       public function callable(){
+         echo "callable";
+       }
 
        // 呼び出せない
-	   private function cantcall(){
-	     echo "can not call";
+       private function cantcall(){
+         echo "can not call";
        }
    }
 
 
 
+-----------------------------
 7) View
 -----------------------------
  WingPHPではViewにSmartyを採用しています。
@@ -181,8 +186,8 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
 
    class CatalogController extends BaseController{
        public function view(){
-	       $this->display('catalog/index.html');
-	   }
+           $this->display('catalog/index.html');
+       }
    }
 
  継承元のスーパークラス内にあるdisplayメソッドに、
@@ -193,9 +198,9 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
 
    class CatalogController extends BaseController{
        public function view(){
-	       $this->assign('name', 'value');
-	       $this->display('catalog/index.html');
-	   }
+           $this->assign('name', 'value');
+           $this->display('catalog/index.html');
+       }
    }
 
  Smartyが標準で用意しているメソッド名と合わせてありますので、
@@ -204,17 +209,17 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
 
  ■ layout 機能を使用する
    例えばニュースサイトやブログで、記事内容はページによって変わるが、
-   メニューや基本的なデザインは一緒という場合があります。
+   メニューや基本的なデザインは一緒という場合は多々あります。
 
-   これの実装方法は色々がありますが、すべてのテンプレートに内容を書いてしまうと、
-   いざデザインを変更するとなった時に大変なお祭りになります。そこで用いるのが
+   これの実装方法は色々がありますが、すべてのテンプレートにすべての内容を書いてしまうと、
+   いざデザインを変更するとなった時に大変なお祭りになります。こんな時に用いるのが
    layout機能です。
 
     class CatalogController extends BaseController{
        public function view(){
-	       $this->layout('layout/base.html');
-	       $this->display('catalog/index.html');
-	   }
+           $this->layout('layout/base.html');     //ここに注目
+           $this->display('catalog/index.html');
+       }
     }
   
    全ページで共通するHTML等を layout/base.html に記述します。
@@ -224,30 +229,30 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
    catalog/index.html に置き換わります。
 
       layout/base.html
-	    <html><head><title>layout test</title></head>
-	    <body>
+        <html><head><title>layout test</title></head>
+        <body>
         {$CONTENT}
-	    </body>
-	    </html>
+        </body>
+        </html>
 
       catalog/index.html
-	    <h1>HelloWorld</h1>
-		<p>welcome to wingphp</p>
+        <h1>HelloWorld</h1>
+        <p>welcome to wingphp</p>
 
-      最終的な出力結果($this->display実行結果)
-	    <html><head><title>layout test</title></head>
-	    <body>
-    	<h1>HelloWorld</h1>
-		<p>welcome to wingphp</p>
-	    </body>
-	    </html>
+      最終的な出力結果($this->display()実行結果)
+        <html><head><title>layout test</title></head>
+        <body>
+        <h1>HelloWorld</h1>
+        <p>welcome to wingphp</p>
+        </body>
+        </html>
 
    注意点としては、layoutメソッドは必ずdisplayよりも前に実行する必要があること、
    またassignで渡した変数は、layout用のファイルにも影響を与えることです。
 
 
 
-
+-----------------------------
 8) Model
 -----------------------------
  WingPHPのモデルは、ざっくり言うとPDOを経由し、MySQLとデータのやりとりを
@@ -267,27 +272,38 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
      public function set(){
          ;
      }
-	 public function get(){
-	     ;
-	 }
+     public function get(){
+         ;
+     }
    }
 
  モデルはコントローラーを経由して呼ばれることがほとんどですので、
- public/privateの違いはコントローラーから隠すどうかという意味しか
+ public/privateの違いはコントローラーから隠すかどうかという意味しか
  持ちません。
    ※Smartyのプラグインを用意することで、簡単にViewからも
      Modelを呼ぶことができます。
+
 
  ■ SELECT句
    モデルからSELECT句を発行するには、selectメソッドを用います。
 
      class CatalogModel extends BaseModel{
-	   public function get($id){
-	      return(
-	        $this->select('select * from catalog where id=?', array($id))
-	      );
-	   }
-	 }
+       public function get($id){
+          return(
+            $this->select('select * from catalog where id=?', array($id))
+          );
+       }
+     }
+
+     //ControllerからModelを利用
+     class CatalogController extends BaseController{
+       public function index($argv){
+          $id = $argv[0];
+
+          $model = new CatalogModel();
+          $model->get($id);
+       }
+     }
 
    失敗時にはfalseが返ってきます。
    成功時には次のような2次元配列が返却されます。
@@ -300,12 +316,13 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
      )
 
 
-   例えばcountして件数だけ知りたい等、あらかじめ結果が1レコードだけと
-   分かりきっている場合があります。そういった時には select1 メソッドを
+   しかし、これだとまどろっこしい場合があります。
+   あらかじめ結果が1レコードだけと分かりきっている時です。例えばcountして件数だけ知りたい、
+   プライマリーキーで絞り込んだ時などが考えられます。こういった時には select1 メソッドを
    使用するのが良いでしょう。
 
-	 //違いは1がつくかどうか
-	 $this->select1('select count(*) as cnt  from catalog where id=?', array($id))
+     //違いはメソッド名に "1" がつくかどうか
+     $this->select1('select count(*) as cnt  from catalog where id=?', array($id))
 
    select1は、仮に複数レコードが結果だった場合でも最初の1レコード目のみが返却されます。
    またselectと異なり配列も1次元となります。
@@ -314,14 +331,191 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
 
 
  ■ insert/update/delete
+   何らかのデータ更新を行う場合は、execメソッドを利用します。
+
+     class CatalogModel extends BaseModel{
+       public function create($val){
+            $ret = $this->exec(
+                'insert into catalog values(?,?,?)'
+              , array($val['name'], $val['price'], $val['description'])
+            );
+
+            return($ret);
+       }
+     }
+
+     //ControllerからModelを利用
+     class CatalogController extends BaseController{
+       public function index($argv){
+          $model = new CatalogModel();
+          $ret   = $model->create(array(
+                            'name'  => $argv[0]
+                          , 'price' => $argv[1]
+                          , 'description' => $argv[2]
+                    ));
+
+           $this->assign('is_create', $ret);
+           $this->display('catalog/create.html');
+       }
+     }
+
+   成功すればtrue, 失敗すればfalseが返されます。
+   上記の例ではinsertを行っていますが、同様にupdate,deleteも行えます。
+   権限さえあればcreate tableなどももちろん可能です。
+
 
  ■ トランザクション
+   複数のSQLを実行し、そのうちのひとつでも失敗したら処理を取り消したい(rollbackしたい)
+   場合はどうすればよいでしょうか？
+
+    // 仕様変更予定のため後日記入
+
 
  ■ キャッシュ
+   WingPHPではSQLの実行結果をmemcachなどに一定時間自動的にキャッシュする機能があります。
+   これのON/OFFを切り替えるだけで、コード上はまったく意識することなくDBへの負荷を減らす
+   ことが可能です。
+   
+     class CatalogModel extends BaseModel{
+       public function get($id){
+          return(
+            $this->select(
+                  'select * from catalog where id=?'
+                , array($id)
+                , true
+            )
+          );
+       }
+     }
+
+   select(select1)の第3引数に注目してください。
+   これが true になっている場合にキャッシュ機能が利用されます(未指定の場合はfalse)。
+     ※当然ながらこれは select, select1でのみ有効な機能です。
+
+   キャッシュ単位ですが、第１引数のSQL文と、第２引数のプレースホルダー用の変数の値の両方で
+   1つのキャッシュとなります。つまり同じSQL文でもプレースホルダーの値が異なれば、新しくDB
+   から取ってくるというわけです。
+
+      $sql = 'select * from catalog where id=?';
+      $this->select($sql, array(10), true);        // A
+      $this->select($sql, array(99), true);        // B
+      $this->select($sql, array(10), true);        // C
+
+   A,B,CとSQLは同じですが、
+   BはAとプレースホルダーの値が違うためDBへ問い合わせがいきます。
+   CはAとSQLもプレースホルダーの値が両方同じ物のため、キャッシュが利用されます。
+
+   具体的なキャッシュ先や、キャッシュする時間は conf.php で定義を行います。
+
+     $Conf = array(
+        //■キャッシュ
+        , 'Cache' => array(
+                  'strage'  => 'File'                     //'File' or 'MemCache'
+                , 'expire'  => 3600                       //秒数を指定。 0=無期限
+                
+                //DB系
+                , 'db_use'    => false                    //ModelのDB系メソッドでキャッシュするか
+                , 'db_pre'    => '__lib.dbcache'         //ModelのDB系メソッドのキャッシュIDの先頭文字列
+                , 'db_expire' => 3600                     //キャッシュ寿命
+        )
+      );
+
+    strageでキャッシュする先を指定します。
+    通常は File か MemCache のいずれかを指定することになりますが、
+    lib/Cache/Strage 配下に一定のルールに従ってクラスを書けば、その他のKVS(MongoDB,Radis…)など
+    にも自由に格納することができます。
+
+    注意点としては、db_user を true にすると、強制的に全select(select1)の実行がキャッシュされます。
+    これを利用するケースはあまりないでしょうが、その時が来たらご利用ください。
+
 
  ■ DBの切り替え
+   MySQLでは、クエリー数が増加するとスレーブを新たに設置し、マスターとスレーブを切り替えて使いたくなります。
+   また情報によって参照先のDBを切り替えたい場合もあるでしょう。そんな時には usedb メソッドを利用します。
+
+   まずは conf.php に利用するDBの接続情報を記入します。
+
+     $Conf = array(
+        //■データベース設定
+        'DB' => array(
+                'master' => array(
+                          'DSN'         => 'mysql:dbname=test;host=localhost'
+                        , 'USER'        => 'username'
+                        , 'PASSWORD'    => 'password'
+                        , 'fetch_style' => PDO::FETCH_ASSOC
+                        , 'persistent'  => false
+                )
+                , 'slave1' => array(
+                          'DSN'         => 'mysql:dbname=test;host=slave1'
+                        , 'USER'        => 'slave1'
+                        , 'PASSWORD'    => 'foobar'
+                        , 'fetch_style' => PDO::FETCH_ASSOC
+                        , 'persistent'  => false
+                )
+        )
+     )
+
+   master はデフォルトで記入されている部分ですが、それに続けてDBの接続先を記入します。
+   ここでは slave1 としましたが、名前は自由につけることができます。また追加する個数に制限はありませんので、
+   いくらでも追加できます。 
+
+   conf.php に記入したら、次はモデル内での利用方法です。
+   これは非常に簡単で、select(select1)/exec 実行前に usedb メソッドを実行するだけです。
+     
+     $this->userdb('slave1'); 
+     $this->select($sql);
+
+   これで select は slave1 に対して実行されます。
+   なおusedbを明示的に使わなかった場合は、常にmasterが利用されます。
+
+     $this->select($sql);       // master
+     $this->userdb('slave1'); 
+     $this->select($sql);       // slave1
+
+   また次のように配列内に接続先名称を配列にいれて渡すと、ランダムに切り替えが行われます。
+   スレーブが増えたきた際に利用するとよいでしょう。
+
+     $this->usedb(array('slave1', 'slave2'));
 
 
+-----------------------------
 9) autoload
 -----------------------------
+ WingPHPでは、Controller,Model に限って、require(_once) で該当するクラスファイルをあらかじめ
+ 読み込んでおかなくても、必要な時に自動的に読み込まれます。
+
+   // controller/catalog.php
+   <?php
+   class CatalogController extends BaseController{
+       public function index($argv){
+          $id = $argv[0];
+
+          $model = new CatalogModel();
+          $model->get($id);
+       }
+     }
+   ?>
+ 
+ 上記ファイルでは、どこでも model/catalog.php を require していません問題なく動作します。
+ これは実行時に PHP の autoload 機能を利用し、該当クラスが見つからない場合の処理をフレームワーク側で
+ 別途書いているからです。
+   ※具体的な処理内容は lib/autoload.php 内にあります。
+
+ 注意点としては、この機能を用いるためには、これまでにご説明したController, Model のネーミングルールを
+ 守っていただく必要があることです。
+ 
+ # 事前に require(_once) を行い、当該クラスを読み込んでおくことでこの機能を利用せず、高速性を求める
+ # ことも可能ですが、どうしてもという場合をのぞいては推奨しません。
+
+
+-----------------------------
+10) FAQ
+-----------------------------
+ Q1. 画像やCSS、JavaScriptのファイルはどこに設置すればよいですか？
+ A1. 完全に静的なものなら htdocs 配下に、
+     動的なSmartyを利用するCSSやJSなら view 配下に
+
+ Q2. 複数のサイトを1つのWingPHPで開発することはできますか？
+ A2. 可能です。
+
 
