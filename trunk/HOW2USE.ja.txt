@@ -96,31 +96,32 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
 ------------------------------
 5) URL Rule 3 "URL Arguments"
 -----------------------------
- 次のURLの場合は、コントローラーに対しURLから引数を渡すことが可能です。
+ 次のURLは、コントローラーに対しURLから引数を渡しています。
 
       http://yourdomain/catalog/view/12345/simple
+
          ↓
+
       include_once('controller/catalog.php'); 
+
       $obj = new CatalogController();
       $obj->view(array(12345, 'simple'));
 
  viewメソッドに注目してください。
- URLのメソッド指定部分から先の12345, "simple" が引数として
- 渡されます。
+ URLのメソッド指定部分から先の12345, "simple" が引数として渡されます。
 
- 値はスラッシュ(/)で区切られ、いくつでも渡すことが可能です。
-   ※URLの最大長がブラウザやサーバに依存しますので、
-    あまりに長大になる場合はPOSTメソッドのクエリーを
-    用いてください。
+ 実際にメソッド内で利用する際には、以下のようなコードを記述します。
 
- 実際にメソッド内で利用する際には、以下のようなコードを
- 記述します。
    public function view($argv){
      $id   = $argv[0];  //12345
      $mode = $argv[1];  //"simple"
  
    }
 
+ 値はスラッシュ(/)で区切られ、いくつでも渡すことが可能です。
+   ※URLの最大長がブラウザやサーバに依存しますので、
+    あまりに長大になる場合はPOSTメソッドのクエリーを
+    用いてください。
   
 
 -----------------------------
@@ -128,8 +129,7 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
 -----------------------------
  コントローラー作成時の注意点は3つです。
 
-   1. すべてのControllerは、controller/base.php内にある
-      BaseControllerクラスを継承する。
+   1. すべてのControllerは、controller/base.php内にある BaseControllerクラスを継承する。
    2. ファイル名は controller/(クラス名を小文字).php 
    3. クラス名は (クラス名)Controller とする。
 
@@ -173,7 +173,7 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
 7) View
 -----------------------------
  WingPHPではViewにSmartyを採用しています。
- 現在では2.6系のサポートが終了し、3.1系のみの利用が可能です。
+ 現在では3.1系のみの利用が可能です。
  http://www.smarty.net/docs/ja/
 
  Viewとして用いるHTMLは、viewディレクトリ配下に自由なファイル名で
@@ -228,18 +228,20 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
    layout/base.html 内に {$CONTENT} と書いた部分が
    catalog/index.html に置き換わります。
 
-      layout/base.html
+   具体的には次のような動きになります。
+
+      ○layout/base.html
         <html><head><title>layout test</title></head>
         <body>
         {$CONTENT}
         </body>
         </html>
 
-      catalog/index.html
+      ○catalog/index.html
         <h1>HelloWorld</h1>
         <p>welcome to wingphp</p>
 
-      最終的な出力結果($this->display()実行結果)
+      ○最終的な出力結果($this->display()実行結果)
         <html><head><title>layout test</title></head>
         <body>
         <h1>HelloWorld</h1>
@@ -260,8 +262,7 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
  
  このモデルにもコントローラーと同様のお作法があります。
 
-   1. すべてのModelは、Model/base.php内にある
-      BaseModelクラスを継承する。
+   1. すべてのModelは、Model/base.php 内にある BaseModelクラスを継承する。
    2. ファイル名は model/(クラス名を小文字).php 
    3. クラス名は (クラス名)Model とする。
 
@@ -330,7 +331,7 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
      array('cnt'=>123)
 
 
- ■ insert/update/delete
+ ■ INSERT/UPDATE/DELETE句
    何らかのデータ更新を行う場合は、execメソッドを利用します。
 
      class CatalogModel extends BaseModel{
@@ -462,14 +463,14 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
    conf.php に記入したら、次はモデル内での利用方法です。
    これは非常に簡単で、select(select1)/exec 実行前に usedb メソッドを実行するだけです。
      
-     $this->userdb('slave1'); 
+     $this->usedb('slave1'); 
      $this->select($sql);
 
    これで select は slave1 に対して実行されます。
    なおusedbを明示的に使わなかった場合は、常にmasterが利用されます。
 
      $this->select($sql);       // master
-     $this->userdb('slave1'); 
+     $this->usedb('slave1'); 
      $this->select($sql);       // slave1
 
    また次のように配列内に接続先名称を配列にいれて渡すと、ランダムに切り替えが行われます。
