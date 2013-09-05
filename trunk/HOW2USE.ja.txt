@@ -1,0 +1,327 @@
+
+WingPHPのご利用ありがとうございます。
+このファイルはWingPHPの利用方法について簡単に説明したファイルです。
+
+WingPHPは「MVCモデル」を採用した軽量のフレームワークです。
+モデルにPDO, ViewにSmartyを利用することで、これまでの知識を再利用
+できる学習コストの低さを求めています。
+
+  index. ------------------------------
+    1) How to install.
+    2) Directory
+    3) URL Rule 1 "Basic Rule"
+    4) URL Rule 2 "index Method"
+    5) URL Rule 3 "URL Arguments"
+    6) Controller
+	7) View
+	8) Model
+	9) autoload
+  -------------------------------------
+
+
+1) How to install.
+------------------------
+ 同梱されている INSTALL.*.txt をご覧ください。
+
+
+2) Directory
+------------------------
+ 各ディレクトリは次のような意味を持ちます。
+
+  controller ... コントローラー用のクラス
+  model ........ モデル用のクラス
+  view ......... ビュー用のHTML(Smartyテンプレート)
+    layout .....  layout機能を用いる際に利用
+	_common ....  共通パーツを保存する際に利用
+  temp ......... Smartyのキャッシュ置場
+  lib .......... アプリ内で利用するクラス
+  htdocs ....... ドキュメントルート
+  conf.php ..... アプリ内全体で利用する$Confの設定、
+                 ルーティングの設定を行うクラスの設定
+
+
+3) URL Rule 1 "Basic Rule"
+---------------------------
+ 例えば以下のようなURLがあったとします。
+
+   http://yourdomain/catalog/view/
+
+
+ このURLへアクセスがあった場合、WingPHPは次のような動作をします。
+
+    1. htdocs/catalog/view/ のファイルの存在をチェック
+	  1.1 ファイルがある場合 → その内容を返却し終了
+	  1.2 ファイルがない場合 → 2へ進む
+
+    2. controllerを実行
+      2.1 controller/catalog.phpをinclude する
+	  2.2 class CatalogController のインスタンスを生成、viewメソッドを実行し終了
+	        
+			// 以下はイメージです
+			include_once('controller/catalog.php');
+		    
+			$obj = new CatalogController();
+		    $obj->view();
+
+	  2.3 もし上記のファイルやクラス、メソッドが存在しない場合は、
+	      次の「404エラー」を出力するURLへリダイレクトされます。
+		  http://yourdomain/error/msg/404
+
+
+ つまり、URLは次のような意味を持つことになります。
+
+       http://yourdomain/(コントローラー名)/(メソッド名)/
+
+
+
+4) URL Rule 2 "index method"
+-----------------------------
+ メソッド名は省略することが可能です。
+ 次のURLの場合は
+    http://yourdomain/catalog
+
+ 以下のURLと同じ意味になります。
+    http://yourdomain/catalog/index
+
+ もしindexメソッドが存在しない場合は404エラーとなります。
+ また明示的にindexをつけても問題ありません。
+
+
+
+5) URL Rule 3 "URL Arguments"
+-----------------------------
+ 次のURLの場合は、コントローラーに対しURLから引数を渡すことが可能です。
+
+      http://yourdomain/catalog/view/12345/simple
+         ↓
+      include_once('controller/catalog.php'); 
+      $obj = new CatalogController();
+      $obj->view(array(12345, 'simple'));
+
+ viewメソッドに注目してください。
+ URLのメソッド指定部分から先の12345, "simple" が引数として
+ 渡されます。
+
+ 値はスラッシュ(/)で区切られ、いくつでも渡すことが可能です。
+   ※URLの最大長がブラウザやサーバに依存しますので、
+    あまりに長大になる場合はPOSTメソッドのクエリーを
+	用いてください。
+
+ 実際にメソッド内で利用する際には、以下のようなコードを
+ 記述します。
+   public function view($argv){
+     $id   = $argv[0];  //12345
+	 $mode = $argv[1];  //"simple"
+ 
+   }
+
+ 
+
+6) Controller
+-----------------------------
+ コントローラー作成時の注意点は3つです。
+
+   1. すべてのControllerは、controller/base.php内にある
+      BaseControllerクラスを継承する。
+   2. ファイル名は controller/(クラス名を小文字).php 
+   3. クラス名は (クラス名)Controller とする。
+
+ このフレームワークのお作法ですので、ここまでは必ず守って
+ いただく必要があります。
+
+
+ 例えば catalog という名前のコントローラーを作成する場合は
+ 次のようになります。
+
+   // controller/catalog.php
+   class CatalogController extends BaseController{
+	   public function index(){
+	     echo "helloworld";
+	   }
+   }
+
+ 実際に上記のファイルを作成したら、ブラウザからアクセスして
+ みてください。
+   http://yourdomain/catalog
+   http://yourdomain/catalog/index
+
+
+ ■呼ばれたくないメソッド
+   ユーザーに直接呼ばれたくないメソッドは private を明示的に
+   記述してください。private になっているメソッドは呼び出さ
+   れません。仮に呼ばれても404になります。
+
+    class CatalogController extends BaseController{
+	   // 呼び出せます
+	   public function callable(){
+	     echo "callable";
+	   }
+
+       // 呼び出せない
+	   private function cantcall(){
+	     echo "can not call";
+       }
+   }
+
+
+
+7) View
+-----------------------------
+ WingPHPではViewにSmartyを採用しています。
+ 現在では2.6系のサポートが終了し、3.1系のみの利用が可能です。
+ http://www.smarty.net/docs/ja/
+
+ Viewとして用いるHTMLは、viewディレクトリ配下に自由なファイル名で
+ 保存し、それをコントローラーから呼び出すことができます。
+ 
+
+ 例えば、
+ view/catalog/index.html にSmarty記法でかかれたファイルを
+ 置いたとします。これを出力するためのコードは以下になります。
+
+   class CatalogController extends BaseController{
+       public function view(){
+	       $this->display('catalog/index.html');
+	   }
+   }
+
+ 継承元のスーパークラス内にあるdisplayメソッドに、
+ Viewのファイルのパスを与えるだけです。
+
+
+ また変数をSmartyに渡す場合は、以下になります。
+
+   class CatalogController extends BaseController{
+       public function view(){
+	       $this->assign('name', 'value');
+	       $this->display('catalog/index.html');
+	   }
+   }
+
+ Smartyが標準で用意しているメソッド名と合わせてありますので、
+ 特に深く考えなくても利用できるようになっています。
+
+
+ ■ layout 機能を使用する
+   例えばニュースサイトやブログで、記事内容はページによって変わるが、
+   メニューや基本的なデザインは一緒という場合があります。
+
+   これの実装方法は色々がありますが、すべてのテンプレートに内容を書いてしまうと、
+   いざデザインを変更するとなった時に大変なお祭りになります。そこで用いるのが
+   layout機能です。
+
+    class CatalogController extends BaseController{
+       public function view(){
+	       $this->layout('layout/base.html');
+	       $this->display('catalog/index.html');
+	   }
+    }
+  
+   全ページで共通するHTML等を layout/base.html に記述します。
+   当該ページの内容を 'catalog/index.html' に記述します。
+
+   layout/base.html 内に {$CONTENT} と書いた部分が
+   catalog/index.html に置き換わります。
+
+      layout/base.html
+	    <html><head><title>layout test</title></head>
+	    <body>
+        {$CONTENT}
+	    </body>
+	    </html>
+
+      catalog/index.html
+	    <h1>HelloWorld</h1>
+		<p>welcome to wingphp</p>
+
+      最終的な出力結果($this->display実行結果)
+	    <html><head><title>layout test</title></head>
+	    <body>
+    	<h1>HelloWorld</h1>
+		<p>welcome to wingphp</p>
+	    </body>
+	    </html>
+
+   注意点としては、layoutメソッドは必ずdisplayよりも前に実行する必要があること、
+   またassignで渡した変数は、layout用のファイルにも影響を与えることです。
+
+
+
+
+8) Model
+-----------------------------
+ WingPHPのモデルは、ざっくり言うとPDOを経由し、MySQLとデータのやりとりを
+ する機能になります。
+ 
+ このモデルにもコントローラーと同様のお作法があります。
+
+   1. すべてのModelは、Model/base.php内にある
+      BaseModelクラスを継承する。
+   2. ファイル名は model/(クラス名を小文字).php 
+   3. クラス名は (クラス名)Model とする。
+
+ コードにした場合、次のようになります。
+
+   // model/catalog.php
+   class CatalogModel extends BaseModel{
+     public function set(){
+         ;
+     }
+	 public function get(){
+	     ;
+	 }
+   }
+
+ モデルはコントローラーを経由して呼ばれることがほとんどですので、
+ public/privateの違いはコントローラーから隠すどうかという意味しか
+ 持ちません。
+   ※Smartyのプラグインを用意することで、簡単にViewからも
+     Modelを呼ぶことができます。
+
+ ■ SELECT句
+   モデルからSELECT句を発行するには、selectメソッドを用います。
+
+     class CatalogModel extends BaseModel{
+	   public function get($id){
+	      return(
+	        $this->select('select * from catalog where id=?', array($id))
+	      );
+	   }
+	 }
+
+   失敗時にはfalseが返ってきます。
+   成功時には次のような2次元配列が返却されます。
+   (ゼロ件だった場合は空の配列が返却されます)
+ 
+     array(
+         array('column1'=>'value', 'column2'=>'value')
+       , array('column1'=>'value', 'column2'=>'value')
+       , array('column1'=>'value', 'column2'=>'value')
+     )
+
+
+   例えばcountして件数だけ知りたい等、あらかじめ結果が1レコードだけと
+   分かりきっている場合があります。そういった時には select1 メソッドを
+   使用するのが良いでしょう。
+
+	 //違いは1がつくかどうか
+	 $this->select1('select count(*) as cnt  from catalog where id=?', array($id))
+
+   select1は、仮に複数レコードが結果だった場合でも最初の1レコード目のみが返却されます。
+   またselectと異なり配列も1次元となります。
+
+     array('cnt'=>123)
+
+
+ ■ insert/update/delete
+
+ ■ トランザクション
+
+ ■ キャッシュ
+
+ ■ DBの切り替え
+
+
+9) autoload
+-----------------------------
+
