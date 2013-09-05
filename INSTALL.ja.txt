@@ -1,4 +1,3 @@
-
 WingPHPに興味を持っていただきありがとうございます。
 このドキュメントではWingPHPを素早くセットアップするための方法について
 簡単に解説したものです。
@@ -19,12 +18,12 @@ WingPHPに興味を持っていただきありがとうございます。
  - ApacheからPHPが動作する
      ※CGIモードではなくmod_phpなどモジュールでご利用ください
  - PHPからPDO経由でMySQLに接続ができる
-     ※DBの作成(create database)、ユーザー名とパスワード(grant)を準備
+     ※DBの作成(create database)、ユーザー名とパスワード(grant)を準備ください
 
 未検証ですが、
 MySQLとApacheは指定バージョンよりも下位のものでも動作します。
-またnginx, php-fpmの組み合わせでも動作いたしますが、基本的に検証を
-しておりませんので、その旨ご留意ください。
+またnginx, php-fpmの組み合わせでも動作いたしますが、基本的に検証をしておりません。
+その旨ご留意ください。
 
 
 ---------------------------------------------------------------------
@@ -45,8 +44,7 @@ MySQLとApacheは指定バージョンよりも下位のものでも動作しま
 ------------------------
  GoogleCodeよりZipファイルをdownloadし、解凍してください。
  Subversionのリポジトリの最新版は不具合や動作しない可能性があります。
-     
-	 *downloads*
+    *download*
      http://code.google.com/p/wingphp/downloads/list
 
      $ wget http://wingphp.googlecode.com/files/wingphp.zip
