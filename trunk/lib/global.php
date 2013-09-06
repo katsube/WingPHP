@@ -63,4 +63,25 @@ function uselib(){
 	}
 }
 
+
+/**
+ * 指定URL(パス)へ遷移する 
+ *
+ * HTTPヘッダがまだ送信されていない場合はLocationヘッダで、
+ * すでに送信されている場合はmeta要素を出力する
+ *
+ * @param  string  $url   URL(パス)
+ * @param  int     $sec   遷移までの秒数(meta出力時のみ有効)
+ * @access public
+ */
+function location($url, $sec=0){
+	if( ! headers_sent() ){
+		$head = sprintf('Location: %s', $url);
+		header($head);
+	}
+	else{
+		$meta = sprintf('<meta http-equiv="refresh" content="%d;url=%s">', $sec, $url);
+		echo $meta;
+	}
+}
 ?>
