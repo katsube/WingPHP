@@ -167,7 +167,7 @@ class BaseModel{
 		
 		//トランザクションスタート
 		if($is_tra)
-			$this->beginTransaction();
+			$this->begin();
 		
 		//SQL実行
 		$ret = $this->_runsql($sql, $bind, 'exec');
@@ -185,14 +185,31 @@ class BaseModel{
 	
 	/**
 	 * トランザクションを開始する
+	 * 
+	 * 2013/09/06 beginTransaction から begin にメソッド名を変更
+	 * @return bool
+	 * @access public
+	 */
+	public function begin(){
+		if(!$this->dbh)
+			$this->dbh = $this->_connect();
+		
+		return( $this->dbh->beginTransaction() );
+	}
+	
+	/**
+	 * トランザクション中か判定する
 	 *
 	 * @return bool
 	 * @access public
 	 */
-	public function beginTransaction(){
-		return( $this->dbh->beginTransaction() );
+	public function isTransaction(){				//PDOは"in", このメソッドは"is"
+		if(!$this->dbh)
+			$this->dbh = $this->_connect();
+		
+		return( $this->dbh->inTransaction() );
 	}
-	
+
 	/**
 	 * commitする
 	 *
@@ -200,6 +217,9 @@ class BaseModel{
 	 * @access public
 	 */
 	public function commit(){
+		if(!$this->dbh)
+			return(false);
+
 		return( $this->dbh->commit() );
 	}
 
@@ -210,6 +230,9 @@ class BaseModel{
 	 * @access public
 	 */
 	public function rollback(){
+		if(!$this->dbh)
+			return(false);
+		
 		return( $this->dbh->rollBack() );
 	}
 	
