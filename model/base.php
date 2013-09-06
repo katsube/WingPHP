@@ -153,34 +153,18 @@ class BaseModel{
 	 * UPDATE,INSERT,DELETE句実行
 	 *
 	 * データ更新系のSQLを実行する。
+	 * 2013/09/06 is_tra, commit の引数を廃止
 	 *
 	 * @param  string $sql       SQL文を直書き。
 	 * @param  array  $bind      SQL文内でプレースホルダを利用している場合は配列で渡す。順番考慮。
-	 * @param  bool   $is_tra    トランザクションを利用する場合はtrue
-	 * @param  bool   $is_commit 処理終了後にcommit(rollback)する場合はtrue
 	 * @return bool
 	 * @access public
 	 */
-	public function exec($sql, $bind=array(), $is_tra=true, $is_commit=true){
+	public function exec($sql, $bind=array()){
 		if(!$this->dbh)
 			$this->dbh = $this->_connect();
 		
-		//トランザクションスタート
-		if($is_tra)
-			$this->begin();
-		
-		//SQL実行
-		$ret = $this->_runsql($sql, $bind, 'exec');
-
-		//確定 or 巻戻し
-		if($is_commit){
-			if($ret)
-				$this->commit();
-			else
-				$this->rollback();
-		}
-
-		return( $ret );
+		return( $this->_runsql($sql, $bind, 'exec') );
 	}
 	
 	/**
