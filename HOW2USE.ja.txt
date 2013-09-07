@@ -262,7 +262,7 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
  
  このモデルにもコントローラーと同様のお作法があります。
 
-   1. すべてのModelは、Model/base.php 内にある BaseModelクラスを継承する。
+   1. すべてのModelは、model/base.php 内にある BaseModelクラスを継承する。
    2. ファイル名は model/(クラス名を小文字).php 
    3. クラス名は (クラス名)Model とする。
 
@@ -374,16 +374,16 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
          // トランザクション開始
          $this->begin();
 
-          // データ更新
-		     if(      $this->exec('insert into catalog(id,name)  values(?,?)', array(1234,'foobar'))
-		          &&  $this->exec('insert into detail(id,price)  values(?,?)', array(1234,10500)) ){
-		   
-		         $this->commit();    //両方成功した場合
-	        }
-		      else{
-		         $this->rollback();  //どちらか片方でも失敗した場合
-		      }
-	     }
+         // データ更新
+         if(      $this->exec('insert into catalog(id,name)  values(?,?)', array(1234,'foobar'))
+              &&  $this->exec('insert into detail(id,price)  values(?,?)', array(1234,10500)) ){
+           
+                 $this->commit();    //両方成功した場合
+         }
+         else{
+                 $this->rollback();  //どちらか片方でも失敗した場合
+         }
+       }
      }
 
    通常、execは処理が終了したタイミングで自動的にcommitされます。
