@@ -65,4 +65,3 @@ class Regex{
 	//空行
 	const BLANK_LINE = '/^\r?\n/';
 }
-?>

@@ -94,4 +94,3 @@ class QueryModel extends BaseModel{
 	 * - 
 	 *--------------------------------------------*/
 }
-?>

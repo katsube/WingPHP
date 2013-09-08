@@ -37,4 +37,3 @@ END_OF_HTML;
 
 	return($js);
 }
-?>

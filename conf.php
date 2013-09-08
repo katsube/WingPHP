@@ -145,4 +145,3 @@ class Routing{
 		$this->param  = $obj->param;			//array('huga1', 'huga2', ...)
 	}
 }
-?>

@@ -43,4 +43,3 @@ function _wingAutoload($className){
 }
 
 spl_autoload_register('_wingAutoload');
-?>

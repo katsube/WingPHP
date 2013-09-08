@@ -30,4 +30,3 @@ require_once('../lib/framewing.php');
 
 $fw = new framewing();
 $fw->go();
-?>

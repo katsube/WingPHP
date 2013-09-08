@@ -218,4 +218,3 @@ class BaseController{
 		$this->smarty = $smarty;
 	}
 }
-?>

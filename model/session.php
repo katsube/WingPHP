@@ -166,4 +166,3 @@ class SessionModel extends BaseModel{
 	 * - 
 	 *--------------------------------------------*/
 }
-?>

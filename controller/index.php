@@ -78,4 +78,3 @@ class IndexController extends BaseController{
 	 * - 
 	 *--------------------------------------------*/
 }
-?>
