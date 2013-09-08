@@ -145,3 +145,14 @@ class Routing{
 		$this->param  = $obj->param;			//array('huga1', 'huga2', ...)
 	}
 }
+
+
+/**
+ * Model,View,Controller間でデータを共有するための変数
+ *
+ * @global array $GLOBALS['Scratch']
+ * @name $Scratch
+ */
+$Scratch = array(
+	'validation' => array();
+);
