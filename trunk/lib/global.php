@@ -27,7 +27,7 @@
  * ライブラリを明示的に読み込む
  * 
  * example.<code>
- *   uselib('Math');					// == require_once('../lib/Math.php');
+ *   uselib('Math');						// == require_once('../lib/Math.php');
  *   uselib('stdio', 'stdlib');			// == require_once('../lib/stdio.php'); 
  *										//    require_once('../lib/stdlib.php');
  *   //以下の二つは同じ意味。
@@ -65,7 +65,7 @@ function uselib(){
 
 
 /**
- * 指定URL(パス)へ遷移する 
+ * 指定URL(パス)へ遷移する
  *
  * HTTPヘッダがまだ送信されていない場合はLocationヘッダで、
  * すでに送信されている場合はmeta要素を出力する
@@ -84,4 +84,94 @@ function location($url, $sec=0){
 		echo $meta;
 	}
 }
+
+
+/**
+ * デバグ用の簡易ログを記録する
+ *
+ * 
+ *
+ * @param  string   ファイル識別子
+ * @param  mix       記録文字列　※可変長
+ * @return boolean  成功時:true, 失敗時:false
+ * @access public
+ */
+function addlogfile(){
+	global $Conf;
+	$args = func_get_args();
+	$time = time();
+
+	// ファイル識別子の存在チェック
+	$file = $args[0];
+	if(!array_key_exists($file, $Conf['Log']['file']))
+		return(false);
+
+	// ファイルパス作成
+	$path = sprintf('%s/%s%s.%s'
+				, $Conf['Log']['dir']
+				, $Conf['Log']['file'][$file]
+				, ($Conf['Log']['add'] === false)?  '' : date($Conf['Log']['add'], $time)
+				, $Conf['Log']['ext']
+			);
+
+	// 書き込む文字列のチェック
+	$len = count($args);
+	$separate = $Conf['Log']['separate'];
+	for($i=1; $i<$len; $i++ ){			//args[0] はファイル識別子なので飛ばす
+		$args[$i] = preg_replace("/($separate|\r|\n)/", '', $args[$i]);
+	}
+
+	// 書き込む文字列を作成
+	$str   = implode($separate, array_merge(
+						  array( date('Y-m-d', $time), date('H:i:s', $time))
+						, array_slice($args, 1)
+					));
+	$str .= ($Conf['Log']['addtrace'])?   $separate . json_encode(debug_backtrace()):'';
+	$str .= "\n";
+
+	// ファイルへ保存
+	return(
+		lockfwrite($path, $str)
+	);
+}
+
+
+
+/**
+ * flockしてファイルに書き込む
+ *
+ * fopen, flock, fwrite の一連の処理をまとめた便利関数。
+ * 常に a モードでファイルをopenする。
+ * 真っ白なファイルに戻した上で書き込みたい場合は、$reset に true を指定すると
+ * ファイルサイズをゼロにし、ファイルポインタを冒頭に戻し書き込む。
+ *
+ * @param  string   $path   書き込み先ファイルのパス
+ * @param  string   $str    ファイルに書き込む文字列
+ * @param  boolean  $reset  ファイルサイズをゼロにするか
+ * @return boolean  成功時:true, 失敗時:false
+ * @access public
+ */
+function lockfwrite($path, $str, $reset=false){
+	$fp = fopen($path, 'a');
+	if( !$fp )
+		return(false);
+	
+	if (flock($fp, LOCK_EX)){
+		if($reset){
+			ftruncate($fp, 0);
+			rewind($fp);
+		}
+		fwrite($fp, $str);
+		fflush($fp);
+		flock($fp, LOCK_UN);
+		fclose($fp);
+
+		return(true);
+	}
+	else{
+		fclose($fp);
+		return(false);
+	}
+}
+
 ?>
