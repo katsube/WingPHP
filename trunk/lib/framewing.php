@@ -123,4 +123,3 @@ class framewing{
 			$this->param = array_slice($arr, 2);
 	}
 }
-?>

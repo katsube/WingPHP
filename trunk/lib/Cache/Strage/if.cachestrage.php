@@ -40,4 +40,3 @@
 	public function flush();
 	public function expire($sec);
 }
-?>

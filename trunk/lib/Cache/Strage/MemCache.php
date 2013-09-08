@@ -151,4 +151,3 @@ class MemCacheStrage implements CacheStrageIF{
 		$this->expire = $sec;
 	}	
 }
-?>

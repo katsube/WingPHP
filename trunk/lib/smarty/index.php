@@ -30,4 +30,3 @@ switch( $Conf['Smarty']['version'] ){
 		uselib('smarty/3.1/libs/Smarty.class');
 		break;
 }
-?>

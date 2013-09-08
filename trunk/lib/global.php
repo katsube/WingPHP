@@ -180,4 +180,3 @@ function lockfwrite($path, $str, $reset=false){
 	}
 }
 
-?>
