@@ -29,7 +29,7 @@
  * example.<code>
  *     uselib('Cache');
  *
- *     $cache = Cache('File');
+ *     $cache = new Cache('File');
  *     $cache->expire(60 * 60);           //キャッシュの有効時間を1時間に
  *
  *     if(!$cache->exists('name'))
