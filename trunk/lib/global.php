@@ -89,7 +89,13 @@ function location($url, $sec=0){
 /**
  * デバグ用の簡易ログを記録する
  *
+ *  $Conf で設定された内容に従い、指定されたログファイルに記録する。
+ *  第一引数にファイル識別子、それ以降は記録したい文字列を指定する。
+ *  (第二引数以降は可変長のため、いくら指定してもよい)
  * 
+ * example.<code>
+ *   addlogfile('ERROR', $userid, $string, $foobar);
+ * </code>
  *
  * @param  string   ファイル識別子
  * @param  mix       記録文字列　※可変長
