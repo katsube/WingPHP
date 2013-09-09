@@ -154,5 +154,5 @@ class Routing{
  * @name $Scratch
  */
 $Scratch = array(
-	'validation' => array();
+	'validation' => array()
 );
