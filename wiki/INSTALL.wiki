@@ -4,7 +4,7 @@ WingPHPに興味を持っていただきありがとうございます。
 
 
 == 必要なソフトウェア ==
-  * PHP5.4 later (php-pdo,php-mysql,php-pecl-memcache が必要です)
+  * PHP5.4 later (php-pdo,php-mysqlが必要です)
   * MySQL 5.5 later
   * Apache2.2 later (mod_rewriteが必要です)
 
