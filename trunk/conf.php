@@ -56,10 +56,21 @@ $Conf = array(
 		#	, 'persistent'  => false
 		#)
 	)
-	
+
+	// ■BaseModel設定用
+	, 'Model' => array(
+		// select(1), execで例外が発生した際の処理
+		'error' => 'exception'		// 'exception'
+									//    throw new Exception(...) 的な処理を実行します。
+									// 'boolean'
+									//    return(false); 的な処理を実行します。
+									//    ただしDBへの接続処理が失敗した時はPDOがPDOExceptionを
+									//    投げて死ぬため本番サービスでの利用はオススメしません。
+	)
+
 	//■秘密鍵
 	, 'Secret' => array(
-		'key' => 'aqwsdertyhjiolpzsxcfvgbnjmk,l.;/:'	//適当な文字列に変更してください。
+		'key' => 'qwertyuiop'		// 適当な文字列に変更してください。
 	)
 
 	//■セッション設定
@@ -112,6 +123,14 @@ $Conf = array(
 		, 'cache_life' => 0
 		//, 'cache_life' => 60 * 60	//秒
 	)
+
+	//■validation設定
+	, 'validation' => array(
+		  'jscheck' => false 				//JavaScriptによる事前チェックを行うか
+		, 'form' => array(
+			'idname' => '__wgidname'
+		)
+	)
 );
 
 
@@ -154,5 +173,5 @@ class Routing{
  * @name $Scratch
  */
 $Scratch = array(
-	'validation' => array()
+	'form' => array()
 );
