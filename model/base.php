@@ -41,8 +41,9 @@ class BaseModel{
 	//--------------------------------------------
 	// メンバ変数
 	//--------------------------------------------
-	private $dbh = false;
+	private $dbh   = false;
 	private $db_location = 'master';
+	private $error = null;
 
 	/**
 	 * コンストラクタ
@@ -50,7 +51,8 @@ class BaseModel{
 	 * @access public
 	 */
 	function __construct(){
-		;
+		global $Conf;
+		$this->error = $Conf['Model']['error'];
 	}
 
 	/**
@@ -69,7 +71,8 @@ class BaseModel{
 	 * - select
 	 * - select1
 	 * - exec
-	 * - beginTransaction
+	 * - begin
+	 * - isTransaction
 	 * - commit
 	 * - rollback
 	 *--------------------------------------------*/
@@ -108,8 +111,14 @@ class BaseModel{
 			
 			$this->db_location = $account;
 		}
-		else
-			die();		//confに未登録のアカウントが指定された場合は死ぬ
+		else{
+			if($this->error === 'exception'){
+				throw new Exception('[usedb] 404 configration $Conf[DB]', 404);
+			}
+			else{
+				return(false);
+			}
+		}
 	}
 
 	//--------------------------------------------
@@ -227,6 +236,7 @@ class BaseModel{
 	 * - _connect
 	 * - _select
 	 * - _runsql
+	 * - _getExceptionMessage
 	 *--------------------------------------------*/
 	/**
 	 * DBに接続する
@@ -246,10 +256,12 @@ class BaseModel{
 			return( $dbh );
 		}
 		catch(PDOException $e){
-			print('Error:'.$e->getMessage());
-			die();
-		}
+			$cd  = $e->getCode();
+			$msg = $e->getMessage();
 
+			$result = sprintf('[_connect] %s', $msg);
+			throw new Exception($result, $cd);
+		}
 	}
 
 	/**
@@ -300,8 +312,12 @@ class BaseModel{
 
 		$st  = $this->dbh->prepare($sql);
 		$ret = $st->execute($bind);
+
 		if(!$ret){
-			return(false);
+			if($this->error === 'exception')
+				throw new Exception($this->_getExceptionMessage('_runsql', $st ));
+			else
+				return(false);
 		}
 		else{
 			switch($type){
@@ -310,5 +326,26 @@ class BaseModel{
 				   default: return( $ret );
 			}	
 		}
+	}
+
+
+	/**
+	 * エラーメッセージ作成
+	 *
+	 * @access private
+	 */
+	private function _getExceptionMessage($name, $st){
+		//データベースハンドラ
+		$error_cd    = $this->dbh->errorCode();
+		$error_info  = $this->dbh->errorInfo();
+
+		//PDOStatement 
+		if($error_cd === null || $error_cd === '00000'){
+			$error_cd   = $st->errorCode();
+			$error_info = $st->errorInfo();
+		}
+
+		$result = sprintf('[%s] %s', $name, implode(' ', $error_info));
+		return($result);
 	}
 }
