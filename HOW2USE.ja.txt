@@ -389,7 +389,20 @@ WingPHPは「MVCモデル」を採用した軽量のフレームワークです�
    通常、execは処理が終了したタイミングで自動的にcommitされます。
    しかしbeginメソッドを実行するとトランザクションが開始され、明示的にcommitしないとデータは記録されません。
    commitせずにすべての処理が終了すると、PDOの機能により自動的にrollbackされます。
-      ※現在は実装されていませんが、将来のバージョンでtry～catchできるといいな、と考えています。 
+
+   またr159からtry～catchにも対応しています。
+   （Downlooad用のZIPファイルはしばらくお待ちください）
+     
+	 try{
+       $this->begin();
+       $this->exec('insert into catalog(id,name)  values(?,?)', array(1234,'foobar'));
+       $this->exec('insert into detail(id,price)  values(?,?)', array(1234,10500));
+       $this->commit();
+	 }
+	 catch(Exception $e){
+       $this->rollback();
+	 }
+
 
    なお、トランザクション中は他のプロセスによりデータが更新されないことが保証されていますので、
    複雑なSELECT句を発行する際に用いるのにもよいでしょう。
