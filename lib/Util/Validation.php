@@ -38,7 +38,7 @@
  *   const MODE     = 'form';
  *   const FORMNAME = 'foo';
  * 
- * 	 public function form(){
+ *   public function form(){
  *     $this->display('foo/form.html');
  *   }
  * 
