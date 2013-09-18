@@ -26,8 +26,71 @@
 /**
  * Validationクラス
  * 
+ * 入力値のチェックを汎用的に行うクラス。
+ *   ToDo: 若干煩雑なのでもう少しコード量を減らせないか…。
  *
  * example.<code>
+ * <?
+ * //---------------------
+ * // Controller
+ * //---------------------
+ * class FooController extends BaseController{
+ *   const MODE     = 'form';
+ *   const FORMNAME = 'foo';
+ * 
+ * 	 public function form(){
+ *     $this->display('foo/form.html');
+ *   }
+ * 
+ *   public function check(){
+ *     uselib('Util/Validation');
+ * 
+ *     // インスタンス生成
+ *     $v = new Validation(self::MODE, self::FORMNAME);
+ * 
+ *     // validationルールを設定
+ *     $v->setRule(array(
+ *              'bar'    => array('notnull', 'num')           // 必須, 数値
+ *            , 'postcd' => array('post')                     // 郵便番号
+ *            , 'userid' => array(function(){                 // 自分で定義した関数(必ずbooleanを返す)
+ *                                    if(...)
+ *                                        return(true);   //trueで問題なし
+ *                                    else
+ *                                        return(false);
+ *                                })
+ *     ));
+ *     $v->addRule(array('hoge'=>array('notnull')));           // ルール追加
+ * 
+ *     // チェックするデータを定義（省略可）
+ *     // $q = new QueryModel();
+ *     // $v->setData(json_decode($q->data('foo')));          //setData未実行の場合はクエリーが自動的に採用される
+ *     // $v->addData(array('userid' => $q->data('bar')));    //addDataでvalidation対象を追加する
+ * 
+ *     if ( $v->check() ){
+ *       // 成功時処理
+ *       $m = new FooModel();
+ *       $m->add();
+ *     }
+ *     else{
+ *       // エラー時処理
+ *       $v->setError();                   //$Scratch['form']['foo'] 以下にエラー情報を格納し、
+ *                                         //  $this->assign('__wgSYSFORMNAME', 'foo');
+ *                                         //を実行する。
+ *                                         //インスタンス生成時にmode, form nameを未指定の場合は、$Scratch['_']['_'] に格納される
+ *       $this->display('foo/form.html');
+ *     }
+ *   }
+ * }
+ * 
+ * //---------------------
+ * // View
+ * //---------------------
+ * <form action="/foo/check">
+ *   {input type="text" name="bar"}
+ *   {iserror name="bar"}<p>>{errormsg name="bar"}</p>{/iserror}
+ * 
+ *   <input type="submit">
+ * </form>
  * </code>
  *
  * @package    Validation
@@ -37,8 +100,25 @@
  * @access     public
  */
 class Validation{
+	function __construct(){
+	}
 
+	public function setRule(){
+	}
 
-	
+	public function addRule(){
+	}
+
+	public function setData(){
+	}
+
+	public function addData(){
+	}
+
+	public function check(){
+	}
+
+	public function setError(){
+	}
 }
 
