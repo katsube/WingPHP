@@ -52,7 +52,7 @@
  *     $v->setRule(array(
  *              'bar'    => array('notnull', 'num')           // 必須, 数値
  *            , 'postcd' => array('post')                     // 郵便番号
- *            , 'userid' => array(function(){                 // 自分で定義した関数(必ずbooleanを返す)
+ *            , 'userid' => array(function($userid){          // 自分で定義した関数(必ずbooleanを返す)
  *                                    if(...)
  *                                        return(true);   //trueで問題なし
  *                                    else
@@ -86,8 +86,11 @@
  * // View
  * //---------------------
  * <form action="/foo/check">
- *   {input type="text" name="bar"}
- *   {iserror name="bar"}<p>>{errormsg name="bar"}</p>{/iserror}
+ *   {input type="text" name="bar" errclass="warning"} <!-- error時にclassを追加する -->
+ *   {input type="text" name="bar" notsetvalue=true}   <!-- 自動的に入力値をセットしない -->
+ *   
+ *   {iserror name="bar"}<p>{errormsg name="bar"}</p>{/iserror}
+ *   {iserror name="bar"}<p>独自のメッセージを使いたい場合はこんな感じで</p>{/iserror}
  * 
  *   <input type="submit">
  * </form>
