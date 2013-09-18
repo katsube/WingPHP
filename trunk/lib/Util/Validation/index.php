@@ -121,9 +121,9 @@ class Validation{
 					, 'alpha' => function($val){}
 					, 'alnum' => function($val){}
 					
-					, 'require'=> function($val){}
-					, 'maxlen' => function($val, $opt){}
-					, 'minlen' => function($val, $opt){}
+					, 'require' => function($val){}
+					, 'maxlen'  => function($val, $opt){}
+					, 'minlen'  => function($val, $opt){}
 				); 
 
 
