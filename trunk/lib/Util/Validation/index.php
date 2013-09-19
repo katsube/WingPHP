@@ -108,17 +108,22 @@
  */
 
 uselib('Util/Regex');
+uselib('Util/Validation/Message');
+
 class Validation{
 	private $mode     = null;
 	private $formname = null;
 
 	private $list   = array();
 	private $target = array();
-	private $error  = array();
 	
+	private $error     = array();
+	private $errormsg  = array();
+	private $vmsg      = null;
+
 	private $rule = array();
 
-	function __construct($mode, $formname){
+	function __construct($mode, $formname, $lang='ja'){
 		$this->mode     = $mode;
 		$this->formname = $formname;
 
@@ -154,6 +159,13 @@ class Validation{
 		if( $mode === 'form' ){
 			$this->addData( array_merge($_GET, $_POST) );
 		}
+
+		//-------------------------------
+		// デフォルトのエラー文言差込み
+		//-------------------------------
+		$vmsg = new ValidationMessage();
+		$vmsg->setLanguage($lang);
+		$this->vmsg = $vmsg;
 	}
 
 
@@ -225,11 +237,13 @@ class Validation{
 	 * 
 	 * @param  string  $name ルール名
 	 * @param  object  $func 実行する無名関数(ClosureObject)
+	 * @param  string  $msg  エラー時のメッセージ(任意)
 	 * @return void
 	 * @access public
 	 */
-	public function addRule($name, $func){
+	public function addRule($name, $func, $msg=null){
 		$this->rule[$name] = $func;
+		$this->vmsg->set($name, $msg);
 	}
 	
 	/**
@@ -381,8 +395,10 @@ class Validation{
 		$mode  = $this->mode;
 		$form  = $this->formname;
 		$error = $this->error;
-	
-		$Scratch[$mode][$form]['error'] = $error; 
+		$msg   = $this->errormsg;
+		
+		$Scratch[$mode][$form]['error']    = $error; 
+		$Scratch[$mode][$form]['errormsg'] = $msg;
 	}
 
 	/**
@@ -408,12 +424,13 @@ class Validation{
 	 * @return void
 	 * @access public
 	 */
-
 	public function addError($name, $cd){
 		if( ! array_key_exists($name,  $this->error) )
 			$this->error[$name] = array();
-	
 		array_push( $this->error[$name], $cd);
+		
+		if( array_key_exists($cd, $this->errormsg) )
+			$this->errormsg[$cd] = $this->vmsg->get($cd);
 	}
 }
 

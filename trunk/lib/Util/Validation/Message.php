@@ -43,25 +43,32 @@ class ValidationMessage{
 	private $lang  = 'ja';
 	private $error = array(
 			'ja' => array(
-				  'url'   => 'がURLの書式ではありません'
-				, 'email' => 'がメールアドレスの書式ではありません'
-				, 'ip4'   => 'がIPアドレスの書式ではありません'
-				, 'post'  => 'が郵便番号の書式ではありません'
-				, 'post7' => 'が郵便番号の書式ではありません'
-				, 'tel'   => 'が電話番号の書式ではありません'
-				, 'num'   => 'が半角の数字ではありません'
-				, 'alpha' => 'が半角の英字ではありません'
-				, 'alnum' => 'が半角の英数字ではありません'
+				  'url'   => 'URLの書式ではありません'
+				, 'email' => 'メールアドレスの書式ではありません'
+				, 'ip4'   => 'IPアドレスの書式ではありません'
+				, 'post'  => '郵便番号の書式ではありません'
+				, 'post7' => '郵便番号の書式ではありません'
+				, 'tel'   => '電話番号の書式ではありません'
+				, 'num'   => '半角の数字ではありません'
+				, 'alpha' => '半角の英字ではありません'
+				, 'alnum' => '半角の英数字ではありません'
 
-				, 'require' => 'が入力されていません'
-				, 'maxlen'  => '最大文字数を超過しています'
-				, 'minlen'  => '最小文字数に達していません'
+				, 'require' => '必須項目が入力されていません'
+				, 'bytemax' => '最大byte数を超過しています'
+				, 'bytemin' => '最小byte数に達していません'
+				, 'max'     => '最大値を超過しています'
+				, 'min'     => '最小値に達していません'
+				
+				, 'match' => '内容が一致しません'
+				, 'eq'    => '内容が一致しません'
+				, 'ne'    => '内容が一致しません'
+				, 'in'    => '内容が一致しません'
 			)
 	);
 
 
 	public function setLanguage($lang){
-		if( array_key_exists($lang, $error) ){
+		if( array_key_exists($lang, $this->error) ){
 			$this->lang = $lang;
 			return(true);
 		}
