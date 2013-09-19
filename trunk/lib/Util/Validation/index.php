@@ -46,7 +46,7 @@
  *     uselib('Util/Validation');
  * 
  *     // インスタンス生成
- *     $v = new Validation(self::MODE, self::FORMNAME);
+ *     $v = new Validation(self::MODE, self::FORMNAME);   // mode に"form" を指定＝クエリー値が対象になる
  * 
  *     // 独自のルールを追加する場合は事前に定義する
  *     $v->addRule('hoge', function($userid){             // 必ずbooleanを返す無名関数を渡す
@@ -58,20 +58,19 @@
  *     );
  *
  *     // 検証リストを設定
- *     $v->setList(array(
+ *     $v->addList(array(
  *              'bar'    => array('require', 'num')                       // 必須, 数値
  *            , 'postcd' => array('post')                                 // 郵便番号
  *            , 'userid' => array('hoge')                                 // 独自ルールも同様に指定できる
  *            , 'name'   => array(['minlen',3], ['maxlen',10], 'alnum')   // 値指定
  *     ));
- *     $v->setList(array('hoge'=>array('require')));      //setRuleを再び呼ぶと既存の検証リストに追加される
+ *     $v->addList(array('hoge'=>array('require')));      //setRuleを再び呼ぶと既存の検証リストに追加される
  *
  *     // $v->clearList();   //現在定義されている検証リストをクリアしたい場合はこちら
  * 
  *
  *     // チェックするデータを定義（省略可）
  *     // $q = new QueryModel();
- *     // $v->setData(json_decode($q->data('foo')));          //setData未実行の場合はクエリーが自動的に採用される
  *     // $v->addData(array('userid' => $q->data('bar')));    //addDataでvalidation対象を追加する
  * 
  *     if ( $v->check() ){
@@ -122,8 +121,12 @@ class Validation{
 	function __construct($mode, $formname){
 		$this->mode     = $mode;
 		$this->formname = $formname;
+
+		//-------------------------------
+		// 検証ルールを差込む
+		//-------------------------------
 		$this->rule     = array(
-			  'url'=> function($val){ return(preg_match(Regex::URL,   $val)); }			// 書式 URL
+			  'url'   => function($val){ return(preg_match(Regex::URL,   $val)); }		// 書式 URL
 			, 'email' => function($val){ return(preg_match(Regex::EMAIL, $val)); }		// 書式 メールアドレス
 			, 'ip4'   => function($val){ return(preg_match(Regex::IP4,   $val)); }		// 書式 IPv4形式
 			, 'post'  => function($val){ return(preg_match(Regex::POST,  $val)); }		// 書式 郵便番号 000-0000
@@ -144,6 +147,13 @@ class Validation{
 			, 'ne'    => function($val, $opt){ return( $val !== $opt[0] ); }			// 指定した文字列と違うか
 			, 'in'    => function($val, $opt){ return( in_array($val, $opt)); }			// 指定したリスト内のいずれかと合致するか
 		);
+
+		//-------------------------------
+		// デフォルトの検証データ差込み
+		//-------------------------------
+		if( $mode === 'form' ){
+			$this->addData( array_merge($_GET, $_POST) );
+		}
 	}
 
 
@@ -166,7 +176,7 @@ class Validation{
 	 * @return void
 	 * @access public
 	 */
-	public function setList($list){
+	public function addList($list){
 		if( is_array($list) )
 			$this->list = array_merge($this->list, $list);
 	}
@@ -181,6 +191,29 @@ class Validation{
 	 */
 	public function clearList(){
 		$this->list = array();
+	}
+
+	/**
+	 * 検証リストを取得する
+	 * 
+	 * 現状オブジェクト内にある検証リストを取得する。
+	 * $nameを未指定の場合はすべての、
+	 * $nameを指定した場合は該当する項目を返却する。
+	 *
+	 * @param  array $name 取得したい項目名(任意)
+	 * @return mixed $name未指定時:全リスト, $name指定時:個別, $name指定時未存在:false  
+	 * @access public
+	 */
+	public function getList($name=null){
+		if( $name === null  ){
+			return( $this->list );
+		}
+		else if( array_key_exists($name, $this->list) ){
+			return( $this->list[$name] );
+		}
+		else{
+			return(false);
+		}
 	}
 
 
@@ -198,27 +231,34 @@ class Validation{
 	public function addRule($name, $func){
 		$this->rule[$name] = $func;
 	}
-
-
+	
 	/**
-	 * 検証用データを格納する
+	 * 検証ルールを取得する
 	 * 
-	 * 次のように第1引数へ検証用のデータを格納する。
-	 * array('name1'=>'value', 'name2'=>value ... 'namen'=>value);
-	 * 
-	 * @param  array $data 検証用データ格納用
-	 * @return void
+	 * 現状オブジェクト内にある検証ルールを取得する。
+	 * $nameを未指定の場合はすべての、
+	 * $nameを指定した場合は該当するルールを返却する。
+	 *
+	 * @param  array $name 取得したいルール名(任意)
+	 * @return mixed $name未指定時:全ルール, $name指定時:個別, $name指定時未存在:false  
 	 * @access public
 	 */
-	public function setData($target){
-		if( is_array($target) )
-			$this->target = $target;
+	public function getRule($name=null){
+		if( $name === null  ){
+			return( $this->rule );
+		}
+		else if( array_key_exists($name, $this->rule) ){
+			return( $this->rule[$name] );
+		}
+		else{
+			return(false);
+		}
 	}
 
 	/**
 	 * 検証用データを追加する
 	 * 
-	 * setDataと同様の検証データを既存のデータ一覧に追加する。
+	 * 検証データを既存のデータ一覧に追加する。
 	 * 同名のデータが存在する場合は上書きされる。
 	 *
 	 * @param  array $data 検証用データ格納用
@@ -229,6 +269,30 @@ class Validation{
 		if( is_array($target) )
 			$this->target = array_merge($this->target, $target);
 	}
+
+	/**
+	 * 検証用データを取得する
+	 * 
+	 * 現状オブジェクト内にある検証データを取得する。
+	 * $nameを未指定の場合はすべての、
+	 * $nameを指定した場合は該当するデータを返却する。
+	 *
+	 * @param  array $name 取得したいデータ名(任意)
+	 * @return mixed $name未指定時:全データ, $name指定時:個別データ, $name指定時未存在:false  
+	 * @access public
+	 */
+	public function getData($name=null){
+		if( $name === null  ){
+			return( $this->target );
+		}
+		else if( array_key_exists($name, $this->target) ){
+			return( $this->target[$name] );
+		}
+		else{
+			return(false);
+		}
+	}
+
 
 	/**
 	 * 検証を実施する
@@ -267,19 +331,12 @@ class Validation{
 					$func = $cur[0];
 					$opt  = array_slice($cur, 1);
 
-					if( array_key_exists($func, $functions) ){
+					if( array_key_exists($func, $rule) ){
 						$ret = $rule[$func]($data, $opt);
 					}
 					else{
 						$ret = false;
 					}
-				}
-				//------------------------------
-				// ◇独自関数
-				//------------------------------
-				else if( is_object($cur) && ($cur instanceof Closure) ){
-					$func = '_closure';
-					$ret  = $cur($data);
 				}
 				//------------------------------
 				// ◇既存定義
@@ -301,12 +358,13 @@ class Validation{
 				// エラー時処理
 				//------------------------------
 				if(!$ret){
+					$flag_error = true;
 					$this->addError($name, $func);
 				}
 			}
 		}
 
-		return($flag_error);
+		return(!$flag_error);
 	}
 
 	/**
