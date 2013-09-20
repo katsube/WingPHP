@@ -51,6 +51,8 @@ class ValidationMessage{
 	// メンバ変数
 	//---------------------------------------------
 	private $lang = 'ja';
+	
+	//ToDo: これも気持ち悪いので別ファイルに分離したい。
 	private $msg  = array(
 		'ja' => array(
 			  'url'   => 'URLの書式ではありません'
