@@ -140,6 +140,7 @@ class Validation{
 		//-------------------------------
 		// 検証ルールを差込む
 		//-------------------------------
+		//ToDo: 気持ち悪いのであとで他ファイルに分割したい。
 		$this->rule     = array(
 			  'url'   => function($val){ return(preg_match(Regex::URL,   $val)); }		// 書式 URL
 			, 'email' => function($val){ return(preg_match(Regex::EMAIL, $val)); }		// 書式 メールアドレス
