@@ -23,6 +23,11 @@
  * THE SOFTWARE.
  */
 
+
+uselib('Util/Regex');
+uselib('Util/Validation/Message');
+
+
 /**
  * Validationクラス
  * 
@@ -35,8 +40,7 @@
  * // Controller
  * //---------------------
  * class FooController extends BaseController{
- *   const MODE     = 'form';
- *   const FORMNAME = 'foo';
+ *   const MODE = 'form';
  * 
  *   public function form(){
  *     $this->display('foo/form.html');
@@ -46,7 +50,7 @@
  *     uselib('Util/Validation');
  * 
  *     // インスタンス生成
- *     $v = new Validation(self::MODE, self::FORMNAME);   // mode に"form" を指定＝クエリー値が対象になる
+ *     $v = new Validation(self::MODE);   // mode に"form" を指定＝クエリー値が対象になる
  * 
  *     // 独自のルールを追加する場合は事前に定義する
  *     $v->addRule('hoge', function($userid){             // 必ずbooleanを返す無名関数を渡す
@@ -106,26 +110,32 @@
  * @license    The MIT License
  * @access     public
  */
-
-uselib('Util/Regex');
-uselib('Util/Validation/Message');
-
 class Validation{
-	private $mode     = null;
-	private $formname = null;
+	//---------------------------------------------
+	// メンバ変数
+	//---------------------------------------------
+	private $mode = null;				// 動作モード
 
-	private $list   = array();
-	private $target = array();
+	private $list   = array();			// 検証ルール格納用
+	private $target = array();			// 検証データ格納用
 	
-	private $error     = array();
-	private $errormsg  = array();
-	private $vmsg      = null;
+	private $vmsg      = null;			// ValidationMessageオブジェクト入れ
+	private $error     = array();		// エラーコード格納用
+	private $errormsg  = array();		// エラーメッセージ格納用
 
-	private $rule = array();
+	private $rule = array();			// 評価用のClosure格納用
 
-	function __construct($mode, $formname, $lang='ja'){
+
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param  string $mode 動作モード 'self' or 'form'
+	 * @param  string $lang エラーメッセージ用言語 'ja'固定
+	 * @return void
+	 * @access public
+	 */
+	function __construct($mode='self', $lang='ja'){
 		$this->mode     = $mode;
-		$this->formname = $formname;
 
 		//-------------------------------
 		// 検証ルールを差込む
@@ -161,7 +171,7 @@ class Validation{
 		}
 
 		//-------------------------------
-		// デフォルトのエラー文言差込み
+		// エラーメッセージ準備
 		//-------------------------------
 		$vmsg = new ValidationMessage();
 		$vmsg->setLanguage($lang);
@@ -307,6 +317,19 @@ class Validation{
 		}
 	}
 
+	/**
+	 * 検証用データをリセットする
+	 * 
+	 * 現状オブジェクト内にある検証データをすべて削除します。
+	 *
+	 * @return void 
+	 * @access public
+	 */
+	public function clearData(){
+		$this->target = array();
+	}
+
+
 
 	/**
 	 * 検証を実施する
@@ -367,7 +390,6 @@ class Validation{
 					$ret  = false;
 				}
 
-
 				//------------------------------
 				// エラー時処理
 				//------------------------------
@@ -393,12 +415,11 @@ class Validation{
 	public function setError2Scratch(){
 		global $Scratch;
 		$mode  = $this->mode;
-		$form  = $this->formname;
 		$error = $this->error;
 		$msg   = $this->errormsg;
 		
-		$Scratch[$mode][$form]['error']    = $error; 
-		$Scratch[$mode][$form]['errormsg'] = $msg;
+		$Scratch[$mode]['error']    = $error; 
+		$Scratch[$mode]['errormsg'] = $this->vmsg->gets(array_keys($msg));
 	}
 
 	/**
@@ -427,10 +448,10 @@ class Validation{
 	public function addError($name, $cd){
 		if( ! array_key_exists($name,  $this->error) )
 			$this->error[$name] = array();
+
 		array_push( $this->error[$name], $cd);
-		
-		if( array_key_exists($cd, $this->errormsg) )
-			$this->errormsg[$cd] = $this->vmsg->get($cd);
+		$this->errormsg[$cd] = 1;
 	}
 }
+
 
