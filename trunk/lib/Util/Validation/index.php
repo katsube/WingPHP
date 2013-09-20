@@ -53,12 +53,13 @@ uselib('Util/Validation/Message');
  *     $v = new Validation(self::MODE);   // mode に"form" を指定＝クエリー値が対象になる
  * 
  *     // 独自のルールを追加する場合は事前に定義する
- *     $v->addRule('hoge', function($userid){             // 必ずbooleanを返す無名関数を渡す
- *                                    if(...)
- *                                        return(true);   // trueで通過
- *                                    else
- *                                        return(false);  // falseでエラー
- *                                }
+ *     $v->addRule(
+ *         'hoge'
+ *       , function($userid){             // 必ずbooleanを返す無名関数を渡す
+ *           if(...) return(true);   // trueで通過
+ *           else    return(false);  // falseでエラー
+ *          }
+ *       , 'エラーメッセージをここに記入'
  *     );
  *
  *     // 検証リストを設定
