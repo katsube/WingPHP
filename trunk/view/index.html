@@ -1,19 +1,60 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
-<meta http-equiv="Content-Script-Type" content="text/javascript" />
-
-<title>Welcome to WingPHP!</title>
+<meta charset="utf-8">
+<title>Welcome to WingPHP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<style>
+body {
+	min-height: 2000px;
+}
+footer{
+	margin-left: 10px;
+}
+.navbar-static-top {
+	margin-bottom: 19px;
+}
+</style>
 </head>
 <body>
 
-<h1>ようこそ！WingPHPへ</h1>
+<!-- Static navbar -->
+<div class="navbar navbar-default navbar-static-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/">WingPHP</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/">Home</a></li>
+				<li><a href="https://code.google.com/p/wingphp/wiki/INSTALL">INSTALL</a></li>
+				<li><a href="mailto:katsubemakito@gmail.com">Contact</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="https://code.google.com/p/wingphp/">GoogleCode</a></li>
+			</ul>
+		</div><!--/.nav-collapse -->
+	</div>
+</div>
 
-<p>WingPHPは軽量で、初期の学習コストがほとんどかからないことを目的に作成された日本製フレームワークです。</p>
+<div class="container">
+	<div class="jumbotron">
+		<h1>Welcome to WingPHP</h1>
+		<p>WingPHPは軽量で、初期の学習コストがほとんどかからないことを目的に作成された日本製フレームワークです。</p>
+	</div>
+</div> <!-- /container -->
+<hr>
+<footer>
+	All Right Reserved, (C) {$smarty.now|date_format:'%Y'} WingPHP Project / M.Katsube
+</footer>
 
-{include file="_common/footer.html"}
-{* debugprint *}
+<script src="//code.jquery.com/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
