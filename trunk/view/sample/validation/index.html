@@ -1,0 +1,28 @@
+<form action="/sample/validation/check" class="form-horizontal" role="form">
+	<div class="form-group{iserror name="require"} has-error{/iserror}">
+		<label for="require" class="col-lg-2 control-label">必須項目</label>
+		<div class="col-lg-10">
+			<input type="textbox" class="form-control" id="require" name="require" placeholder="何でもよいので、何かを入力しないとエラーになります" value="{$smarty.request.require|escape}">
+			{iserror name="require"}<span class="help-block">{errormsg name="require"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group{iserror name="bytemax"} has-error{/iserror}">
+		<label for="bytemax" class="col-lg-2 control-label">最大バイト数</label>
+		<div class="col-lg-10">
+			<input type="textbox" class="form-control" id="bytemax" name="bytemax" placeholder="4byte以上入力するとエラーになります" value="{$smarty.request.bytemax|escape}">
+			{iserror name="bytemax"}<span class="help-block">{errormsg name="bytemax"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group{iserror name="bytemin"} has-error{/iserror}">
+		<label for="bytemin" class="col-lg-2 control-label">最小バイト数</label>
+		<div class="col-lg-10">
+			<input type="textbox" class="form-control" id="bytemin" name="bytemin" placeholder="4byte以上入力しないとエラーになります" value="{$smarty.request.bytemin|escape}">
+			{iserror name="bytemin"}<span class="help-block">{errormsg name="bytemin"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-lg-offset-2 col-lg-10">
+			<button type="submit" class="btn btn-default">Validation</button>
+		</div>
+	</div>
+</form>
