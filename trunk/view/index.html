@@ -1,81 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Welcome to WingPHP</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-<style>
-body {
-	min-height: 2000px;
-}
-footer{
-	margin-left: 10px;
-}
-.navbar-static-top {
-	margin-bottom: 19px;
-}
-</style>
-</head>
-<body>
-
-<!-- Static navbar -->
-<div class="navbar navbar-default navbar-static-top">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="/">WingPHP</a>
-		</div>
-		<div class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-				<li class="active"><a href="/">Home</a></li>
-				<li><a href="https://code.google.com/p/wingphp/wiki/INSTALL">INSTALL</a></li>
-				<li><a href="mailto:katsubemakito@gmail.com">Contact</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="https://code.google.com/p/wingphp/">GoogleCode</a></li>
-			</ul>
-		</div><!--/.nav-collapse -->
-	</div>
+<div class="jumbotron">
+	<h1>Welcome to WingPHP</h1>
+	<p>WingPHPは軽量で、初期の学習コストがほとんどかからないことを目的に作成された日本製フレームワークです。</p>
 </div>
 
-<div class="container">
-	<div class="jumbotron">
-		<h1>Welcome to WingPHP</h1>
-		<p>WingPHPは軽量で、初期の学習コストがほとんどかからないことを目的に作成された日本製フレームワークです。</p>
+<div class="row">
+	<div class="col-lg-4">
+		<h2>チュートリアル</h2>
+		<p>初めてWingPHPを使用する入門者向けのドキュメントです。 ※製作中</p>
+		{* <p><a class="btn btn-default" href="#">View details &raquo;</a></p> *}
 	</div>
-</div> <!-- /container -->
-
-<div class="container">
-	<div class="row">
-		<div class="col-lg-4">
-			<h2>チュートリアル</h2>
-			<p>初めてWingPHPを使用する入門者向けのドキュメントです。 ※製作中</p>
-			{* <p><a class="btn btn-default" href="#">View details &raquo;</a></p> *}
-		</div>
-		<div class="col-lg-4">
-			<h2>動作サンプル</h2>
-			<ul>
-				<li><a href="/sample/validation">Validation</a></li>
-			</ul>
-		</div>
-		<div class="col-lg-4">
-			<h2>リファレンス</h2>
-			<p>※製作中</p>
-			{* <p><a class="btn btn-default" href="#">View details &raquo;</a></p> *}
-		</div>
+	<div class="col-lg-4">
+		<h2>動作サンプル</h2>
+		<ul>
+			<li><a href="/sample/validation">Validation</a></li>
+		</ul>
 	</div>
-	<hr>
-	<footer>
-		All Right Reserved, (C) {$smarty.now|date_format:'%Y'} WingPHP Project / M.Katsube
-	</footer>
+	<div class="col-lg-4">
+		<h2>リファレンス</h2>
+		<p>※製作中</p>
+		{* <p><a class="btn btn-default" href="#">View details &raquo;</a></p> *}
+	</div>
 </div>
-
-<script src="//code.jquery.com/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-</body>
-</html>
