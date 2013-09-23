@@ -136,13 +136,13 @@ class Validation{
 	 * @access public
 	 */
 	function __construct($mode='self', $lang='ja'){
-		$this->mode     = $mode;
+		$this->mode = $mode;
 
 		//-------------------------------
 		// 検証ルールを差込む
 		//-------------------------------
 		//ToDo: 気持ち悪いのであとで他ファイルに分割したい。
-		$this->rule     = array(
+		$this->rule = array(
 			  'url'   => function($val){ return(preg_match(Regex::URL,   $val)); }		// 書式 URL
 			, 'email' => function($val){ return(preg_match(Regex::EMAIL, $val)); }		// 書式 メールアドレス
 			, 'ip4'   => function($val){ return(preg_match(Regex::IP4,   $val)); }		// 書式 IPv4形式
@@ -153,7 +153,7 @@ class Validation{
 			, 'alpha' => function($val){ return(preg_match(Regex::ALPHA, $val)); }		// 書式 半角英字
 			, 'alnum' => function($val){ return(preg_match(Regex::ALNUM, $val)); }		// 書式 半角英数字
 	
-			, 'require' => function($val){ return( isset($val) ); }						// 必須項目
+			, 'require' => function($val){ return( isset($val) && $val !== ''); }						// 必須項目
 			, 'bytemax' => function($val, $opt){ return( strlen($val) <= $opt[0] );  }	// 最大バイト長
 			, 'bytemin' => function($val, $opt){ return( strlen($val) >= $opt[0] ); }	// 最小バイト長
 			, 'max'     => function($val, $opt){ return( $val <= $opt[0] ); }			// 最大値
