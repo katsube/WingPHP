@@ -61,15 +61,24 @@ class SampleController extends BaseController{
 		$mode = $argv[0];
 
 		switch ($mode) {
-			case 'value':
-				# code...
+			case 'check':
+				uselib('Util/Validation');
+				$v = new Validation('form');
+				$v->addList(array(
+					  'require' => array('require')
+					, 'bytemax' => array(['bytemax', 4])
+					, 'bytemin' => array(['bytemin', 4])
+				));
+				if( !$v->check() )
+					$v->setError2Scratch();
 				break;
 			
 			default:
-				$this->layout('layout/base.html');
-				$this->assign('TITLE', 'Validation');
-				$this->display('sample/validation/index.html');
 				break;
 		}
+	
+		$this->layout('layout/base.html');
+		$this->assign('TITLE', 'Validation');
+		$this->display('sample/validation/index.html');
 	}
 }
