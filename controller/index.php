@@ -68,6 +68,7 @@ class IndexController extends BaseController{
 	 * @access public
 	 */
 	public function index(){
+		$this->layout('layout/base.html');
 		$this->display('index.html');
 	}
 

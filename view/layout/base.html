@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Welcome to WingPHP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<style>
+body {
+	min-height: 2000px;
+}
+footer{
+	margin-left: 10px;
+}
+.navbar-static-top {
+	margin-bottom: 19px;
+}
+</style>
+</head>
+<body>
+
+{include file="_common/header.html"}
+
+<div class="container">
+	{$CONTENT}
+	<hr>
+	{include file="_common/footer.html"}
+</div>
+
+<script src="//code.jquery.com/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
