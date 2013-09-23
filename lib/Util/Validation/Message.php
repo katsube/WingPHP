@@ -112,7 +112,12 @@ class ValidationMessage{
 			return( $this->msg[$lang][$cd] );
 		}
 		else{
-			return(null);
+			if( array_key_exists($cd, $this->error[$lang]) ){
+				return( $this->error[$lang][$cd] );
+			}
+			else{
+				return(null);
+			}
 		}
 	}
 
