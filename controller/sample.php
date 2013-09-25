@@ -68,6 +68,12 @@ class SampleController extends BaseController{
 					  'require' => array('require')
 					, 'bytemax' => array(['bytemax', 4])
 					, 'bytemin' => array(['bytemin', 4])
+					, 'max'     => array(['max', 500])
+					, 'min'     => array(['min', 500])
+					, 'match'   => array(['match', '/^He/'])
+					, 'eq'      => array(['eq', 'XYLITOL'])
+					, 'ne'      => array(['ne', 'XYLITOL'])
+					, 'in'      => array(['in', '雪', '月', '花'])
 				));
 				if( !$v->check() )
 					$v->setError2Scratch();

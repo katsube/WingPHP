@@ -1,27 +1,73 @@
 <form action="/sample/validation/check" class="form-horizontal" role="form">
 	<div class="form-group{iserror name="require"} has-error{/iserror}">
-		<label for="require" class="col-lg-2 control-label">必須項目</label>
-		<div class="col-lg-10">
-			<input type="textbox" class="form-control" id="require" name="require" placeholder="何でもよいので、何かを入力しないとエラーになります" value="{$smarty.request.require|escape}">
+		<label for="require" class="col-lg-2 col-xs-2 control-label">必須項目(require)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="require" name="require" placeholder="未入力でエラー" value="{$smarty.request.require|escape}">
 			{iserror name="require"}<span class="help-block">{errormsg name="require"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="bytemax"} has-error{/iserror}">
-		<label for="bytemax" class="col-lg-2 control-label">最大バイト数</label>
-		<div class="col-lg-10">
-			<input type="textbox" class="form-control" id="bytemax" name="bytemax" placeholder="4byte以上入力するとエラーになります" value="{$smarty.request.bytemax|escape}">
+		<label for="bytemax" class="col-lg-2 col-xs-2 control-label">最大バイト数(bytemax)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="bytemax" name="bytemax" placeholder="4byte以上入力するとエラー" value="{$smarty.request.bytemax|escape}">
 			{iserror name="bytemax"}<span class="help-block">{errormsg name="bytemax"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="bytemin"} has-error{/iserror}">
-		<label for="bytemin" class="col-lg-2 control-label">最小バイト数</label>
-		<div class="col-lg-10">
-			<input type="textbox" class="form-control" id="bytemin" name="bytemin" placeholder="4byte以上入力しないとエラーになります" value="{$smarty.request.bytemin|escape}">
+		<label for="bytemin" class="col-lg-2 col-xs-2 control-label">最小バイト数(bytemin)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="bytemin" name="bytemin" placeholder="4byte以上入力しないとエラー" value="{$smarty.request.bytemin|escape}">
 			{iserror name="bytemin"}<span class="help-block">{errormsg name="bytemin"}</span>{/iserror}
 		</div>
 	</div>
+	<div class="form-group{iserror name="max"} has-error{/iserror}">
+		<label for="max" class="col-lg-2 col-xs-2 control-label">最大値(max)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="max" name="max" placeholder="500を越える数値でエラー" value="{$smarty.request.max|escape}">
+			{iserror name="max"}<span class="help-block">{errormsg name="max"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group{iserror name="min"} has-error{/iserror}">
+		<label for="min" class="col-lg-2 col-xs-2 control-label">最小値(min)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="min" name="min" placeholder="500を下回る数値でエラー" value="{$smarty.request.min|escape}">
+			{iserror name="min"}<span class="help-block">{errormsg name="min"}</span>{/iserror}
+		</div>
+	</div>
+
+	<div class="form-group{iserror name="match"} has-error{/iserror}">
+		<label for="match" class="col-lg-2 col-xs-2 control-label">正規表現(match)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="match" name="match" placeholder="/^He/にマッチしなければエラー" value="{$smarty.request.match|escape}">
+			{iserror name="match"}<span class="help-block">{errormsg name="match"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group{iserror name="eq"} has-error{/iserror}">
+		<label for="eq" class="col-lg-2 col-xs-2 control-label">文字列比較(eq)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="eq" name="eq" placeholder="'XYLITOL'でなければエラー" value="{$smarty.request.eq|escape}">
+			{iserror name="eq"}<span class="help-block">{errormsg name="eq"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group{iserror name="ne"} has-error{/iserror}">
+		<label for="eq" class="col-lg-2 col-xs-2 control-label">文字列比較(ne)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="ne" name="ne" placeholder="'XYLITOL'ならエラー" value="{$smarty.request.ne|escape}">
+			{iserror name="ne"}<span class="help-block">{errormsg name="ne"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group{iserror name="in"} has-error{/iserror}">
+		<label for="eq" class="col-lg-2 col-xs-2 control-label">文字列比較(in)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="in" name="in" placeholder="雪,月,花のいずれかでなければエラー" value="{$smarty.request.in|escape}">
+			{iserror name="in"}<span class="help-block">{errormsg name="in"}</span>{/iserror}
+		</div>
+	</div>
+
+
 	<div class="form-group">
-		<div class="col-lg-offset-2 col-lg-10">
+		<label class="col-lg-2 col-xs-2 control-label"></label>
+		<div class="col-lg-4 col-xs-4">
 			<button type="submit" class="btn btn-default">Validation</button>
 		</div>
 	</div>
