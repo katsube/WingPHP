@@ -74,11 +74,25 @@ class SampleController extends BaseController{
 					, 'eq'      => array(['eq', 'XYLITOL'])
 					, 'ne'      => array(['ne', 'XYLITOL'])
 					, 'in'      => array(['in', '雪', '月', '花'])
+					, 'num'     => array('num')
+					, 'alpha'   => array('alpha')
+					, 'alnum'   => array('alnum')
+					, 'url'     => array('url')
+					, 'email'   => array('email')
+					, 'ip4'     => array('ip4')
+					, 'postcd'  => array('postcd')
+					, 'tel'     => array('tel')
 				));
 				if( !$v->check() )
 					$v->setError2Scratch();
 				break;
-			
+			case 'check2':
+				uselib('Util/Validation');
+				$v = new Validation('form');
+				$v->addList(array(
+				));
+				if( !$v->check() )
+					$v->setError2Scratch();
 			default:
 				break;
 		}

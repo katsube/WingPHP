@@ -1,4 +1,10 @@
-<form action="/sample/validation/check" class="form-horizontal" role="form">
+<ul class="nav nav-tabs" id="myTab">
+  <li class="active"><a href="#basic" data-toggle="tab">基本バリデーション</a></li>
+  <li><a href="#form" data-toggle="tab">フォーム部品</a></li>
+</ul>
+<div class="tab-content">
+<div class="tab-pane active" id="basic">
+<form action="/sample/validation/check" class="form-horizontal" role="form" style="margin-top:25px;">
 	<div class="form-group{iserror name="require"} has-error{/iserror}">
 		<label for="require" class="col-lg-2 col-xs-2 control-label">必須項目(require)</label>
 		<div class="col-lg-4 col-xs-4">
@@ -64,6 +70,63 @@
 		</div>
 	</div>
 
+	<div class="form-group{iserror name="num"} has-error{/iserror}">
+		<label for="num" class="col-lg-2 col-xs-2 control-label">半角数字(num)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="num" name="num" placeholder="半角数字でなければエラー" value="{$smarty.request.num|escape}">
+			{iserror name="num"}<span class="help-block">{errormsg name="num"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group{iserror name="alpha"} has-error{/iserror}">
+		<label for="alpha" class="col-lg-2 col-xs-2 control-label">半角英字(alpha)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="alpha" name="alpha" placeholder="半角英字でなければエラー" value="{$smarty.request.alpha|escape}">
+			{iserror name="alpha"}<span class="help-block">{errormsg name="alpha"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group{iserror name="alnum"} has-error{/iserror}">
+		<label for="alnum" class="col-lg-2 col-xs-2 control-label">半角英数字(alnum)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="alnum" name="alnum" placeholder="半角英数字でなければエラー" value="{$smarty.request.alnum|escape}">
+			{iserror name="alnum"}<span class="help-block">{errormsg name="alnum"}</span>{/iserror}
+		</div>
+	</div>
+
+	<div class="form-group{iserror name="url"} has-error{/iserror}">
+		<label for="url" class="col-lg-2 col-xs-2 control-label">URL(url)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="url" name="url" placeholder="URLでなければエラー" value="{$smarty.request.url|escape}">
+			{iserror name="url"}<span class="help-block">{errormsg name="url"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group{iserror name="email"} has-error{/iserror}">
+		<label for="email" class="col-lg-2 col-xs-2 control-label">Email(email)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="email" name="email" placeholder="emailでなければエラー" value="{$smarty.request.email|escape}">
+			{iserror name="email"}<span class="help-block">{errormsg name="email"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group{iserror name="ip4"} has-error{/iserror}">
+		<label for="ip4" class="col-lg-2 col-xs-2 control-label">IPアドレス(ip4)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="ip4" name="ip4" placeholder="IPアドレス(IPv4)でなければエラー" value="{$smarty.request.ip4|escape}">
+			{iserror name="ip4"}<span class="help-block">{errormsg name="ip4"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group{iserror name="postcd"} has-error{/iserror}">
+		<label for="postcd" class="col-lg-2 col-xs-2 control-label">郵便番号(postcd)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="postcd" name="postcd" placeholder="郵便番号(123-4567)でなければエラー" value="{$smarty.request.postcd|escape}">
+			{iserror name="postcd"}<span class="help-block">{errormsg name="postcd"}</span>{/iserror}
+		</div>
+	</div>
+	<div class="form-group{iserror name="tel"} has-error{/iserror}">
+		<label for="tel" class="col-lg-2 col-xs-2 control-label">電話番号(tel)</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="tel" name="tel" placeholder="電話番号でなければエラー" value="{$smarty.request.tel|escape}">
+			{iserror name="tel"}<span class="help-block">{errormsg name="tel"}</span>{/iserror}
+		</div>
+	</div>
 
 	<div class="form-group">
 		<label class="col-lg-2 col-xs-2 control-label"></label>
@@ -72,3 +135,17 @@
 		</div>
 	</div>
 </form>
+</div> <!-- /tab-pane-->
+<div class="tab-pane" id="form">
+<form action="/sample/validation/check2" class="form-horizontal" role="form">
+
+
+	<div class="form-group">
+		<label class="col-lg-2 col-xs-2 control-label"></label>
+		<div class="col-lg-4 col-xs-4">
+			<button type="submit" class="btn btn-default">Validation</button>
+		</div>
+	</div>
+</form>
+</div> <!-- /tab-pane-->
+</div> <!-- /tab-content -->
