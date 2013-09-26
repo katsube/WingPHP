@@ -143,12 +143,12 @@ class Validation{
 		//-------------------------------
 		//ToDo: 気持ち悪いのであとで他ファイルに分割したい。
 		$this->rule = array(
-			  'url'   => function($val){ return(preg_match(Regex::URL,   $val)); }		// 書式 URL
-			, 'email' => function($val){ return(preg_match(Regex::EMAIL, $val)); }		// 書式 メールアドレス
-			, 'ip4'   => function($val){ return(preg_match(Regex::IP4,   $val)); }		// 書式 IPv4形式
-			, 'post'  => function($val){ return(preg_match(Regex::POST,  $val)); }		// 書式 郵便番号 000-0000
-			, 'post7' => function($val){ return(preg_match(Regex::POST7, $val)); }		// 書式 7桁数値  0000000
-			, 'tel'   => function($val){ return(preg_match(Regex::TEL,   $val)); }		// 書式 電話番号 0123-12-1234, 03-12-1234, 090-1234-1234
+			  'url'    => function($val){ return(preg_match(Regex::URL,   $val)); }		// 書式 URL
+			, 'email'  => function($val){ return(preg_match(Regex::EMAIL, $val)); }		// 書式 メールアドレス
+			, 'ip4'    => function($val){ return(preg_match(Regex::IP4,   $val)); }		// 書式 IPv4形式
+			, 'postcd' => function($val){ return(preg_match(Regex::POST,  $val)); }		// 書式 郵便番号 000-0000
+			, 'tel'    => function($val){ return(preg_match(Regex::TEL,   $val)); }		// 書式 電話番号 0123-12-1234, 03-12-1234, 090-1234-1234
+
 			, 'num'   => function($val){ return(preg_match(Regex::NUM,   $val)); }		// 書式 半角数字(文字列としての数字も真)
 			, 'alpha' => function($val){ return(preg_match(Regex::ALPHA, $val)); }		// 書式 半角英字
 			, 'alnum' => function($val){ return(preg_match(Regex::ALNUM, $val)); }		// 書式 半角英数字
