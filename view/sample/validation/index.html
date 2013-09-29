@@ -1,10 +1,11 @@
 <ul class="nav nav-tabs" id="myTab">
-  <li class="active"><a href="#basic" data-toggle="tab">基本バリデーション</a></li>
-  <li><a href="#form" data-toggle="tab">フォーム部品</a></li>
+  <li class="active"><a id="li-basic" href="#basic" data-toggle="tab">基本バリデーション</a></li>
+  <li><a id="li-ex" href="#ex" data-toggle="tab">応用バリデーション</a></li>
+  <li><a id="li-form" href="#form" data-toggle="tab">フォーム部品</a></li>
 </ul>
 <div class="tab-content">
 <div class="tab-pane active" id="basic">
-<form action="/sample/validation/check" class="form-horizontal" role="form" style="margin-top:25px;">
+<form id="form-check1" action="/sample/validation/check#basictab" class="form-horizontal" role="form" style="margin-top:25px;">
 	<div class="form-group{iserror name="require"} has-error{/iserror}">
 		<label for="require" class="col-lg-2 col-xs-2 control-label">必須項目(require)</label>
 		<div class="col-lg-4 col-xs-4">
@@ -136,9 +137,62 @@
 	</div>
 </form>
 </div> <!-- /tab-pane-->
-<div class="tab-pane" id="form">
-<form action="/sample/validation/check2" class="form-horizontal" role="form">
 
+<div class="tab-pane" id="ex">
+<form action="/sample/validation/check3#extab" class="form-horizontal" role="form" style="margin-top:25px;">
+	<div class="form-group">
+		<label class="col-lg-2 col-xs-2 control-label"></label>
+		<div class="col-lg-4 col-xs-4">
+			<button type="submit" class="btn btn-default">Validation</button>
+		</div>
+	</div>
+</form>
+</div> <!-- /tab-pane-->
+
+
+<div class="tab-pane" id="form">
+<form action="/sample/validation/check2#formtab" class="form-horizontal" role="form" style="margin-top:25px;">
+	<!-- select1-->
+	<div class="form-group{iserror name="select1"} has-error{/iserror}">
+		<label for="select1" class="col-lg-2 col-xs-2 control-label">セレクトボックス</label>
+		<div class="col-lg-4 col-xs-4">
+			<select name="select1">
+				<option value="">value空文字(エラー)</option>
+				<option value="1"{if $smarty.request.select1 == 1} selected="selected"{/if}>value設定済み(成功)</option>
+			</select>
+			{iserror name="select1"}<span class="help-block">{errormsg name="select1"}</span>{/iserror}
+		</div>
+	</div>
+
+	<!-- checkbox -->
+	<div class="form-group{iserror name="check1"} has-error{/iserror}">
+		<label class="col-lg-2 col-xs-2 control-label">チェックボックス</label>
+		<div class="col-lg-4 col-xs-4">
+			<div class="checkbox">
+				<label><input type="checkbox" name="check1" value="1"> ほげ</label>
+			</div>
+			<div class="checkbox">
+				<label><input type="checkbox" name="check1" value="2"> ほげ</label>
+			</div>
+			<div class="checkbox">
+				<label><input type="checkbox" name="check1" value="3"> ほげ</label>
+			</div>
+
+			{iserror name="check1"}<span class="help-block">{errormsg name="check1"}</span>{/iserror}
+		</div>
+	</div>
+
+
+{*
+	<!-- radio -->
+	<div class="form-group{iserror name=""} has-error{/iserror}">
+		<label for="" class="col-lg-2 col-xs-2 control-label"></label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="" name="" placeholder="" value="{$smarty.request.|escape}">
+			{iserror name=""}<span class="help-block">{errormsg name=""}</span>{/iserror}
+		</div>
+	</div>
+*}
 
 	<div class="form-group">
 		<label class="col-lg-2 col-xs-2 control-label"></label>
@@ -148,4 +202,6 @@
 	</div>
 </form>
 </div> <!-- /tab-pane-->
+
+
 </div> <!-- /tab-content -->
