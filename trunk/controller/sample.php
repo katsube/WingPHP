@@ -60,10 +60,17 @@ class SampleController extends BaseController{
 	public function validation($argv){
 		$mode = $argv[0];
 
+		uselib('Util/Validation');
+		$v = new Validation('form');
+
+		//------------------------------------------
+		// 検証リストを準備
+		//------------------------------------------
 		switch ($mode) {
+			//---------------
+			// 基本
+			//---------------
 			case 'check':
-				uselib('Util/Validation');
-				$v = new Validation('form');
 				$v->addList(array(
 					  'require' => array('require')
 					, 'bytemax' => array(['bytemax', 4])
@@ -83,20 +90,34 @@ class SampleController extends BaseController{
 					, 'postcd'  => array('postcd')
 					, 'tel'     => array('tel')
 				));
-				if( !$v->check() )
-					$v->setError2Scratch();
 				break;
+
+			//---------------
+			// フォーム部品
+			//---------------
 			case 'check2':
-				uselib('Util/Validation');
-				$v = new Validation('form');
 				$v->addList(array(
+					  'select1' => array('require')
+					, 'check1' => array('require')
 				));
-				if( !$v->check() )
-					$v->setError2Scratch();
+				break;
+
+			//---------------
+			// ？
+			//---------------
 			default:
 				break;
 		}
 	
+		//------------------------------------------
+		// validaiton実行
+		//------------------------------------------
+		if( !$v->check() )
+			$v->setError2Scratch();
+
+		//------------------------------------------
+		// 表示
+		//------------------------------------------
 		$this->layout('layout/base.html');
 		$this->assign('TITLE', 'Validation');
 		$this->display('sample/validation/index.html');
