@@ -1,7 +1,7 @@
 <?php
 /* [WingPHP]
  *  - QueryModel class
- *  
+ *
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,7 +25,7 @@
 
 /**
  * QueryModelクラス
- * 
+ *
  * クエリーをやりとりする。$_REQUESTのラッパーのようなもの。
  * 将来的な変更などを考えてこのクラス経由でクエリーの操作を行う
  * ことが望ましい。
@@ -37,18 +37,20 @@
  * @access     public
  */
 class QueryModel extends BaseModel{
-	//--------------------------------------------
+	//---------------------------------------------
 	// メンバ変数
-	//--------------------------------------------
-	private $q;
-	
+	//---------------------------------------------
+	private $method = null;			//'POST', 'GET', 'REQUEST'
+	private $q      = null;
+
 	/**
 	 * コンストラクタ
 	 *
 	 * @access public
 	 */
-	function __construct(){
-		$this->q = $_REQUEST;
+	function __construct($method='REQUEST'){
+		$this->method = $method;
+		$this->_setTarget($method);
 	}
 
 	/**
@@ -60,37 +62,117 @@ class QueryModel extends BaseModel{
 		;
 	}
 
+	/**
+	 * プロパティのオーバーライド
+	 *
+	 *「$q->foobar」は「$q->data('foobar')」 と同じ意味になる。
+	 * 存在していないクエリーは false が返る。
+	 */
+	function __get($name){
+		if(array_key_exists($name, $this->q))
+			return($this->q[$name]);
+		else
+			return(false);
+	}
 
 	/*--------------------------------------------
 	 * ■ Public ■
 	 *--------------------------------------------
 	 * - data
 	 *--------------------------------------------*/
-
 	/**
 	 * クエリー返却
 	 *
 	 * 指定されたクエリーを返却する。
-	 * 存在しない場合はfalseを、未指定の場合は全ての
-	 * クエリーを返却する。
+	 * 存在しない場合はfalseを、未指定の場合は全てのクエリーを返却する。
 	 *
-	 * @param  string  $name
+	 * @param  mixed  $name  単体のクエリー名
+	 *                       または配列(['name1', 'name2'...])で複数の指定が可
 	 * @return mixed
 	 * @access public
 	 */
-	public function data($name=false){
-		if(! $name )
-			return( $this->q );
-		else
-			if(array_key_exists($name, $this->q))
-				return( $this->q[$name] );
-			else
-				return( false );
+	public function data($name=null){
+		return(
+			$this->_getValue($name)
+		);
 	}
+
+
 
 	/*--------------------------------------------
 	 * ■ Private ■
 	 *--------------------------------------------
-	 * - 
+	 * - _getValue
+	 * - _setTarget
 	 *--------------------------------------------*/
+	/**
+	 * クエリー返却(実作業)
+	 *
+	 * 指定されたクエリーを返却する。
+	 * data,post,getの実作業を行う。
+	 *
+	 * @param  mixed  $name  単体のクエリー名
+	 *                       または配列(['name1', 'name2'...])で複数の指定が可
+	 * @return mixed
+	 * @access private
+	 */
+	private function _getValue($name=null, $mode='request'){
+		if( $name === null ){
+			return( $this->q );
+		}
+		else if( is_array($name) ){
+			$result = array();
+			$len    = count($name);
+			for($i=0; $i<$len; $i++){
+				$key = $name[$i];
+				if( array_key_exists($key, $this->q) ){
+					$result[$key] = $this->q[$key];
+				}
+				else{
+					$result[$key] = false;
+				}
+			}
+
+			return($result);
+		}
+		else{
+			if(array_key_exists($name, $this->q))
+				return( $this->q[$name] );
+			else
+				return( false );
+		}
+	}
+
+	/**
+	 * 作業対象をセット(変更する)
+	 *
+	 * _getValueの作業対象を指定されたものに変更する。
+	 * 前回実行時と同じターゲットの場合は変更されない。
+	 *
+	 * @param  string  $method GET,POST,REQUEST
+	 * @return void
+	 * @access private
+	 */
+	private function _setTarget($method){
+		switch($method){
+			case 'GET':
+				$this->q = $_GET;
+				break;
+
+			case 'POST':
+				$this->q = $_POST;
+				break;
+
+			case 'REQUEST':
+			default:
+				if($_SERVER['REQUEST_METHOD'] === 'POST')
+					$this->q = $_POST;
+				else
+					$this->q = $_GET;
+				break;
+		}
+
+		if(array_key_exists('_q', $this->q))
+			unset($this->q['_q']);
+	}
 }
