@@ -67,6 +67,8 @@ class QueryModel extends BaseModel{
 	 *
 	 *「$q->foobar」は「$q->data('foobar')」 と同じ意味になる。
 	 * 存在していないクエリーは false が返る。
+	 *   ※呼び出し元で何度も利用する場合は、ローカル変数に一度代入し
+	 *     利用しないとオーバーヘッドがかかる点に注意。
 	 */
 	function __get($name){
 		if(array_key_exists($name, $this->q))
