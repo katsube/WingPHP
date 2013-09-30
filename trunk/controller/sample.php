@@ -1,7 +1,7 @@
 <?php
 /* [WingPHP]
  *  - SampleController
- *  
+ *
  * The MIT License
  * Copyright (c) 2013 WingPHP < http://wingphp.net >
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,7 +25,7 @@
 
 /**
  * SampleControllerクラス
- * 
+ *
  * 動作サンプル用クラス
  *
  * @package    SampleController
@@ -96,9 +96,11 @@ class SampleController extends BaseController{
 			// フォーム部品
 			//---------------
 			case 'check2':
+				$q = new QueryModel();
 				$v->addList(array(
 					  'select1' => array('require')
-					, 'check1' => array('require')
+					, 'check1' => array('grequire1')
+					, 'check2' => array(['gin', 1, 2, 3])
 				));
 				break;
 
@@ -108,7 +110,7 @@ class SampleController extends BaseController{
 			default:
 				break;
 		}
-	
+
 		//------------------------------------------
 		// validaiton実行
 		//------------------------------------------

@@ -164,24 +164,44 @@
 		</div>
 	</div>
 
-	<!-- checkbox -->
+	<!-- checkbox1 -->
 	<div class="form-group{iserror name="check1"} has-error{/iserror}">
 		<label class="col-lg-2 col-xs-2 control-label">チェックボックス</label>
 		<div class="col-lg-4 col-xs-4">
 			<div class="checkbox">
-				<label><input type="checkbox" name="check1" value="1"> ほげ</label>
+				<label><input type="checkbox" name="check1[]" value="1"{if $smarty.request.check1|inarray:1} checked="checked"{/if}> ねこ</label>
 			</div>
 			<div class="checkbox">
-				<label><input type="checkbox" name="check1" value="2"> ほげ</label>
+				<label><input type="checkbox" name="check1[]" value="2"{if $smarty.request.check1|inarray:2} checked="checked"{/if}> ぬこ</label>
 			</div>
 			<div class="checkbox">
-				<label><input type="checkbox" name="check1" value="3"> ほげ</label>
+				<label><input type="checkbox" name="check1[]" value="3"{if $smarty.request.check1|inarray:3} checked="checked"{/if}> にゃんこ</label>
 			</div>
-
 			{iserror name="check1"}<span class="help-block">{errormsg name="check1"}</span>{/iserror}
+			{isnoterror name="check1"}<span class="help-block">※1つもチェックしないとエラー</span>{/isnoterror}
 		</div>
 	</div>
 
+	<!-- checkbox2 -->
+	<div class="form-group{iserror name="check2"} has-error{/iserror}">
+		<label class="col-lg-2 col-xs-2 control-label">チェックボックス</label>
+		<div class="col-lg-4 col-xs-4">
+			<div class="checkbox">
+				<label><input type="checkbox" name="check2[]" value="1"{if $smarty.request.check2|inarray:1} checked="checked"{/if}> ねこ</label>
+			</div>
+			<div class="checkbox">
+				<label><input type="checkbox" name="check2[]" value="2"{if $smarty.request.check2|inarray:2} checked="checked"{/if}> ぬこ</label>
+			</div>
+			<div class="checkbox">
+				<label><input type="checkbox" name="check2[]" value="3"{if $smarty.request.check2|inarray:3} checked="checked"{/if}> にゃんこ</label>
+			</div>
+			<div class="checkbox">
+				<label><input type="checkbox" name="check2[]" value="4"{if $smarty.request.check2|inarray:4} checked="checked"{/if}> わんこ</label>
+			</div>
+			{iserror name="check2"}<span class="help-block">{errormsg name="check2"}。<br>※本来は想定外の値チェックに利用。</span>{/iserror}
+			{isnoterror name="check2"}<span class="help-block">※わんこにチェックするとエラー</span>{/isnoterror}
+		</div>
+	</div>
 
 {*
 	<!-- radio -->
