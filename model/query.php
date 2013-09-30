@@ -147,7 +147,6 @@ class QueryModel extends BaseModel{
 	 * 作業対象をセット(変更する)
 	 *
 	 * _getValueの作業対象を指定されたものに変更する。
-	 * 前回実行時と同じターゲットの場合は変更されない。
 	 *
 	 * @param  string  $method GET,POST,REQUEST
 	 * @return void
