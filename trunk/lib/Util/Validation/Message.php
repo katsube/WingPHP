@@ -1,7 +1,7 @@
 <?php
 /* [WingPHP]
  *  - lib/Util/Validation/Message.php
- *  
+ *
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,9 +25,9 @@
 
 /**
  * ValidationMessageクラス
- * 
+ *
  * validation時に利用するメッセージ管理クラス。
- * 
+ *
  * example.<code>
  *     uselib('Util/Validation/Message');
  *
@@ -46,12 +46,11 @@
  * @access     public
  */
 class ValidationMessage{
-
 	//---------------------------------------------
 	// メンバ変数
 	//---------------------------------------------
 	private $lang = 'ja';
-	
+
 	//ToDo: これも気持ち悪いので別ファイルに分離したい。
 	private $msg  = array(
 		'ja' => array(
@@ -69,19 +68,25 @@ class ValidationMessage{
 			, 'bytemin' => '最小byte数に達していません'
 			, 'max'     => '最大値を超過しています'
 			, 'min'     => '最小値に達していません'
-				
+
 			, 'match' => '内容が一致しません'
 			, 'eq'    => '内容が一致しません'
 			, 'ne'    => '内容が一致しません'
 			, 'in'    => '内容が一致しません'
-		
+
+			, 'date' => '有効な日付ではありません'
+			, 'time' => '有効な時間ではありません'
+
+			, 'grequire'  => 'すべてに入力されていません'
+			, 'grequire1' => '最低でも1つ以上の入力が必要です'
+
 			, '_404' => ''
 		)
 	);
 
 	/**
 	 * コンストラクタ
-	 * 
+	 *
 	 * @return void
 	 * @access public
 	 */
@@ -92,7 +97,7 @@ class ValidationMessage{
 
 	/**
 	 * メッセージを取得する
-	 * 
+	 *
 	 * メッセージを取得する。
 	 * $cdを未指定の場合はすべての、
 	 * $cdを指定した場合は該当する項目を返却する。
@@ -122,7 +127,7 @@ class ValidationMessage{
 
 	/**
 	 * メッセージをまとめて取得する
-	 * 
+	 *
 	 * メッセージをまとめて取得する。
 	 * 第一引数$cd配列内で指定された項目を配列として返却する。
 	 *
@@ -132,7 +137,7 @@ class ValidationMessage{
 	 */
 	public function gets($cds){
 		$result = array();
-		
+
 		$len = count($cds);
 		for($i=0; $i<$len; $i++){
 			$cd     = $cds[$i];
@@ -144,7 +149,7 @@ class ValidationMessage{
 
 	/**
 	 * メッセージをセットする
-	 * 
+	 *
 	 * メッセージをオブジェクト内にセットする。
 	 * 同一の$CDが存在する場合は上書きされる。
 	 *
@@ -160,7 +165,7 @@ class ValidationMessage{
 
 	/**
 	 * 言語種別をセットする
-	 * 
+	 *
 	 * どの言語を使用するかをオブジェクト内にセットする。
 	 *
 	 * @param  string $lang  言語CD
