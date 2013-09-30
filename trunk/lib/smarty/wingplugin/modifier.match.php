@@ -5,4 +5,3 @@ function smarty_modifier_match($subject, $pattern){
 	else
 		return(false);
 }
-?>
