@@ -1,7 +1,7 @@
 <?php
 /* [WingPHP]
  *  - lib/Util/Validation/index.php
- *  
+ *
  * The MIT License
  * Copyright (c) 2013 WingPHP < http://wingphp.net >
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,7 +30,7 @@ uselib('Util/Validation/Message');
 
 /**
  * Validationクラス
- * 
+ *
  * 入力値のチェックを汎用的に行うクラス。
  *   ToDo: 若干煩雑なのでもう少しコード量を減らせないか…。
  *
@@ -41,21 +41,21 @@ uselib('Util/Validation/Message');
  * //---------------------
  * class FooController extends BaseController{
  *   const MODE = 'form';
- * 
+ *
  *   public function form(){
  *     $this->display('foo/form.html');
  *   }
- * 
+ *
  *   public function check(){
  *     uselib('Util/Validation');
- * 
+ *
  *     // インスタンス生成
  *     $v = new Validation(self::MODE);   // mode に"form" を指定＝クエリー値が対象になる
- * 
+ *
  *     // 独自のルールを追加する場合は事前に定義する
  *     $v->addRule(
  *         'hoge'
- *       , function($userid){             // 必ずbooleanを返す無名関数を渡す
+ *       , function($userid){        // 必ずbooleanを返す無名関数を渡す
  *           if(...) return(true);   // trueで通過
  *           else    return(false);  // falseでエラー
  *          }
@@ -72,12 +72,12 @@ uselib('Util/Validation/Message');
  *     $v->addList(array('hoge'=>array('require')));      //setRuleを再び呼ぶと既存の検証リストに追加される
  *
  *     // $v->clearList();   //現在定義されている検証リストをクリアしたい場合はこちら
- * 
+ *
  *
  *     // チェックするデータを定義（省略可）
  *     // $q = new QueryModel();
  *     // $v->addData(array('userid' => $q->data('bar')));    //addDataでvalidation対象を追加する
- * 
+ *
  *     if ( $v->check() ){
  *       // 成功時処理
  *       $m = new FooModel();
@@ -90,17 +90,17 @@ uselib('Util/Validation/Message');
  *     }
  *   }
  * }
- * 
+ *
  * //---------------------
  * // View
  * //---------------------
  * <form action="/foo/check">
  *   {input type="text" name="bar" errclass="warning"} <!-- error時にclassを追加する -->
  *   {input type="text" name="bar" notsetvalue=true}   <!-- 自動的に入力値をセットしない -->
- *   
+ *
  *   {iserror name="bar"}<p>{errormsg name="bar"}</p>{/iserror}
  *   {iserror name="bar"}<p>独自のメッセージを使いたい場合はこんな感じで</p>{/iserror}
- * 
+ *
  *   <input type="submit">
  * </form>
  * </code>
@@ -117,10 +117,10 @@ class Validation{
 	//---------------------------------------------
 	private $mode = null;				// 動作モード
 
-	private $list   = array();			// 検証ルール格納用
-	private $target = array();			// 検証データ格納用
-	
-	private $vmsg      = null;			// ValidationMessageオブジェクト入れ
+	private $list   = array();		// 検証ルール格納用
+	private $target = array();		// 検証データ格納用
+
+	private $vmsg      = null;		// ValidationMessageオブジェクト入れ
 	private $error     = array();		// エラーコード格納用
 	private $errormsg  = array();		// エラーメッセージ格納用
 
@@ -129,7 +129,7 @@ class Validation{
 
 	/**
 	 * コンストラクタ
-	 * 
+	 *
 	 * @param  string $mode 動作モード 'self' or 'form'
 	 * @param  string $lang エラーメッセージ用言語 'ja'固定
 	 * @return void
@@ -152,16 +152,16 @@ class Validation{
 			, 'num'   => function($val){ return( preg_match(Regex::NUM,   $val) ); }		// 書式 半角数字(文字列としての数字も真)
 			, 'alpha' => function($val){ return( preg_match(Regex::ALPHA, $val) ); }		// 書式 半角英字
 			, 'alnum' => function($val){ return( preg_match(Regex::ALNUM, $val) ); }		// 書式 半角英数字
-	
-			, 'require' => function($val){ return( isset($val) && $val !== '' ); }						// 必須項目
+
+			, 'require' => function($val){ return( isset($val) && $val !== '' ); }		// 必須項目
 			, 'bytemax' => function($val, $opt){ return( strlen($val) <= $opt[0] );  }	// 最大バイト長
-			, 'bytemin' => function($val, $opt){ return( strlen($val) >= $opt[0] ); }	// 最小バイト長
-			, 'max'     => function($val, $opt){ return( $val <= $opt[0] ); }			// 最大値
-			, 'min'     => function($val, $opt){ return( $val >= $opt[0] ); }			// 最小値
+			, 'bytemin' => function($val, $opt){ return( strlen($val) >= $opt[0] ); }		// 最小バイト長
+			, 'max'     => function($val, $opt){ return( $val <= $opt[0] ); }				// 最大値
+			, 'min'     => function($val, $opt){ return( $val >= $opt[0] ); }				// 最小値
 
 			, 'match' => function($val, $opt){ return( preg_match($opt[0], $val) ); }		// 指定した正規表現にマッチするか
-			, 'eq'    => function($val, $opt){ return( $val === $opt[0] ); }			// 指定した文字列と同じか
-			, 'ne'    => function($val, $opt){ return( $val !== $opt[0] ); }			// 指定した文字列と違うか
+			, 'eq'    => function($val, $opt){ return( $val === $opt[0] ); }				// 指定した文字列と同じか
+			, 'ne'    => function($val, $opt){ return( $val !== $opt[0] ); }				// 指定した文字列と違うか
 			, 'in'    => function($val, $opt){ return( in_array($val, $opt)); }			// 指定したリスト内のいずれかと合致するか
 
 			// 日付が妥当な物か
@@ -195,7 +195,7 @@ class Validation{
 				for ($i=0; $i < $len; $i++)
 					if( !isset($val[$i]) || $val[$i] === '')
 						return(false);
-	
+
 				return(true);
 			}
 
@@ -211,7 +211,6 @@ class Validation{
 
 				return(false);
 			}
-
 		);
 
 		//-------------------------------
@@ -232,7 +231,7 @@ class Validation{
 
 	/**
 	 * 検証リストに追加する
-	 * 
+	 *
 	 * 次のように第一引数にルールを指定する。
 	 *   array(
 	 *        '名前1' => array('検証名1', '検証名2' ... '検証名n');
@@ -243,7 +242,7 @@ class Validation{
 	 * 独自の関数を指定することができる
 	 *   - 検証名との併記も可能
 	 *   - 独自関数を複数併記することも可能
-	 * 2回目以降呼び出された場合は、既存のリストに追加される。 
+	 * 2回目以降呼び出された場合は、既存のリストに追加される。
 	 *
 	 * @param  array $rule ルール格納用
 	 * @return void
@@ -256,9 +255,9 @@ class Validation{
 
 	/**
 	 * 検証リストをリセットする
-	 * 
+	 *
 	 * setRuleで定義されたルールをすべてリセットします
-	 * 
+	 *
 	 * @return void
 	 * @access public
 	 */
@@ -268,13 +267,13 @@ class Validation{
 
 	/**
 	 * 検証リストを取得する
-	 * 
+	 *
 	 * 現状オブジェクト内にある検証リストを取得する。
 	 * $nameを未指定の場合はすべての、
 	 * $nameを指定した場合は該当する項目を返却する。
 	 *
 	 * @param  array $name 取得したい項目名(任意)
-	 * @return mixed $name未指定時:全リスト, $name指定時:個別, $name指定時未存在:false  
+	 * @return mixed $name未指定時:全リスト, $name指定時:個別, $name指定時未存在:false
 	 * @access public
 	 */
 	public function getList($name=null){
@@ -292,10 +291,10 @@ class Validation{
 
 	/**
 	 * 検証ルールを追加する
-	 * 
+	 *
 	 * ルールに独自関数を追加します。
 	 * 同名のルールがある場合は上書きされます。
-	 * 
+	 *
 	 * @param  string  $name ルール名
 	 * @param  object  $func 実行する無名関数(ClosureObject)
 	 * @param  string  $msg  エラー時のメッセージ(任意)
@@ -306,16 +305,16 @@ class Validation{
 		$this->rule[$name] = $func;
 		$this->vmsg->set($name, $msg);
 	}
-	
+
 	/**
 	 * 検証ルールを取得する
-	 * 
+	 *
 	 * 現状オブジェクト内にある検証ルールを取得する。
 	 * $nameを未指定の場合はすべての、
 	 * $nameを指定した場合は該当するルールを返却する。
 	 *
 	 * @param  array $name 取得したいルール名(任意)
-	 * @return mixed $name未指定時:全ルール, $name指定時:個別, $name指定時未存在:false  
+	 * @return mixed $name未指定時:全ルール, $name指定時:個別, $name指定時未存在:false
 	 * @access public
 	 */
 	public function getRule($name=null){
@@ -332,7 +331,7 @@ class Validation{
 
 	/**
 	 * 検証用データを追加する
-	 * 
+	 *
 	 * 検証データを既存のデータ一覧に追加する。
 	 * 同名のデータが存在する場合は上書きされる。
 	 *
@@ -347,13 +346,13 @@ class Validation{
 
 	/**
 	 * 検証用データを取得する
-	 * 
+	 *
 	 * 現状オブジェクト内にある検証データを取得する。
 	 * $nameを未指定の場合はすべての、
 	 * $nameを指定した場合は該当するデータを返却する。
 	 *
 	 * @param  array $name 取得したいデータ名(任意)
-	 * @return mixed $name未指定時:全データ, $name指定時:個別データ, $name指定時未存在:false  
+	 * @return mixed $name未指定時:全データ, $name指定時:個別データ, $name指定時未存在:false
 	 * @access public
 	 */
 	public function getData($name=null){
@@ -370,10 +369,10 @@ class Validation{
 
 	/**
 	 * 検証用データをリセットする
-	 * 
+	 *
 	 * 現状オブジェクト内にある検証データをすべて削除します。
 	 *
-	 * @return void 
+	 * @return void
 	 * @access public
 	 */
 	public function clearData(){
@@ -384,11 +383,11 @@ class Validation{
 
 	/**
 	 * 検証を実施する
-	 * 
+	 *
 	 * 定義された検証用ルールに従って、データを検証する。
 	 * 途中でルールに反した項目があった場合でもすべてのルールを
 	 * 最後までチェックする。
-	 * 
+	 *
 	 * @return boolean 全項目をクリアでtrue, エラーがあればfalse
 	 * @access public
 	 */
@@ -456,7 +455,7 @@ class Validation{
 
 	/**
 	 * エラー内容を$Scratchにセットする
-	 * 
+	 *
 	 * check実行後にエラー結果を次の場所にセットする。
 	 *  $Scratch[モード][フォーム名]['error']
 	 *
@@ -468,14 +467,14 @@ class Validation{
 		$mode  = $this->mode;
 		$error = $this->error;
 		$msg   = $this->errormsg;
-		
-		$Scratch[$mode]['error']    = $error; 
+
+		$Scratch[$mode]['error']    = $error;
 		$Scratch[$mode]['errormsg'] = $this->vmsg->gets(array_keys($msg));
 	}
 
 	/**
 	 * エラー内容を取得する
-	 * 
+	 *
 	 * 現状のエラー内容を返却する。
 	 * 自分自身でエラー表示をコントロールしたい場合などに利用する。
 	 *
@@ -488,7 +487,7 @@ class Validation{
 
 	/**
 	 * エラー内容を追加する
-	 * 
+	 *
 	 * クラス内変数にエラー内容を追加する。
 	 *
 	 * @param  $name
@@ -504,5 +503,3 @@ class Validation{
 		$this->errormsg[$cd] = 1;
 	}
 }
-
-
