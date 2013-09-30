@@ -199,14 +199,29 @@ class Validation{
 				if(!is_array($val))
 					return(false);
 
-				$len  = count($val);
+				$len = count($val);
 				for ($i=0; $i < $len; $i++)
 					if(isset($val[$i]) && $val[$i] !== '')
 						return(true);
 
 				return(false);
 			}
+
+			// 配列の要素が、すべて指定したリスト内のいずれかと合致するか
+			, 'gin' => function($val, $opt){
+				if(!is_array($val))
+					return(false);
+
+				$len = count($val);
+				for ($i=0; $i < $len; $i++)
+					if( !in_array($val[$i], $opt) )
+						return(false);
+
+				return(true);
+			}
 		);
+
+
 
 		//-------------------------------
 		// デフォルトの検証データ差込み
