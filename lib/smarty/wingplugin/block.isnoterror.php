@@ -1,6 +1,6 @@
 ﻿<?php
 require_once('lib.iserror.php');
-function smarty_block_iserror($params, $content, &$smarty, &$repeat){
+function smarty_block_isnoterror($params, $content, &$smarty, &$repeat){
 	if(!$repeat){
 		//-----------------------------
 		// 引数取得
@@ -12,7 +12,7 @@ function smarty_block_iserror($params, $content, &$smarty, &$repeat){
 		//-----------------------------
 		$is_error = smarty_wgplugin_iserror($name);
 
-		if($is_error)
+		if(!$is_error)
 			return($content);
 		else
 			return(null);
