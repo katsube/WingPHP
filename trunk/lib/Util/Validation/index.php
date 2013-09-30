@@ -194,19 +194,6 @@ class Validation{
 				);
 			}
 
-			// 配列の要素すべてが入力必須
-			, 'grequire' => function($val){
-				if(!is_array($val))
-					return(false);
-
-				$len  = count($val);
-				for ($i=0; $i < $len; $i++)
-					if( !isset($val[$i]) || $val[$i] === '')
-						return(false);
-
-				return(true);
-			}
-
 			// 配列の要素中、1つ以上が入力されている
 			, 'grequire1' => function($val){
 				if(!is_array($val))
