@@ -1,7 +1,7 @@
 <?php
 /* [WingPHP]
  *  - BaseController
- *  
+ *
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,7 +25,7 @@
 
 /**
  * BaseControllerクラス
- * 
+ *
  * 各コントローラーのスーパークラス。
  * 以下のような処理を受け持つ。
  *  - ビュー周りの処理
@@ -47,7 +47,7 @@ class BaseController{
 	private $layout   = null;
 	private $layout_marker = null;
 	private $run_validation = false;
-	
+
 	/**
 	 * コンストラクタ
 	 *
@@ -85,10 +85,10 @@ class BaseController{
 	public function smarty(){
 		if(!$this->smarty)
 			$this->_setSmarty();
-		
+
 		return($this->smarty);
 	}
-	
+
 	/**
 	 * view(Smarty)のレイアウトファイルを指定
 	 *
@@ -99,7 +99,7 @@ class BaseController{
 		$this->layout = $file;
 		$this->layout_marker = $marker;
 	}
-	
+
 	/**
 	 * view(Smarty)に値をセットする
 	 *
@@ -110,7 +110,7 @@ class BaseController{
 	public function assign($key, $value=null){
 		if(!$this->smarty)
 			$this->_setSmarty();
-		
+
 		if(is_array($key))
 			$this->smarty->assign($key);
 		else
@@ -119,15 +119,15 @@ class BaseController{
 
 	/**
 	 * viewを出力する
-	 * 
-	 * @param  string  
+	 *
+	 * @param  string
 	 * @access public
 	 * @todo   キャッシュ関連の対応を行う。
 	 */
 	public function display($file){
 		if(!$this->smarty)
 			$this->_setSmarty();
-		
+
 		//layout使わない
 		if($this->layout === null){
 			$this->smarty->display($file);
@@ -138,7 +138,7 @@ class BaseController{
 					  $this->layout_marker
 					, $this->smarty->fetch($file)
 			);
-			
+
 			$this->smarty->display($this->layout);
 		}
 	}
@@ -167,16 +167,16 @@ class BaseController{
 		$from    = $data['from'];
 		$to      = $data['to'];
 		$body    = $data['body'];
-		
+
 		//ヘッダー作成
 		$header = sprintf('From: %s', $from);
-		
+
 		//送信
 		return(
 			mb_send_mail($to, $subject, $body, $header)
 		);
 	}
-	
+
 	/*--------------------------------------------
 	 * ■ Private ■
 	 *--------------------------------------------
@@ -184,7 +184,7 @@ class BaseController{
 	 *--------------------------------------------*/
 
 	/**
-	 * Smartyインスタンスを作成、設定を行う 
+	 * Smartyインスタンスを作成、設定を行う
 	 *
 	 * Smartyインスタンスを作成し、$GLOBALS['Conf']の内容に
 	 * したがって各種設定を反映する。
@@ -203,13 +203,13 @@ class BaseController{
 
 		switch($Conf['Smarty']['version']){
 			case '3.1':
-				$smarty->plugins_dir = array_merge(array(realpath('../lib/smarty/3.1/libs/plugins')), $Conf['Smarty']['plugin']);
+				$smarty->plugins_dir = array_merge(array(realpath('../lib/Smarty/3.1/libs/plugins')), $Conf['Smarty']['plugin']);
 				break;
 			default:
 				$smarty->plugins_dir = $Conf['Smarty']['plugin'];
 				break;
 		}
-		
+
 		//キャッシュ
 		$smarty->caching = $Conf['Smarty']['is_cache'];
 		$smarty->cache_lifetime = $Conf['Smarty']['cache_life'];

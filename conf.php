@@ -1,7 +1,7 @@
 <?php
 /* [WingPHP]
  *  - global configuration file.
- *  
+ *
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -77,17 +77,17 @@ $Conf = array(
 	, 'Session' => array(
 		'name' => 'SESSID'
 	)
-	
+
 	//■ライブラリ
 	, 'Lib' => array(
 		'dir' => '../lib/'
 	)
-	
+
 	//■キャッシュ
 	, 'Cache' => array(
 		  'strage'  => 'File'					//'File' or 'MemCache'
 		, 'expire'  => 3600					//秒数を指定。 0=無期限
-		
+
 		//DB系
 		, 'db_use'    => false				//ModelのDB系メソッドでキャッシュするか
 		, 'db_pre'    => '__lib.dbcache'		//ModelのDB系メソッドのキャッシュIDの先頭文字列
@@ -115,10 +115,10 @@ $Conf = array(
 		  'version' => '3.1'					//'3.1'固定
 		, 'tmpl'    => '../view/'
 		, 'tmpl_c'  => '../temp/smarty/templates_c/'
-		, 'plugin'  => array(realpath('../lib/smarty/wingplugin'))
-		, 'config'  => '../lib/smarty/configs/'
+		, 'plugin'  => array(realpath('../lib/Smarty/wingplugin'))
+		, 'config'  => '../lib/Smarty/configs/'
 		, 'cache'   => '../temp/smarty/cache/'
-		
+
 		, 'is_cache'   => true
 		, 'cache_life' => 0
 		//, 'cache_life' => 60 * 60	//秒
@@ -136,7 +136,7 @@ $Conf = array(
 
 /**
  * Routingクラス
- * 
+ *
  * ルーティングクラスです。
  * ルーティングを行う場合は、直接このクラスを書き換えてください。
  *
@@ -157,7 +157,7 @@ class Routing{
 	public $ctrl;		//コントローラー
 	public $method;		//メソッド
 	public $param;		//パラメーター
-	
+
 	function __construct(framewing $obj){
 		$this->ctrl   = $obj->ctrl_name;		//FoobarController
 		$this->method = $obj->method_name;		//index
