@@ -71,10 +71,9 @@ class BaseController{
 	 * ■ Public ■
 	 *--------------------------------------------
 	 * - smarty
-	 * - set
-	 * - location
-	 * - check
-	 * - sendmail
+	 * - layout
+	 * - assign
+	 * - display
 	 *--------------------------------------------*/
 	/**
 	 * view用のSmartyオブジェクトを返却
@@ -143,39 +142,6 @@ class BaseController{
 		}
 	}
 
-
-	/**
-	 * メール送信ラッパー
-	 *
-	 * mb_send_mailの簡易ラッパー。将来的にもろもろ拡張予定。
-	 *
-	 * Example. <code>
-	 *   $this->sendmail(array(
-	 *        'subject' => 'メールの件名'
-	 *      , 'from'    => 'from@example.com'
-	 *      , 'to'      => 'to@example.com'
-	 *      , 'body'    => $body
-	 *	));
-	 * </code>
-	 *
-	 * @param  array  $data  array('subject'=>'件名', 'from'=>'送信者', 'to'=>'宛先', 'body'=>'本文')
-	 * @return bool
-	 * @access public
-	 */
-	public function sendmail($data){
-		$subject = $data['subject'];
-		$from    = $data['from'];
-		$to      = $data['to'];
-		$body    = $data['body'];
-
-		//ヘッダー作成
-		$header = sprintf('From: %s', $from);
-
-		//送信
-		return(
-			mb_send_mail($to, $subject, $body, $header)
-		);
-	}
 
 	/*--------------------------------------------
 	 * ■ Private ■
