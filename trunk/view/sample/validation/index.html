@@ -138,8 +138,50 @@
 </form>
 </div> <!-- /tab-pane-->
 
+
+
+
 <div class="tab-pane" id="ex">
 <form action="/sample/validation/check3#extab" class="form-horizontal" role="form" style="margin-top:25px;">
+
+	<div class="form-group{iserror name="strcmp1"} has-error{/iserror}">
+		<label for="strcmp1" class="col-lg-2 col-xs-2 control-label">2箇所が同一か</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="strcmp1" name="strcmp1" placeholder="下と同じ文字でなければエラー" value="{$smarty.request.strcmp1|escape}" style="margin-bottom:5px;">
+			<input type="textbox" class="form-control" id="strcmp2" name="strcmp2" placeholder="上と同じ文字でなければエラー" value="{$smarty.request.strcmp2|escape}">
+			{iserror name="strcmp1"}<span class="help-block">{errormsg name="strcmp1"}</span>{/iserror}
+			{isnoterror name="strcmp1"}<span class="help-block">※パスワードやメアドの確認入力に使う想定</span>{/isnoterror}
+		</div>
+	</div>
+
+	<div class="form-group{iserror name="check2"} has-error{/iserror}">
+		<label class="col-lg-2 col-xs-2 control-label">仲間外れ</label>
+		<div class="col-lg-4 col-xs-4">
+			<div class="checkbox">
+				<label><input type="checkbox" name="check2[]" value="1"{if $smarty.request.check2|inarray:1} checked="checked"{/if}> ねこ</label>
+			</div>
+			<div class="checkbox">
+				<label><input type="checkbox" name="check2[]" value="2"{if $smarty.request.check2|inarray:2} checked="checked"{/if}> ぬこ</label>
+			</div>
+			<div class="checkbox">
+				<label><input type="checkbox" name="check2[]" value="3"{if $smarty.request.check2|inarray:3} checked="checked"{/if}> にゃんこ</label>
+			</div>
+			<div class="checkbox" style="background-color: lightyellow">
+				<label><input type="checkbox" name="check2[]" value="4"{if $smarty.request.check2|inarray:4} checked="checked"{/if}> わんこ</label>
+			</div>
+			{iserror name="check2"}<span class="help-block">{errormsg name="check2"}</span>{/iserror}
+			{isnoterror name="check2"}<span class="help-block">※わんこにチェックするとエラー。意図しない値でないか確認する際に利用。</span>{/isnoterror}
+		</div>
+	</div>
+
+	<div class="form-group{iserror name="mix1"} has-error{/iserror}">
+		<label for="mix1" class="col-lg-2 col-xs-2 control-label">合体技</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="textbox" class="form-control" id="mix1" name="mix1" placeholder="必須,5byte以上,半角数字でなければエラー" value="{$smarty.request.mix1|escape}">
+			{iserror name="mix1"}<span class="help-block">{errormsg name="mix1"}</span>{/iserror}
+		</div>
+	</div>
+
 	<div class="form-group">
 		<label class="col-lg-2 col-xs-2 control-label"></label>
 		<div class="col-lg-4 col-xs-4">
@@ -148,6 +190,8 @@
 	</div>
 </form>
 </div> <!-- /tab-pane-->
+
+
 
 
 <div class="tab-pane" id="form">
@@ -182,37 +226,41 @@
 		</div>
 	</div>
 
-	<!-- checkbox2 -->
-	<div class="form-group{iserror name="check2"} has-error{/iserror}">
-		<label class="col-lg-2 col-xs-2 control-label">チェックボックス</label>
+	<!-- radio -->
+	<div class="form-group{iserror name="radio1"} has-error{/iserror}">
+		<label class="col-lg-2 col-xs-2 control-label">ラジオボタン</label>
 		<div class="col-lg-4 col-xs-4">
-			<div class="checkbox">
-				<label><input type="checkbox" name="check2[]" value="1"{if $smarty.request.check2|inarray:1} checked="checked"{/if}> ねこ</label>
+			<div class="radio">
+				<label><input type="radio" name="radio1[]" value="1"{if $smarty.request.radio1|inarray:1} checked="checked"{/if}> ねこ</label>
 			</div>
-			<div class="checkbox">
-				<label><input type="checkbox" name="check2[]" value="2"{if $smarty.request.check2|inarray:2} checked="checked"{/if}> ぬこ</label>
+			<div class="radio">
+				<label><input type="radio" name="radio1[]" value="2"{if $smarty.request.radio1|inarray:2} checked="checked"{/if}> ぬこ</label>
 			</div>
-			<div class="checkbox">
-				<label><input type="checkbox" name="check2[]" value="3"{if $smarty.request.check2|inarray:3} checked="checked"{/if}> にゃんこ</label>
+			<div class="radio">
+				<label><input type="radio" name="radio1[]" value="3"{if $smarty.request.radio1|inarray:3} checked="checked"{/if}> にゃんこ</label>
 			</div>
-			<div class="checkbox">
-				<label><input type="checkbox" name="check2[]" value="4"{if $smarty.request.check2|inarray:4} checked="checked"{/if}> わんこ</label>
-			</div>
-			{iserror name="check2"}<span class="help-block">{errormsg name="check2"}。<br>※本来は想定外の値チェックに利用。</span>{/iserror}
-			{isnoterror name="check2"}<span class="help-block">※わんこにチェックするとエラー</span>{/isnoterror}
+			{iserror name="radio1"}<span class="help-block">{errormsg name="radio1"}</span>{/iserror}
+			{isnoterror name="radio1"}<span class="help-block">※1つも選択しないとエラー</span>{/isnoterror}
 		</div>
 	</div>
 
-{*
-	<!-- radio -->
-	<div class="form-group{iserror name=""} has-error{/iserror}">
-		<label for="" class="col-lg-2 col-xs-2 control-label"></label>
+	<!-- textarea-->
+	<div class="form-group{iserror name="textarea1"} has-error{/iserror}">
+		<label for="textarea1" class="col-lg-2 col-xs-2 control-label">テキストエリア</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="" name="" placeholder="" value="{$smarty.request.|escape}">
-			{iserror name=""}<span class="help-block">{errormsg name=""}</span>{/iserror}
+			<textarea name="textarea1" class="form-control" rows="3" placeholder="2byte～16byteで記入しないとエラー">{$smarty.request.textarea1|escape}</textarea>
+			{iserror name="textarea1"}<span class="help-block">{errormsg name="textarea1"}</span>{/iserror}
 		</div>
 	</div>
-*}
+
+	<!-- password -->
+	<div class="form-group{iserror name="passwd1"} has-error{/iserror}">
+		<label for="passwd1" class="col-lg-2 col-xs-2 control-label">パスワード</label>
+		<div class="col-lg-4 col-xs-4">
+			<input type="password" class="form-control" id="passwd1" name="passwd1" placeholder="半角英数字でなければエラー(記号不可)" value="{$smarty.request.passwd1|escape}">
+			{iserror name="passwd1"}<span class="help-block">{errormsg name="passwd1"}</span>{/iserror}
+		</div>
+	</div>
 
 	<div class="form-group">
 		<label class="col-lg-2 col-xs-2 control-label"></label>

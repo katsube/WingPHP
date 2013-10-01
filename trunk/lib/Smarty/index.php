@@ -1,6 +1,6 @@
 ﻿<?php
 /* [WingPHP]
- *  - smarty/index.php
+ *  - Smarty/index.php
  *
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
