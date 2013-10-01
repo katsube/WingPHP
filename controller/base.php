@@ -27,11 +27,6 @@
  * BaseControllerクラス
  *
  * 各コントローラーのスーパークラス。
- * 以下のような処理を受け持つ。
- *  - ビュー周りの処理
- *  - リダイレクトなどHTTPヘッダ周り
- *  - バリデーション
- *  - メール送信
  *
  * @package    BaseController
  * @copyright  2010 WingPHP
