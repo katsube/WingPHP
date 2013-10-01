@@ -167,9 +167,9 @@ class Validation{
 			//, 'datebetween' => function($val, $opt){}
 
 			, 'match' => function($val, $opt){ return( is_null($val) || $val == "" || preg_match($opt[0], $val) ); }		// 指定した正規表現にマッチするか
-			, 'eq'    => function($val, $opt){ return( $val === $opt[0] ); }				// 指定した文字列と同じか
-			, 'ne'    => function($val, $opt){ return( $val !== $opt[0] ); }				// 指定した文字列と違うか
-			, 'in'    => function($val, $opt){ return( in_array($val, $opt)); }			// 指定したリスト内のいずれかと合致するか
+			, 'eq'    => function($val, $opt){ return( is_null($val) || $val == "" || $val === $opt[0] ); }				// 指定した文字列と同じか
+			, 'ne'    => function($val, $opt){ return( is_null($val) || $val == "" || $val !== $opt[0] ); }				// 指定した文字列と違うか
+			, 'in'    => function($val, $opt){ return( is_null($val) || $val == "" || in_array($val, $opt)); }			// 指定したリスト内のいずれかと合致するか
 
 			// 日付が妥当な物か
 			//   $v->addList(array( 'year'=>['date', $q->year, $q->month, $q->day] ));	//yearで引っ掛けてチェックする
@@ -209,13 +209,18 @@ class Validation{
 
 			// 配列の要素が、すべて指定したリスト内のいずれかと合致するか
 			, 'gin' => function($val, $opt){
+				if( is_null($val) || $val == "")
+					return(true);
 				if(!is_array($val))
 					return(false);
 
 				$len = count($val);
-				for ($i=0; $i < $len; $i++)
+				for ($i=0; $i < $len; $i++){
+					if( is_null($val[$i]) || $val[$i] == "")
+						continue;
 					if( !in_array($val[$i], $opt) )
 						return(false);
+				}
 
 				return(true);
 			}
