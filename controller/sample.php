@@ -96,11 +96,24 @@ class SampleController extends BaseController{
 			// フォーム部品
 			//---------------
 			case 'check2':
+				$v->addList(array(
+					  'select1'   => array('require')
+					, 'check1'    => array('grequire1')
+					, 'radio1'    => array('grequire1')
+					, 'textarea1' => array(['bytemin',2], ['bytemax', 16])
+					, 'passwd1'   => array('alnum')
+				));
+				break;
+
+			//---------------
+			// 応用
+			//---------------
+			case 'check3':
 				$q = new QueryModel();
 				$v->addList(array(
-					  'select1' => array('require')
-					, 'check1' => array('grequire1')
-					, 'check2' => array(['gin', 1, 2, 3])
+					  'strcmp1' => array(['eq', $q->strcmp2])			//strcmp1でひっかける
+					, 'check2'  => array(['gin', 1, 2, 3])
+					, 'mix1'    => array('require', ['bytemin', 5], 'num')
 				));
 				break;
 
