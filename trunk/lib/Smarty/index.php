@@ -1,7 +1,7 @@
 ﻿<?php
 /* [WingPHP]
  *  - smarty/index.php
- *  
+ *
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,6 +27,6 @@ global $Conf;
 switch( $Conf['Smarty']['version'] ){
 	case '3.1':
 	default:
-		uselib('smarty/3.1/libs/Smarty.class');
+		uselib('Smarty/3.1/libs/Smarty.class');
 		break;
 }
