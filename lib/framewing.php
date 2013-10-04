@@ -1,7 +1,7 @@
 <?php
 /* [WingPHP]
  *  - framewing class
- *  
+ *
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,6 +23,17 @@
  * THE SOFTWARE.
  */
 
+/**
+ * framewingクラス
+ *
+ * リクエストURLを解析し指定コントローラーを実行する。
+ *
+ * @package    framewing
+ * @copyright  2013 WingPHP
+ * @author     M.Katsube < katsubemakito@gmail.com >
+ * @license    The MIT License
+ * @access     public
+ */
 class framewing{
 	//--------------------------------------------
 	// メンバ変数
@@ -30,14 +41,14 @@ class framewing{
 	public $ctrl_name   = '';
 	public $method_name = '';
 	public $param = array();
-	
+
 	//--------------------------------------------
 	// コンストラクタ
 	//--------------------------------------------
 	function __construct(){
 		//パース
 		$this->_parse();
-		
+
 		// ルーティング
 		$rt = new Routing($this);
 		$this->ctrl_name   = $rt->ctrl;
@@ -52,41 +63,54 @@ class framewing{
 		;
 	}
 
-
 	/*--------------------------------------------
 	 * ■ Public ■
 	 *--------------------------------------------
 	 * - go
 	 *--------------------------------------------*/
-	//--------------------------------------------
-	// 実行
-	//--------------------------------------------
+	/**
+	 * コントローラーを実行する
+	 *
+	 * コントローラーとして指定されたクラス(メソッド)を実行する。
+	 * 存在しない、何らかの理由により実行できない場合はerrorコントローラーに
+	 * リダイレクトする。
+	 *
+	 * @return void
+	 * @access public
+	 */
 	public function go(){
 		$ctrl = $this->ctrl_name;
 		$mthd = $this->method_name;
-		
+
 		if( is_callable(array($ctrl, $mthd))								//存在チェック
 						&& (strcmp('BaseController', $ctrl) != 0)			//スーパークラスは直接実行しない
 						&& !preg_match('/^_/', $mthd)){						//先頭が _ で始まるメソッドは実行しない
-			
+
 			$obj = new $ctrl();
 			call_user_func(array($obj, $mthd), $this->param);
 		}
 		else{
-			// header('Location: /error/msg/404');
-			header("HTTP/1.1 404 Not Found");
+			http_error(404);
 		}
 	}
-
 
 	/*--------------------------------------------
 	 * ■ Private ■
 	 *--------------------------------------------
 	 * - _parse
 	 *--------------------------------------------*/
-	//--------------------------------------------
-	// アクションなど解析しセット
-	//--------------------------------------------
+	/**
+	 * リクエストURLをパースする
+	 *
+	 * リクエストされたURLを '/' で分割し、
+	 * 　- クラス
+	 *   - メソッド
+	 *   - 引数
+	 * に分割する。
+	 *
+	 * @return void
+	 * @access private
+	 */
 	private function _parse(){
 		//-----------------------
 		// パース
@@ -94,7 +118,7 @@ class framewing{
 		if( array_key_exists('_q', $_REQUEST) ){
 			$query = $_REQUEST['_q'];
 			$arr   = explode('/', $query);
-			
+
 			// _qの冒頭に'/'がある場合、先頭の空配列を削除
 			if(count($arr)>1 && empty($arr[0]))
 				 array_splice($arr, 0, 1);
@@ -117,7 +141,7 @@ class framewing{
 			$this->method_name = $arr[1];
 		else
 			$this->method_name = 'index';
-		
+
 		//パラメーター
 		if(count($arr) > 1)
 			$this->param = array_slice($arr, 2);
