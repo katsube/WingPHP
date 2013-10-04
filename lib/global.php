@@ -1,7 +1,7 @@
 <?php
 /* [WingPHP]
  *  - lib/global.php
- *  
+ *
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,10 +25,10 @@
 
 /**
  * ライブラリを明示的に読み込む
- * 
+ *
  * example.<code>
  *   uselib('Math');						// == require_once('../lib/Math.php');
- *   uselib('stdio', 'stdlib');			// == require_once('../lib/stdio.php'); 
+ *   uselib('stdio', 'stdlib');			// == require_once('../lib/stdio.php');
  *										//    require_once('../lib/stdlib.php');
  *   //以下の二つは同じ意味。
  *   uselib('Net/index');
@@ -42,7 +42,7 @@ function uselib(){
 	global $Conf;
 	$dir  = $Conf['Lib']['dir'];
 	$args = func_get_args();
-	
+
 	foreach ($args as $file){
 		//通常
 		$path = sprintf('%s/%s.php', $dir, $file);
@@ -50,9 +50,9 @@ function uselib(){
 			require_once($path);
 			continue;
 		}
-		
+
 		//ディレクトリ指定
-		$path  = sprintf('%s/%s', $dir, $file);		
+		$path  = sprintf('%s/%s', $dir, $file);
 		$path2 = sprintf('%s/index.php', $path);
 		if( is_dir($path) && is_file($path2)){
 			require_once($path2);
@@ -85,6 +85,18 @@ function location($url, $sec=0){
 	}
 }
 
+/**
+ * HTTPエラー表示を行う
+ *
+ * 標準のErrorControllerへリダイレクトするラッパー関数。
+ *
+ * @param  int  $code  HTTPステータスコード
+ * @access public
+ */
+function http_error($code){
+	$path = sprintf('/error/msg/%s%s', $code, $_SERVER['REQUEST_URI']);
+	location($path);
+}
 
 /**
  * デバグ用の簡易ログを記録する
@@ -92,7 +104,7 @@ function location($url, $sec=0){
  *  $Conf で設定された内容に従い、指定されたログファイルに記録する。
  *  第一引数にファイル識別子、それ以降は記録したい文字列を指定する。
  *  (第二引数以降は可変長のため、いくら指定してもよい)
- * 
+ *
  * example.<code>
  *   addlogfile('ERROR', $userid, $string, $foobar);
  * </code>
@@ -161,7 +173,7 @@ function lockfwrite($path, $str, $reset=false){
 	$fp = fopen($path, 'a');
 	if( !$fp )
 		return(false);
-	
+
 	if (flock($fp, LOCK_EX)){
 		if($reset){
 			ftruncate($fp, 0);
@@ -180,3 +192,18 @@ function lockfwrite($path, $str, $reset=false){
 	}
 }
 
+
+/**
+ * 配列の最後の要素を取得する
+ *
+ * array_popでも最後の値が取得できるが、削除されてしまう。
+ * またendはそのまま利用すると内部ポインタが移動してしまうため、
+ * 共通関数化を行う。
+ *
+ * @param  array  対象配列
+ * @return mixed
+ * @access public
+ */
+function array_end($array){
+	return( end($array) );
+}
