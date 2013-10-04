@@ -138,7 +138,16 @@ class ErrorController extends BaseController{
 	 *--------------------------------------------
 	 * - _isPutHTML
 	 *--------------------------------------------*/
-	private function _isPutHTML($ext){
+	/**
+	 * HTML出力判定
+	 *
+	 * 指定された拡張子でHTMLを出力する可の判定を行う。
+	 * クエリーanに1がセットされている場合は強制的に行う。
+	 *
+	 * @param  string   $ext   拡張子
+	 * @access public
+	 */
+	 private function _isPutHTML($ext){
 		$q = new QueryModel();
 		return(
 			$q->an == 1 || in_array($ext, $this->exts)
