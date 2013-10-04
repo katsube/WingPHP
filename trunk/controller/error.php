@@ -1,7 +1,7 @@
 <?php
 /* [WingPHP]
  *  - ErrorController
- *  
+ *
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,7 +26,7 @@
 
 /**
  * ErrorControllerクラス
- * 
+ *
  * 汎用エラー表示クラス。
  * WingPHPでは何らかの *致命的な* エラーが生じた際に、特定のURLへ遷移させる
  * ことで処理を簡素化させている。
@@ -37,9 +37,9 @@
  *   確認する。
  *
  * Example.
- *   404 Not Found → /error/msg/404
- *   共通エラー    → /error/msg/common
- * 
+ *   404 Not Found → /error/msg/404/[リクエストURI]
+ *   共通エラー    → /error/msg/common/[リクエストURI]
+ *
  * @package    ErrorController
  * @copyright  2010 WingPHP
  * @author     M.Katsube < katsubemakito@gmail.com >
@@ -50,6 +50,12 @@ class ErrorController extends BaseController{
 	//--------------------------------------------
 	// メンバ変数
 	//--------------------------------------------
+	private $exts = array(				//HTML出力対象の拡張子
+						''
+						, 'html', 'htm'
+						, 'txt'
+						, 'css', 'js'
+					);
 
 	/**
 	 * コンストラクタ
@@ -81,7 +87,7 @@ class ErrorController extends BaseController{
 	 * @access public
 	 */
 	public function index(){
-		$this->location('/error/msg/common');
+		location('/error/msg/common');
 	}
 
 	/**
@@ -91,30 +97,52 @@ class ErrorController extends BaseController{
 	 * @access public
 	 */
 	public function msg($argv){
-		$code = $argv[0];
-		$file = '';
-		$status = '200 OK';
+		$code    = $argv[0];
+		$org_url = '/' . implode('/', array_slice($argv, 1));		//アクセス元URL
+		$org_ext = pathinfo($org_url, PATHINFO_EXTENSION);			//↑その拡張子
 
+		$file   = '';
+		$status = '';
 		switch($code){
 			case '404':
 				$file   = 'error/404.html';
 				$status = '404 Not Found';
 				break;
+
 			default:
 				$file   = 'error/common.html';
 				$status = '500 Internal Server Error';
 				break;
 		}
-		
+
 		header("HTTP/1.1 $status");
-		$this->assign('file', $file);
-		$this->display($file);
+		if( $this->_isPutHTML($org_ext) ){
+			$this->assign('request_url', $org_url);
+			$this->display($file);
+		}
 	}
 
+	/* ToDo:
+	 * public function setExts(){
+	 * }
+	 * public function addExts(){
+	 * }
+	 * public function getExts(){
+	 * }
+	 * public function delExts(){
+	 * }
+	 */
 
 	/*--------------------------------------------
 	 * ■ Private ■
 	 *--------------------------------------------
-	 * - 
+	 * - _isPutHTML
 	 *--------------------------------------------*/
+	private function _isPutHTML($ext){
+		$q = new QueryModel();
+		return(
+			$q->an == 1 || in_array($ext, $this->exts)
+		);
+	}
+
 }
