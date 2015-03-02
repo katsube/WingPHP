@@ -109,33 +109,35 @@ grantで設定したアカウントな点に注意してください。
 $ sudo vim /etc/httpd/conf/httpd.conf
 
 # コメントアウトします
-855 # Alias /error/ "/var/www/error/"
+# Alias /error/ "/var/www/error/"
 
 # 以下はVirtualHostで実行する例です。
-987 #
-988 # Use name-based virtual hosting.
-989 #
-990 NameVirtualHost *:80
+#
+# Use name-based virtual hosting.
+#
+NameVirtualHost *:80
 
 # ドメイン名やパスなどは、あなたの環境に合わせて書き換えてください。
 # mod_rewriteまわりの設定はそのままコピー＆ペースト
-1012 <VirtualHost *:80>
-1013 ServerAdmin webmaster@wingphp.net
-1014 DocumentRoot /wingphp/htdocs
-1015 ServerName wingphp.net
-1016 ErrorLog logs/wingphp-error_log
-1017 CustomLog logs/wingphp-access_log common
-1018
-1019 <Directory /wingphp/htdocs>
-1020 <IfModule mod_rewrite.c>
-1021 RewriteEngine On
-1022 RewriteBase /
-1023 RewriteCond %{REQUEST_FILENAME} !-d
-1024 RewriteCond %{REQUEST_FILENAME} !-f
-1025 RewriteRule ^(.*)$ /index.php?_q=$1 [QSA,L]
-1026 </IfModule>
-1027 </Directory>
-1028 </VirtualHost>
+ <VirtualHost *:80>
+   ServerAdmin webmaster@wingphp.net
+   DocumentRoot /wingphp/htdocs
+   ServerName wingphp.net
+   ErrorLog logs/wingphp-error_log
+   CustomLog logs/wingphp-access_log common
+
+   <Directory /wingphp/htdocs>
+     Require all granted   #最近のApacheを使っている方はこの指定を
+
+     <IfModule mod_rewrite.c>
+       RewriteEngine On
+       RewriteBase /
+       RewriteCond %{REQUEST_FILENAME} !-d
+       RewriteCond %{REQUEST_FILENAME} !-f
+       RewriteRule ^(.*)$ /index.php?_q=$1 [QSA,L]
+     </IfModule>
+   </Directory>
+ </VirtualHost>
 }}}
 
 
