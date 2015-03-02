@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>{if $TITLE}{$TITLE|escape} | WingPHP{else}Welcome to WingPHP{/if}</title>
+<title>{if isset($TITLE)}{$TITLE|escape} | WingPHP{else}Welcome to WingPHP{/if}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 <style>
