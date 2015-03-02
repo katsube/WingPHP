@@ -416,7 +416,7 @@ class Validation{
 		// ○データ項目数分回す
 		//------------------------------
 		foreach($list as $name => $array){
-			$data = $target[$name];
+			$data = (array_key_exists($name, $target))? $target[$name]:null;
 
 			//------------------------------
 			// ○ルール数分回す
