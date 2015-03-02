@@ -9,35 +9,36 @@
 	<div class="form-group{iserror name="require"} has-error{/iserror}">
 		<label for="require" class="col-lg-2 col-xs-2 control-label">必須項目(require)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="require" name="require" placeholder="未入力でエラー" value="{$smarty.request.require|escape}">
+			
+			<input type="textbox" class="form-control" id="require" name="require" placeholder="未入力でエラー" value="{request key="require" escape="html"}">
 			{iserror name="require"}<span class="help-block">{errormsg name="require"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="bytemax"} has-error{/iserror}">
 		<label for="bytemax" class="col-lg-2 col-xs-2 control-label">最大バイト数(bytemax)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="bytemax" name="bytemax" placeholder="4byte以上入力するとエラー" value="{$smarty.request.bytemax|escape}">
+			<input type="textbox" class="form-control" id="bytemax" name="bytemax" placeholder="4byte以上入力するとエラー" value="{request key="bytemax" escape="html"}">
 			{iserror name="bytemax"}<span class="help-block">{errormsg name="bytemax"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="bytemin"} has-error{/iserror}">
 		<label for="bytemin" class="col-lg-2 col-xs-2 control-label">最小バイト数(bytemin)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="bytemin" name="bytemin" placeholder="4byte以上入力しないとエラー" value="{$smarty.request.bytemin|escape}">
+			<input type="textbox" class="form-control" id="bytemin" name="bytemin" placeholder="4byte以上入力しないとエラー" value="{request key="bytemin" escape="html"}">
 			{iserror name="bytemin"}<span class="help-block">{errormsg name="bytemin"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="max"} has-error{/iserror}">
 		<label for="max" class="col-lg-2 col-xs-2 control-label">最大値(max)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="max" name="max" placeholder="500を越える数値でエラー" value="{$smarty.request.max|escape}">
+			<input type="textbox" class="form-control" id="max" name="max" placeholder="500を越える数値でエラー" value="{request key="max" escape="html"}">
 			{iserror name="max"}<span class="help-block">{errormsg name="max"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="min"} has-error{/iserror}">
 		<label for="min" class="col-lg-2 col-xs-2 control-label">最小値(min)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="min" name="min" placeholder="500を下回る数値でエラー" value="{$smarty.request.min|escape}">
+			<input type="textbox" class="form-control" id="min" name="min" placeholder="500を下回る数値でエラー" value="{request key="min" escape="html"}">
 			{iserror name="min"}<span class="help-block">{errormsg name="min"}</span>{/iserror}
 		</div>
 	</div>
@@ -45,28 +46,28 @@
 	<div class="form-group{iserror name="match"} has-error{/iserror}">
 		<label for="match" class="col-lg-2 col-xs-2 control-label">正規表現(match)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="match" name="match" placeholder="/^He/にマッチしなければエラー" value="{$smarty.request.match|escape}">
+			<input type="textbox" class="form-control" id="match" name="match" placeholder="/^He/にマッチしなければエラー" value="{request key="match" escape="html"}">
 			{iserror name="match"}<span class="help-block">{errormsg name="match"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="eq"} has-error{/iserror}">
 		<label for="eq" class="col-lg-2 col-xs-2 control-label">文字列比較(eq)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="eq" name="eq" placeholder="'XYLITOL'でなければエラー" value="{$smarty.request.eq|escape}">
+			<input type="textbox" class="form-control" id="eq" name="eq" placeholder="'XYLITOL'でなければエラー" value="{request key="eq" escape="html"}">
 			{iserror name="eq"}<span class="help-block">{errormsg name="eq"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="ne"} has-error{/iserror}">
 		<label for="eq" class="col-lg-2 col-xs-2 control-label">文字列比較(ne)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="ne" name="ne" placeholder="'XYLITOL'ならエラー" value="{$smarty.request.ne|escape}">
+			<input type="textbox" class="form-control" id="ne" name="ne" placeholder="'XYLITOL'ならエラー" value="{request key="ne" escape="html"}">
 			{iserror name="ne"}<span class="help-block">{errormsg name="ne"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="in"} has-error{/iserror}">
 		<label for="eq" class="col-lg-2 col-xs-2 control-label">文字列比較(in)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="in" name="in" placeholder="雪,月,花のいずれかでなければエラー" value="{$smarty.request.in|escape}">
+			<input type="textbox" class="form-control" id="in" name="in" placeholder="雪,月,花のいずれかでなければエラー" value="{request key="in" escape="html"}">
 			{iserror name="in"}<span class="help-block">{errormsg name="in"}</span>{/iserror}
 		</div>
 	</div>
@@ -74,21 +75,21 @@
 	<div class="form-group{iserror name="num"} has-error{/iserror}">
 		<label for="num" class="col-lg-2 col-xs-2 control-label">半角数字(num)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="num" name="num" placeholder="半角数字でなければエラー" value="{$smarty.request.num|escape}">
+			<input type="textbox" class="form-control" id="num" name="num" placeholder="半角数字でなければエラー" value="{request key="num" escape="html"}">
 			{iserror name="num"}<span class="help-block">{errormsg name="num"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="alpha"} has-error{/iserror}">
 		<label for="alpha" class="col-lg-2 col-xs-2 control-label">半角英字(alpha)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="alpha" name="alpha" placeholder="半角英字でなければエラー" value="{$smarty.request.alpha|escape}">
+			<input type="textbox" class="form-control" id="alpha" name="alpha" placeholder="半角英字でなければエラー" value="{request key="alpha" escape="html"}">
 			{iserror name="alpha"}<span class="help-block">{errormsg name="alpha"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="alnum"} has-error{/iserror}">
 		<label for="alnum" class="col-lg-2 col-xs-2 control-label">半角英数字(alnum)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="alnum" name="alnum" placeholder="半角英数字でなければエラー" value="{$smarty.request.alnum|escape}">
+			<input type="textbox" class="form-control" id="alnum" name="alnum" placeholder="半角英数字でなければエラー" value="{request key="alnum" escape="html"}">
 			{iserror name="alnum"}<span class="help-block">{errormsg name="alnum"}</span>{/iserror}
 		</div>
 	</div>
@@ -96,35 +97,35 @@
 	<div class="form-group{iserror name="url"} has-error{/iserror}">
 		<label for="url" class="col-lg-2 col-xs-2 control-label">URL(url)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="url" name="url" placeholder="URLでなければエラー" value="{$smarty.request.url|escape}">
+			<input type="textbox" class="form-control" id="url" name="url" placeholder="URLでなければエラー" value="{request key="url" escape="html"}">
 			{iserror name="url"}<span class="help-block">{errormsg name="url"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="email"} has-error{/iserror}">
 		<label for="email" class="col-lg-2 col-xs-2 control-label">Email(email)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="email" name="email" placeholder="emailでなければエラー" value="{$smarty.request.email|escape}">
+			<input type="textbox" class="form-control" id="email" name="email" placeholder="emailでなければエラー" value="{request key="email" escape="html"}">
 			{iserror name="email"}<span class="help-block">{errormsg name="email"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="ip4"} has-error{/iserror}">
 		<label for="ip4" class="col-lg-2 col-xs-2 control-label">IPアドレス(ip4)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="ip4" name="ip4" placeholder="IPアドレス(IPv4)でなければエラー" value="{$smarty.request.ip4|escape}">
+			<input type="textbox" class="form-control" id="ip4" name="ip4" placeholder="IPアドレス(IPv4)でなければエラー" value="{request key="ip4" escape="html"}">
 			{iserror name="ip4"}<span class="help-block">{errormsg name="ip4"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="postcd"} has-error{/iserror}">
 		<label for="postcd" class="col-lg-2 col-xs-2 control-label">郵便番号(postcd)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="postcd" name="postcd" placeholder="郵便番号(123-4567)でなければエラー" value="{$smarty.request.postcd|escape}">
+			<input type="textbox" class="form-control" id="postcd" name="postcd" placeholder="郵便番号(123-4567)でなければエラー" value="{request key="postcd" escape="html"}">
 			{iserror name="postcd"}<span class="help-block">{errormsg name="postcd"}</span>{/iserror}
 		</div>
 	</div>
 	<div class="form-group{iserror name="tel"} has-error{/iserror}">
 		<label for="tel" class="col-lg-2 col-xs-2 control-label">電話番号(tel)</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="tel" name="tel" placeholder="電話番号でなければエラー" value="{$smarty.request.tel|escape}">
+			<input type="textbox" class="form-control" id="tel" name="tel" placeholder="電話番号でなければエラー" value="{request key="tel" escape="html"}">
 			{iserror name="tel"}<span class="help-block">{errormsg name="tel"}</span>{/iserror}
 		</div>
 	</div>
@@ -147,8 +148,8 @@
 	<div class="form-group{iserror name="strcmp1"} has-error{/iserror}">
 		<label for="strcmp1" class="col-lg-2 col-xs-2 control-label">2箇所が同一か</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="strcmp1" name="strcmp1" placeholder="下と同じ文字でなければエラー" value="{$smarty.request.strcmp1|escape}" style="margin-bottom:5px;">
-			<input type="textbox" class="form-control" id="strcmp2" name="strcmp2" placeholder="上と同じ文字でなければエラー" value="{$smarty.request.strcmp2|escape}">
+			<input type="textbox" class="form-control" id="strcmp1" name="strcmp1" placeholder="下と同じ文字でなければエラー" value="{request key="strcmp1" escape="html"}" style="margin-bottom:5px;">
+			<input type="textbox" class="form-control" id="strcmp2" name="strcmp2" placeholder="上と同じ文字でなければエラー" value="{request key="strcmp2" escape="html"}">
 			{iserror name="strcmp1"}<span class="help-block">{errormsg name="strcmp1"}</span>{/iserror}
 			{isnoterror name="strcmp1"}<span class="help-block">※パスワードやメアドの確認入力に使う想定</span>{/isnoterror}
 		</div>
@@ -158,16 +159,16 @@
 		<label class="col-lg-2 col-xs-2 control-label">仲間外れ</label>
 		<div class="col-lg-4 col-xs-4">
 			<div class="checkbox">
-				<label><input type="checkbox" name="check2[]" value="1"{if $smarty.request.check2|inarray:1} checked="checked"{/if}> ねこ</label>
+				<label><input type="checkbox" name="check2[]" value="1"{if isset($smarty.request.check2) && $smarty.request.check2|inarray:1} checked="checked"{/if}> ねこ</label>
 			</div>
 			<div class="checkbox">
-				<label><input type="checkbox" name="check2[]" value="2"{if $smarty.request.check2|inarray:2} checked="checked"{/if}> ぬこ</label>
+				<label><input type="checkbox" name="check2[]" value="2"{if isset($smarty.request.check2) && $smarty.request.check2|inarray:2} checked="checked"{/if}> ぬこ</label>
 			</div>
 			<div class="checkbox">
-				<label><input type="checkbox" name="check2[]" value="3"{if $smarty.request.check2|inarray:3} checked="checked"{/if}> にゃんこ</label>
+				<label><input type="checkbox" name="check2[]" value="3"{if isset($smarty.request.check2) && $smarty.request.check2|inarray:3} checked="checked"{/if}> にゃんこ</label>
 			</div>
 			<div class="checkbox" style="background-color: lightyellow">
-				<label><input type="checkbox" name="check2[]" value="4"{if $smarty.request.check2|inarray:4} checked="checked"{/if}> わんこ</label>
+				<label><input type="checkbox" name="check2[]" value="4"{if isset($smarty.request.check2) && $smarty.request.check2|inarray:4} checked="checked"{/if}> わんこ</label>
 			</div>
 			{iserror name="check2"}<span class="help-block">{errormsg name="check2"}</span>{/iserror}
 			{isnoterror name="check2"}<span class="help-block">※わんこにチェックするとエラー。意図しない値でないか確認する際に利用。</span>{/isnoterror}
@@ -177,7 +178,7 @@
 	<div class="form-group{iserror name="mix1"} has-error{/iserror}">
 		<label for="mix1" class="col-lg-2 col-xs-2 control-label">合体技</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="textbox" class="form-control" id="mix1" name="mix1" placeholder="必須,5byte以上,半角数字でなければエラー" value="{$smarty.request.mix1|escape}">
+			<input type="textbox" class="form-control" id="mix1" name="mix1" placeholder="必須,5byte以上,半角数字でなければエラー" value="{request key="mix1" escape="html"}">
 			{iserror name="mix1"}<span class="help-block">{errormsg name="mix1"}</span>{/iserror}
 		</div>
 	</div>
@@ -202,7 +203,7 @@
 		<div class="col-lg-4 col-xs-4">
 			<select name="select1">
 				<option value="">value空文字(エラー)</option>
-				<option value="1"{if $smarty.request.select1 == 1} selected="selected"{/if}>value設定済み(成功)</option>
+				<option value="1"{if isset($smarty.request.select1) && $smarty.request.select1 == 1} selected="selected"{/if}>value設定済み(成功)</option>
 			</select>
 			{iserror name="select1"}<span class="help-block">{errormsg name="select1"}</span>{/iserror}
 		</div>
@@ -213,13 +214,13 @@
 		<label class="col-lg-2 col-xs-2 control-label">チェックボックス</label>
 		<div class="col-lg-4 col-xs-4">
 			<div class="checkbox">
-				<label><input type="checkbox" name="check1[]" value="1"{if $smarty.request.check1|inarray:1} checked="checked"{/if}> ねこ</label>
+				<label><input type="checkbox" name="check1[]" value="1"{if isset($smarty.request.check1) && $smarty.request.check1|inarray:1} checked="checked"{/if}> ねこ</label>
 			</div>
 			<div class="checkbox">
-				<label><input type="checkbox" name="check1[]" value="2"{if $smarty.request.check1|inarray:2} checked="checked"{/if}> ぬこ</label>
+				<label><input type="checkbox" name="check1[]" value="2"{if isset($smarty.request.check1) && $smarty.request.check1|inarray:2} checked="checked"{/if}> ぬこ</label>
 			</div>
 			<div class="checkbox">
-				<label><input type="checkbox" name="check1[]" value="3"{if $smarty.request.check1|inarray:3} checked="checked"{/if}> にゃんこ</label>
+				<label><input type="checkbox" name="check1[]" value="3"{if isset($smarty.request.check1) && $smarty.request.check1|inarray:3} checked="checked"{/if}> にゃんこ</label>
 			</div>
 			{iserror name="check1"}<span class="help-block">{errormsg name="check1"}</span>{/iserror}
 			{isnoterror name="check1"}<span class="help-block">※1つもチェックしないとエラー</span>{/isnoterror}
@@ -231,13 +232,13 @@
 		<label class="col-lg-2 col-xs-2 control-label">ラジオボタン</label>
 		<div class="col-lg-4 col-xs-4">
 			<div class="radio">
-				<label><input type="radio" name="radio1[]" value="1"{if $smarty.request.radio1|inarray:1} checked="checked"{/if}> ねこ</label>
+				<label><input type="radio" name="radio1[]" value="1"{if isset($smarty.request.radio1) && $smarty.request.radio1|inarray:1} checked="checked"{/if}> ねこ</label>
 			</div>
 			<div class="radio">
-				<label><input type="radio" name="radio1[]" value="2"{if $smarty.request.radio1|inarray:2} checked="checked"{/if}> ぬこ</label>
+				<label><input type="radio" name="radio1[]" value="2"{if isset($smarty.request.radio1) && $smarty.request.radio1|inarray:2} checked="checked"{/if}> ぬこ</label>
 			</div>
 			<div class="radio">
-				<label><input type="radio" name="radio1[]" value="3"{if $smarty.request.radio1|inarray:3} checked="checked"{/if}> にゃんこ</label>
+				<label><input type="radio" name="radio1[]" value="3"{if isset($smarty.request.radio1) && $smarty.request.radio1|inarray:3} checked="checked"{/if}> にゃんこ</label>
 			</div>
 			{iserror name="radio1"}<span class="help-block">{errormsg name="radio1"}</span>{/iserror}
 			{isnoterror name="radio1"}<span class="help-block">※1つも選択しないとエラー</span>{/isnoterror}
@@ -248,7 +249,7 @@
 	<div class="form-group{iserror name="textarea1"} has-error{/iserror}">
 		<label for="textarea1" class="col-lg-2 col-xs-2 control-label">テキストエリア</label>
 		<div class="col-lg-4 col-xs-4">
-			<textarea name="textarea1" class="form-control" rows="3" placeholder="2byte～16byteで記入しないとエラー">{$smarty.request.textarea1|escape}</textarea>
+			<textarea name="textarea1" class="form-control" rows="3" placeholder="2byte～16byteで記入しないとエラー">{request key="textarea1" escape="html"}</textarea>
 			{iserror name="textarea1"}<span class="help-block">{errormsg name="textarea1"}</span>{/iserror}
 		</div>
 	</div>
@@ -257,7 +258,7 @@
 	<div class="form-group{iserror name="passwd1"} has-error{/iserror}">
 		<label for="passwd1" class="col-lg-2 col-xs-2 control-label">パスワード</label>
 		<div class="col-lg-4 col-xs-4">
-			<input type="password" class="form-control" id="passwd1" name="passwd1" placeholder="半角英数字でなければエラー(記号不可)" value="{$smarty.request.passwd1|escape}">
+			<input type="password" class="form-control" id="passwd1" name="passwd1" placeholder="半角英数字でなければエラー(記号不可)" value="{request key="passwd1" escape="html"}">
 			{iserror name="passwd1"}<span class="help-block">{errormsg name="passwd1"}</span>{/iserror}
 		</div>
 	</div>
