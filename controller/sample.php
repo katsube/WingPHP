@@ -58,7 +58,7 @@ class SampleController extends BaseController{
 	}
 
 	public function validation($argv){
-		$mode = $argv[0];
+		$mode = (empty($argv[0]))? null:$argv[0];
 
 		uselib('Util/Validation');
 		$v = new Validation('form');
