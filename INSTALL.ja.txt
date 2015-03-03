@@ -142,8 +142,6 @@ MySQLとApacheは指定バージョンよりも下位のものでも動作しま
 
   $ sudo vim /etc/httpd/conf/httpd.conf
 
-  # コメントアウトします
-  # Alias /error/ "/var/www/error/"
 
   # 以下はVirtualHostで実行する例です。
   #
