@@ -94,7 +94,7 @@ function location($url, $sec=0){
  * @access public
  */
 function http_error($code){
-	$path = sprintf('/error/msg/%s%s', $code, $_SERVER['REQUEST_URI']);
+	$path = sprintf('/message/error/%s%s', $code, $_SERVER['REQUEST_URI']);
 	location($path);
 }
 

@@ -1,6 +1,6 @@
 <?php
 /* [WingPHP]
- *  - ErrorController
+ *  - MessageController
  *
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
@@ -25,28 +25,26 @@
 
 
 /**
- * ErrorControllerクラス
+ * MessageControllerクラス
  *
  * 汎用エラー表示クラス。
- * WingPHPでは何らかの *致命的な* エラーが生じた際に、特定のURLへ遷移させる
+ * WingPHPでは何らかのエラーが生じた際に、特定のURLへ遷移させる
  * ことで処理を簡素化させている。
  *
- * Attention.
- *   Apacheのデフォルトの設定で /error/ がすでに定義されているケースがある。
- *   404などが出るなどうまく動作しない場合は httpd.conf など設定ファイルを
- *   確認する。
+ * ※以前はErrorControllerとしていたが、
+ *   汎用性とApacheのデフォルト設定との衝突を避けるため名称変更。
  *
  * Example.
- *   404 Not Found → /error/msg/404/[リクエストURI]
- *   共通エラー    → /error/msg/common/[リクエストURI]
+ *   404 Not Found → /message/error/404/[リクエストURI]
+ *   共通エラー    → /message/error/[リクエストURI]
  *
- * @package    ErrorController
+ * @package    MessageController
  * @copyright  2010 WingPHP
  * @author     M.Katsube < katsubemakito@gmail.com >
  * @license    The MIT License
  * @access     public
  */
-class ErrorController extends BaseController{
+class MessageController extends BaseController{
 	//--------------------------------------------
 	// メンバ変数
 	//--------------------------------------------
@@ -87,7 +85,7 @@ class ErrorController extends BaseController{
 	 * @access public
 	 */
 	public function index(){
-		location('/error/msg/common');
+		location('/message/error/common');
 	}
 
 	/**
@@ -96,7 +94,7 @@ class ErrorController extends BaseController{
 	 * @param  array   $argv   $argv[0] ... 404|common
 	 * @access public
 	 */
-	public function msg($argv){
+	public function error($argv){
 		$code    = $argv[0];
 		$org_url = '/' . implode('/', array_slice($argv, 1));		//アクセス元URL
 		$org_ext = pathinfo($org_url, PATHINFO_EXTENSION);			//↑その拡張子
@@ -105,12 +103,12 @@ class ErrorController extends BaseController{
 		$status = '';
 		switch($code){
 			case '404':
-				$file   = 'error/404.html';
+				$file   = 'message/error/404.html';
 				$status = '404 Not Found';
 				break;
 
 			default:
-				$file   = 'error/common.html';
+				$file   = 'message/error/common.html';
 				$status = '500 Internal Server Error';
 				break;
 		}
