@@ -1,0 +1,116 @@
+<style type="text/css">
+dl{
+	margin-left: 30px;
+}
+dd{
+	margin-left: 30px;
+	margin-bottom: 10px;
+}
+</style>
+
+{markdown}
+Smarty用 カスタムプラグイン
+---------------------------
+WingPHPでは独自のカスタムプラグインをいくつかご用意しています。
+
+## 
+### request
+指定した$_REQUESTの値を表示します。
+
+```smarty
+{literal}{request key="foo" escape="html|url"}{/literal}
+```
+<dl>
+	<dt>key属性(必須) </dt>
+	<dd>key="foo" とすると、$_REQUEST["foo"]と同義になります。</dd>
+	<dt>escape属性(任意)</dt>
+	<dd>
+		未指定の場合か、"HTML"を指定した場合は htmlspecialchars()、  
+		"url"を指定した場合は urlencode()  
+	</dd>
+</dl>
+
+
+
+### markdown
+markdown記法に変換します。
+
+```smarty
+{literal}{markdown}
+見出し
+=======
+ここに本文を書いたりします。
+* ぬこ
+* ねこ
+* キャット
+{/markdown}{/literal}
+```
+※オプションはありません。
+
+<table class="table table-bordered">
+<tr>
+	<th>機能</th>
+	<th>文法</th>
+	<th>実行結果</th>
+	<th>備考</th>
+</tr>
+<tr>
+	<td>リスト</td>
+	<td>
+		* ねこ<br>
+		* ぬこ<br>
+		* キャット
+	</td>
+	<td>
+		<ul>
+			<li>ねこ</li>
+			<li>ぬこ</li>
+			<li>キャット</li>
+		</ul>
+	</td>
+	<td>
+		*の代わりに+, -でも同様の結果になります。<br>
+		また空行を挟むことで、リスト中でも改行することができます。<br>
+	</td>
+</tr>
+<tr>
+	<td>リスト (順番)</td>
+	<td>
+		1. ねこ<br>
+		2. ぬこ<br>
+		3. キャット
+	</td>
+	<td>
+		<ol>
+			<li>ねこ</li>
+			<li>ぬこ</li>
+			<li>キャット</li>
+		</ol>
+	</td>
+	<td>
+		数値を記述すればよいので、順番が入れ替わっても、すべて同じ数字でも動作します。
+	</td>
+</tr>
+<tr>
+	<td>リンク</td>
+	<td>
+		[Google](http://www.google.com/)<br>
+		[Google](http://www.google.com/)"これはGoogle"
+	</td>
+	<td>
+		<a href="http://www.google.com/">Google</a>
+		<a href="http://www.google.com/" title="これはGoogle">Google(title付き)</a>
+	</td>
+	<td>
+		以下のように後方で定義することもできます。<br>
+
+		<pre><code>代表的な検索エンジンには [Google][1] や [Yahoo][2]、[bing][3] があります。
+
+[1]: http://www.google.com/   "Google.com"
+[2]: http://www.yahoo.co.jp/  "Yahoo!Japan"
+[3]: http://www.bing.com/     "bing"</code></pre>
+		<p>代表的な検索エンジンには <a href="http://www.google.com/" title="Google.com">Google</a> や <a href="http://www.yahoo.co.jp/" title="Yahoo!Japan">Yahoo</a>、<a href="http://www.bing.com/" title="bing">bing</a> があります。</p>
+	</td>
+</tr>
+</table>
+{/markdown}

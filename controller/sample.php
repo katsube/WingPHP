@@ -129,12 +129,22 @@ class SampleController extends BaseController{
 		//------------------------------------------
 		if( !$v->check() )
 			$v->setError2Scratch();
-
 		//------------------------------------------
 		// 表示
 		//------------------------------------------
 		$this->layout('layout/base.html');
 		$this->assign('TITLE', 'Validation');
 		$this->display('sample/validation/index.html');
+	}
+
+
+	public function smartytag(){
+		//------------------------------------------
+		// 表示
+		//------------------------------------------
+		$this->layout('layout/base.html');
+		$this->assign('TITLE', 'Smarty用カスタムプラグイン');
+		$this->display('sample/smartytag/index.html');
+	
 	}
 }
