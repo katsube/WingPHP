@@ -1,0 +1,166 @@
+WingPHPに興味を持っていただきありがとうございます。
+このドキュメントではWingPHPを素早くセットアップするための方法について
+簡単に解説したものです。
+
+
+## 必要なソフトウェア ##
+  * PHP5.4 later (php-pdo,php-mysqlが必要です)
+  * MySQL 5.5 later
+  * Apache2.2 later (mod\_rewriteが必要です)
+
+以下の設定を事前にお願いします。
+  * PHPの基本的な設定
+  * ApacheからPHPが動作する
+  * PHPからPDO経由でMySQLに接続ができる
+
+未検証ですが、MySQLとApacheは指定バージョンよりも下位のものでも動作します。またnginx, php-fpmの組み合わせでも動作いたしますが、基本的に検証をしておりません。その旨ご留意ください。
+
+
+## インストール ##
+### 1) Download zip file ###
+GoogleCodeよりZipファイルをdownloadし、解凍してください。Subversionのリポジトリの最新版は不具合や動作しない可能性があります。
+http://code.google.com/p/wingphp/downloads/list
+
+```
+$ wget http://wingphp.googlecode.com/files/wingphp.zip
+$ unzip wingphp.zip
+```
+
+
+### 2) set directory ###
+解凍してできたディレクトリを好きな場所に移動します。
+
+```
+$ pwd
+/home/katsube/Develop/work
+
+$ ls
+合計 348
+drwxrwxr-x 10 katsube katsube 4096 10月 8 13:15 2010 wingphp
+-rw-rw-r-- 1 katsube katsube 350917 10月 8 14:55 2010 wingphp.zip
+
+$ sudo mv wingphp /wingphp
+```
+
+
+
+### 3) set permission and user ###
+ディレクトリのパーミションと、所有者の変更を行います。所有者、パーミションともに以下の条件をクリアしていればOKです。
+
+  * Apacheの実行ユーザーがファイルを閲覧できる
+  * wingphp/temp/以下のディレクトリを読み書きできる
+
+以下は実行例です。
+あなたの環境に合わせて適宜変更してください。
+
+```
+$ cd /wingphp
+$ sudo chown -R apache:apache .
+
+$ cd temp
+$ chmod -R 0600 .
+```
+
+tempディレクトリはデフォルトではSmartyのキャッシュが保存されます。
+これは設定ファイル(conf.php)を操作することで自由にパスを変更できます。
+
+
+### 4) config /wingphp/conf.php ###
+次にWingPHPの設定に入ります。
+conf.phpはアプリ全体で利用するグローバル変数$Confの設定と、URLのルールをカスタマイズするRoutingクラスの記述を行います。
+
+まずはDBへの接続情報を設定します。
+$Conf['DB']['master']['DSN']に、create databaseで作成したデータベース名と接続先のサーバ名(ホスト名)を記入してください。同様に、DBへログインするためのユーザ名とパスワードを入力します。
+
+```
+$ cd /wingphp
+$ vim conf.php
+33 $Conf = array(
+34 //■データベース設定
+35 'DB' => array(
+36 'master' => array(
+37 'DSN' => 'mysql:dbname=test;host=localhost' //PDO
+38 , 'USER' => 'username'
+39 , 'PASSWORD' => 'password'
+40 , 'fetch_style' => PDO::FETCH_ASSOC //http://www.php.net/manual/ja/pdostatement.fetch.php
+41 , 'persistent' => false //http://php.net/manual/ja/pdo.connections.php
+42 )
+```
+
+とりあえず動かすための設定は以上で完了です。
+ここでのユーザ名とパスワードはLinuxなどのOSにログインするものではなく、
+grantで設定したアカウントな点に注意してください。
+
+
+
+### 5) config httpd.conf ###
+最後にApacheの設定をします
+ここで設定するのは以下です。
+
+  * DocumentRoot
+  * DocumentRoot以下にmod\_rewrite等の指定
+  * /error Aliasを削除
+
+
+以下は実行例です。
+あなたの環境に合わせて適宜変更してください。
+
+```
+$ sudo vim /etc/httpd/conf/httpd.conf
+
+# コメントアウトします
+# Alias /error/ "/var/www/error/"
+
+# 以下はVirtualHostで実行する例です。
+#
+# Use name-based virtual hosting.
+#
+NameVirtualHost *:80
+
+# ドメイン名やパスなどは、あなたの環境に合わせて書き換えてください。
+# mod_rewriteまわりの設定はそのままコピー＆ペースト
+ <VirtualHost *:80>
+   ServerAdmin webmaster@wingphp.net
+   DocumentRoot /wingphp/htdocs
+   ServerName wingphp.net
+   ErrorLog logs/wingphp-error_log
+   CustomLog logs/wingphp-access_log common
+
+   <Directory /wingphp/htdocs>
+     Require all granted   #最近のApacheを使っている方はこの指定を
+
+     <IfModule mod_rewrite.c>
+       RewriteEngine On
+       RewriteBase /
+       RewriteCond %{REQUEST_FILENAME} !-d
+       RewriteCond %{REQUEST_FILENAME} !-f
+       RewriteRule ^(.*)$ /index.php?_q=$1 [QSA,L]
+     </IfModule>
+   </Directory>
+ </VirtualHost>
+```
+
+
+### 6) Apacheをrestart、起動確認 ###
+お疲れさまでした。
+最後に先ほどの設定をApacheに反映すれば設定は完了です。
+
+```
+$ sudo service httpd restart
+httpd を停止中: [ OK ]
+httpd を起動中: [ OK ]
+```
+
+最後にブラウザなどでアクセスし、HTMLが表示されれば
+インストールは正常に完了しています。
+```
+$ w3m http://wingphp.net/
+ようこそ！WingPHPへ
+
+WingPHPは軽量で、初期の学習コストがほとんどかからないことを
+目的に作成された日本製フレームワークです。
+CopyRight (C) 2013 WingPHP, All Right Reserved.
+```
+
+INSTALLの内容は以上です。
+enjoy!
