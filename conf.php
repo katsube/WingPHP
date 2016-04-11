@@ -125,7 +125,11 @@ $Conf = array(
 	)
 
 	//■SmartyDirect
-	, 'SmartyDirect' => true
+	, 'SmartyDirect' => array(
+		    'run'  => true
+		  , 'root' => 'sdroot/'
+		  , 'default' => 'index.html'
+	)
 
 
 	//■validation設定

@@ -173,13 +173,16 @@ class framewing{
 	 */
 	private function _exists_view(){
 		global $Conf;
-		if(!$Conf['SmartyDirect']){
+		if(!$Conf['SmartyDirect']['run']){
 			return(false);
 		}
 		
 		//パス作成
 		$tmpl_dir = $Conf['Smarty']['tmpl'];
-		$path     = $_REQUEST['_q'];
+		$path     = $Conf['SmartyDirect']['root'] .'/'. $_REQUEST['_q'];
+
+		if( preg_match('/\/$/', $path) )
+			$path .= $Conf['SmartyDirect']['default'];
 
 		//存在確認
 		if(is_file($tmpl_dir.'/'.$path)){
