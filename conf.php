@@ -124,7 +124,7 @@ $Conf = array(
 		//, 'cache_life' => 60 * 60	//秒
 	)
 
-	//■SmartyDirectView
+	//■SmartyDirect
 	, 'SmartyDirect' => true
 
 

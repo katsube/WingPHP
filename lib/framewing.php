@@ -99,7 +99,8 @@ class framewing{
 		// viewが存在する
 		//-----------------------------
 		else if( $this->_exists_view() ){
-			echo "hoge";
+			$ctrl = new BaseController();
+			$ctrl->display($this->static_file);
 		}
 		//-----------------------------
 		// 404
@@ -177,11 +178,11 @@ class framewing{
 		}
 		
 		//パス作成
-		$path  = $Conf['Smarty']['tmpl'];
-		$path .= '/' . $_REQUEST['_q'];
+		$tmpl_dir = $Conf['Smarty']['tmpl'];
+		$path     = $_REQUEST['_q'];
 
 		//存在確認
-		if(is_file($path)){
+		if(is_file($tmpl_dir.'/'.$path)){
 			$this->static_file = $path;
 			return(true);
 		}
