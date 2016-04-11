@@ -177,19 +177,26 @@ class framewing{
 			return(false);
 		}
 		
+		//-----------------------
 		//パス作成
+		//-----------------------
 		$tmpl_dir = $Conf['Smarty']['tmpl'];
 		$path     = $Conf['SmartyDirect']['root'] .'/'. $_REQUEST['_q'];
-
+		
+		//ファイル名未指定の場合はdefaultIndexを付加
 		if( preg_match('/\/$/', $path) )
 			$path .= $Conf['SmartyDirect']['default'];
 
+		//-----------------------
 		//汚染チェック
+		//-----------------------
 		if(!preg_match('/^([a-zA-Z0-9_\.\-\/]{1,})$/', $path)){
 			return(false);
 		}
 
+		//-----------------------
 		//存在確認
+		//-----------------------
 		if(is_file($tmpl_dir.'/'.$path)){
 			$this->static_file = $path;
 			return(true);
