@@ -1,0 +1,3 @@
+temp/smarty/cache/*.php
+temp/smarty/templates_c/*.php
+
