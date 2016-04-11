@@ -41,6 +41,9 @@ class framewing{
 	public $ctrl_name   = '';
 	public $method_name = '';
 	public $param = array();
+	
+	private $static_file = '';
+
 
 	//--------------------------------------------
 	// コンストラクタ
@@ -82,6 +85,9 @@ class framewing{
 		$ctrl = $this->ctrl_name;
 		$mthd = $this->method_name;
 
+		//-----------------------------
+		// class, methodが存在する
+		//-----------------------------
 		if( is_callable(array($ctrl, $mthd))								//存在チェック
 						&& (strcmp('BaseController', $ctrl) != 0)			//スーパークラスは直接実行しない
 						&& !preg_match('/^_/', $mthd)){						//先頭が _ で始まるメソッドは実行しない
@@ -89,6 +95,15 @@ class framewing{
 			$obj = new $ctrl();
 			call_user_func(array($obj, $mthd), $this->param);
 		}
+		//-----------------------------
+		// viewが存在する
+		//-----------------------------
+		else if( $this->_exists_view() ){
+			echo "hoge";
+		}
+		//-----------------------------
+		// 404
+		//-----------------------------
 		else{
 			http_error(404);
 		}
@@ -98,6 +113,7 @@ class framewing{
 	 * ■ Private ■
 	 *--------------------------------------------
 	 * - _parse
+	 * - _exists_view
 	 *--------------------------------------------*/
 	/**
 	 * リクエストURLをパースする
@@ -146,4 +162,31 @@ class framewing{
 		if(count($arr) > 1)
 			$this->param = array_slice($arr, 2);
 	}
+
+	
+	/**
+	 * 指定されたViewが存在するかチェック
+	 *
+	 * @return boolean
+	 * @access private
+	 */
+	private function _exists_view(){
+		global $Conf;
+		if(!$Conf['SmartyDirect']){
+			return(false);
+		}
+		
+		//パス作成
+		$path  = $Conf['Smarty']['tmpl'];
+		$path .= '/' . $_REQUEST['_q'];
+
+		//存在確認
+		if(is_file($path)){
+			$this->static_file = $path;
+			return(true);
+		}
+		
+		return(false);
+	}
+	
 }

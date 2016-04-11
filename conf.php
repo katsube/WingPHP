@@ -124,6 +124,10 @@ $Conf = array(
 		//, 'cache_life' => 60 * 60	//秒
 	)
 
+	//■SmartyDirectView
+	, 'SmartyDirect' => true
+
+
 	//■validation設定
 	, 'validation' => array(
 		  'jscheck' => false 				//JavaScriptによる事前チェックを行うか
