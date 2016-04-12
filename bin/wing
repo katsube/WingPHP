@@ -4,35 +4,39 @@
 #
 
 #---------------------------------#
-# Global Valiable
+# Global Valiables
 #---------------------------------#
-SCRIPT_DIR=$(cd $(dirname $0);pwd)
-PROG=wing
+DIR_SH=$(cd $(dirname $0);pwd)
+DIR_PHP=$DIR_SH/php
+PROG_SH=wing
 PROG_PHP=wing.php
 RETVAL=0
 
-#---------------------------------#
-# Function
-#---------------------------------#
-sql() {
-    php $SCRIPT_DIR/php/$PROG_PHP
-    RETVAL=$?
-    return $RETVAL
-}
+
 
 #---------------------------------#
 # Do it
 #---------------------------------#
 case "$1" in
   sql)
-        sql
+        if [ $# = 2 ]; then
+            php $DIR_PHP/$PROG_PHP $DIR_PHP SQL $2
+        else
+            echo "Usage: $PROG_SH sql {SQL file path}"
+        fi
         ;;
-  debug)
-        echo $SCRIPT_DIR
+
+  create)
+        if [ $# = 3 ]; then
+            php $DIR_PHP/$PROG_PHP $DIR_PHP CREATE $2 $3
+        else
+            echo "Usage: $PROG_SH create {controller|model} {name}"
+        fi
         ;;
-        
+
+
   *)
-        echo $"Usage: $PROG {sql|help}"
+        echo $"Usage: $PROG_SH {sql|help}"
         RETVAL=2
 esac
 
