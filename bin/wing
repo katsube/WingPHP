@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+#  wing - command line tool
+#
+
+#---------------------------------#
+# Global Valiable
+#---------------------------------#
+SCRIPT_DIR=$(cd $(dirname $0);pwd)
+PROG=wing
+PROG_PHP=wing.php
+RETVAL=0
+
+#---------------------------------#
+# Function
+#---------------------------------#
+sql() {
+    php $SCRIPT_DIR/php/$PROG_PHP
+    RETVAL=$?
+    return $RETVAL
+}
+
+#---------------------------------#
+# Do it
+#---------------------------------#
+case "$1" in
+  sql)
+        sql
+        ;;
+  debug)
+        echo $SCRIPT_DIR
+        ;;
+        
+  *)
+        echo $"Usage: $PROG {sql|help}"
+        RETVAL=2
+esac
+
+exit $RETVAL
