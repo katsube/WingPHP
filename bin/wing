@@ -19,10 +19,10 @@ RETVAL=0
 #---------------------------------#
 case "$1" in
   sql)
-        if [ $# = 2 ]; then
-            php $DIR_PHP/$PROG_PHP $DIR_PHP SQL $2
+        if [ $# = 3 ]; then
+            php $DIR_PHP/$PROG_PHP $DIR_PHP SQL $2 "$3"
         else
-            echo "Usage: $PROG_SH sql {SQL file path}"
+            echo "Usage: $PROG_SH sql {select|exec} {SQL file path}"
         fi
         ;;
 
