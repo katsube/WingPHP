@@ -102,9 +102,9 @@ function run_sql($arg1, $arg2){
     
     if($arg1 === 'exec'){
         try{
-                $m->begin();
-                $m->exec($sql_str);
-                $m->commit();
+            $m->begin();
+            $m->exec($sql_str);
+            $m->commit();
         }
         catch(PDOException $e){
             $m->rollback();
@@ -116,6 +116,9 @@ function run_sql($arg1, $arg2){
             print_r( $m->select($sql_str) );
         }
         catch(PDOException $e){
+            error("run_sql: ".$e->getMessage());
+        }
+        catch(Exception $e){
             error("run_sql: ".$e->getMessage());
         }
     }
