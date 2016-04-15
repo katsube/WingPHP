@@ -50,7 +50,7 @@ class BaseModel{
 	 * @access public
 	 */
 	function __construct(){
-		parent::__construct();
+		;
 	}
 
 	/**
@@ -186,7 +186,7 @@ class BaseModel{
 			return($ret);
 		}
 		catch( PDOException $e ){
-			throw new Exception('[begin]'.$e->getMessage(), $e->getCode(););
+			throw new Exception('[begin]'.$e->getMessage(), $e->getCode());
 		}
 	}
 	
@@ -205,7 +205,7 @@ class BaseModel{
 			return($ret);
 		}
 		catch( PDOException $e ){
-			throw new Exception('[isTransaction]'.$e->getMessage(), $e->getCode(););
+			throw new Exception('[isTransaction]'.$e->getMessage(), $e->getCode());
 		}
 	}
 
@@ -221,7 +221,7 @@ class BaseModel{
 			return($ret);
 		}
 		catch( PDOException $e ){
-			throw new Exception('[commit]'.$e->getMessage(), $e->getCode(););
+			throw new Exception('[commit]'.$e->getMessage(), $e->getCode());
 		}
 	}
 
@@ -240,7 +240,7 @@ class BaseModel{
 			return($ret);
 		}
 		catch( PDOException $e ){
-			throw new Exception('[rollback]'.$e->getMessage(), $e->getCode(););
+			throw new Exception('[rollback]'.$e->getMessage(), $e->getCode());
 		}		
 
 	}
