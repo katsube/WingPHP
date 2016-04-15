@@ -59,13 +59,8 @@ $Conf = array(
 
 	// ■BaseModel設定用
 	, 'Model' => array(
-		// select(1), execで例外が発生した際の処理
-		'error' => 'exception'		// 'exception'
-									//    throw new Exception(...) 的な処理を実行します。
-									// 'boolean'
-									//    return(false); 的な処理を実行します。
-									//    ただしDBへの接続処理が失敗した時はPDOがPDOExceptionを
-									//    投げて死ぬため本番サービスでの利用はオススメしません。
+		// errorを廃止しました (2016/04/14)
+		//  今後、実行時エラーが発生した場合はthrow new Exceptionが発動します
 	)
 
 	//■秘密鍵

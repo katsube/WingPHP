@@ -41,9 +41,8 @@ class BaseModel{
 	//--------------------------------------------
 	// メンバ変数
 	//--------------------------------------------
-	private $dbh   = false;
+	private $dbh         = false;
 	private $db_location = 'master';
-	private $error = null;
 
 	/**
 	 * コンストラクタ
@@ -51,8 +50,7 @@ class BaseModel{
 	 * @access public
 	 */
 	function __construct(){
-		global $Conf;
-		$this->error = $Conf['Model']['error'];
+		;
 	}
 
 	/**
@@ -112,12 +110,7 @@ class BaseModel{
 			$this->db_location = $account;
 		}
 		else{
-			if($this->error === 'exception'){
-				throw new Exception('[usedb] 404 configration $Conf[DB]', 404);
-			}
-			else{
-				return(false);
-			}
+			throw new Exception('[usedb] 404 configration $Conf[DB]', 404);
 		}
 	}
 
@@ -186,8 +179,15 @@ class BaseModel{
 	public function begin(){
 		if(!$this->dbh)
 			$this->dbh = $this->_connect();
+
+		try{
 		
-		return( $this->dbh->beginTransaction() );
+			$ret = $this->dbh->beginTransaction();
+			return($ret);
+		}
+		catch( PDOException $e ){
+			throw new Exception('[begin]'.$e->getMessage(), $e->getCode());
+		}
 	}
 	
 	/**
@@ -199,8 +199,14 @@ class BaseModel{
 	public function isTransaction(){				//PDOは"in", このメソッドは"is"
 		if(!$this->dbh)
 			$this->dbh = $this->_connect();
-		
-		return( $this->dbh->inTransaction() );
+
+		try{
+			$ret = $this->dbh->inTransaction();
+			return($ret);
+		}
+		catch( PDOException $e ){
+			throw new Exception('[isTransaction]'.$e->getMessage(), $e->getCode());
+		}
 	}
 
 	/**
@@ -210,10 +216,13 @@ class BaseModel{
 	 * @access public
 	 */
 	public function commit(){
-		if(!$this->dbh)
-			return(false);
-
-		return( $this->dbh->commit() );
+		try{
+			$ret = $this->dbh->commit();
+			return($ret);
+		}
+		catch( PDOException $e ){
+			throw new Exception('[commit]'.$e->getMessage(), $e->getCode());
+		}
 	}
 
 	/**
@@ -226,7 +235,14 @@ class BaseModel{
 		if(!$this->dbh)
 			return(false);
 		
-		return( $this->dbh->rollBack() );
+		try{
+			$ret = $this->dbh->rollBack();
+			return($ret);
+		}
+		catch( PDOException $e ){
+			throw new Exception('[rollback]'.$e->getMessage(), $e->getCode());
+		}		
+
 	}
 	
 
@@ -314,10 +330,7 @@ class BaseModel{
 		$ret = $st->execute($bind);
 
 		if(!$ret){
-			if($this->error === 'exception')
-				throw new Exception($this->_getExceptionMessage('_runsql', $st ));
-			else
-				return(false);
+			throw new Exception($this->_getExceptionMessage('_runsql', $st ));
 		}
 		else{
 			switch($type){
