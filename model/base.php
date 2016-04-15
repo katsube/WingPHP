@@ -179,8 +179,15 @@ class BaseModel{
 	public function begin(){
 		if(!$this->dbh)
 			$this->dbh = $this->_connect();
+
+		try{
 		
-		return( $this->dbh->beginTransaction() );
+			$ret = $this->dbh->beginTransaction();
+			return($ret);
+		}
+		catch( PDOException $e ){
+			throw new Exception('[begin]'.$e->getMessage(), $e->getCode(););
+		}
 	}
 	
 	/**
@@ -192,8 +199,14 @@ class BaseModel{
 	public function isTransaction(){				//PDOは"in", このメソッドは"is"
 		if(!$this->dbh)
 			$this->dbh = $this->_connect();
-		
-		return( $this->dbh->inTransaction() );
+
+		try{
+			$ret = $this->dbh->inTransaction();
+			return($ret);
+		}
+		catch( PDOException $e ){
+			throw new Exception('[isTransaction]'.$e->getMessage(), $e->getCode(););
+		}
 	}
 
 	/**
@@ -203,10 +216,13 @@ class BaseModel{
 	 * @access public
 	 */
 	public function commit(){
-		if(!$this->dbh)
-			return(false);
-
-		return( $this->dbh->commit() );
+		try{
+			$ret = $this->dbh->commit();
+			return($ret);
+		}
+		catch( PDOException $e ){
+			throw new Exception('[commit]'.$e->getMessage(), $e->getCode(););
+		}
 	}
 
 	/**
@@ -219,8 +235,14 @@ class BaseModel{
 		if(!$this->dbh)
 			return(false);
 		
-		
-		return( $this->dbh->rollBack() );
+		try{
+			$ret = $this->dbh->rollBack();
+			return($ret);
+		}
+		catch( PDOException $e ){
+			throw new Exception('[rollback]'.$e->getMessage(), $e->getCode(););
+		}		
+
 	}
 	
 
