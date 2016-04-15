@@ -41,9 +41,8 @@ class BaseModel{
 	//--------------------------------------------
 	// メンバ変数
 	//--------------------------------------------
-	private $dbh   = false;
+	private $dbh         = false;
 	private $db_location = 'master';
-	private $error = null;
 
 	/**
 	 * コンストラクタ
@@ -51,8 +50,7 @@ class BaseModel{
 	 * @access public
 	 */
 	function __construct(){
-		global $Conf;
-		$this->error = $Conf['Model']['error'];
+		parent::__construct();
 	}
 
 	/**
@@ -112,12 +110,7 @@ class BaseModel{
 			$this->db_location = $account;
 		}
 		else{
-			if($this->error === 'exception'){
-				throw new Exception('[usedb] 404 configration $Conf[DB]', 404);
-			}
-			else{
-				return(false);
-			}
+			throw new Exception('[usedb] 404 configration $Conf[DB]', 404);
 		}
 	}
 
@@ -226,6 +219,7 @@ class BaseModel{
 		if(!$this->dbh)
 			return(false);
 		
+		
 		return( $this->dbh->rollBack() );
 	}
 	
@@ -314,10 +308,7 @@ class BaseModel{
 		$ret = $st->execute($bind);
 
 		if(!$ret){
-			if($this->error === 'exception')
-				throw new Exception($this->_getExceptionMessage('_runsql', $st ));
-			else
-				return(false);
+			throw new Exception($this->_getExceptionMessage('_runsql', $st ));
 		}
 		else{
 			switch($type){
