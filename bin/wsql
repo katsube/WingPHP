@@ -24,85 +24,54 @@
  * THE SOFTWARE.
  */
 
-
 //---------------------------------
-// arguments
+// Initialize
 //---------------------------------
-$shelldir = $argv[1];
-$command  = $argv[2];
-$arg1     = $argv[3];
-$arg2     = $argv[4];
+require_once('_common.php');
+require_once('../model/base.php');
 
 
 //---------------------------------
-// initialize
+// Arguments
 //---------------------------------
-init($shelldir);
-
-require_once('../../conf.php');
-require_once('../../lib/global.php');
-require_once('../../lib/wsexception.php');
-
-//---------------------------------
-// Do Command
-//---------------------------------
-doCommand($command, $arg1, $arg2);
-
-
-/**
- * Initialize
- */
-function init($shelldir){
-    //---------------------------------
-    // change current diretory
-    //---------------------------------
-    if( is_dir($shelldir) && chdir($shelldir) ){
-        ;
-    }
-    else{
-        error("Can not change current directory ($shelldir)");
-        exit;
-    }
+//---------------------
+// Usage
+//---------------------
+if( $argc === 1 || preg_match('/^help$/', $argv[1]) ){
+    usage();
+    exit(0);
 }
 
+//---------------------
+// Validation
+//---------------------
+// SQL (string)
+$sql_str = ($stdin_mode)? $stdin:$argv[1];
 
-/**
- * Do Command
- */
-function doCommand($mode, $arg1, $arg2){
-    switch( $mode ){
-        case 'SQL':
-            run_sql($arg1, $arg2);
-            break;
-        
-        case 'CREATE':
-            run_create();
-            break;
-        
-        default:
-            error("undefine mode ($mode)");
-            exit;
-    }
-}
+// RunMode ('select' or 'exec')
+$mode = (!empty($argv[2]) && preg_match('/^select|exec$/', $argv[2]))? $argv[2]:'select';
 
+// Export Format ('json' or 'tsv' or 'php')
+$format  = (!empty($argv[3]) && preg_match('/^json|json-pretty|csv|tsv|php$/', $argv[3]))? $argv[3]:'php';
+
+
+//---------------------------------
+// Run SQL
+//---------------------------------
+run_sql($sql_str, $mode, $format);
 
 
 /**
  * Run SQL
  */
-function run_sql($arg1, $arg2){
-    $sql_str = '';
-    if( is_file($arg2) ){
-        $sql_str = file_get_contents($arg2);
-    }
-    else{
-        $sql_str = $arg2;
-    }
+function run_sql($sql_str, $mode, $format){
 
-    require_once('../../model/base.php');
     $m = new BaseModel();
-    
-    if($arg1 === 'exec'){
+
+    //---------------------------------
+    // Transaction mode
+    //---------------------------------
+    if($mode === 'exec'){
         try{
             $m->begin();
             $m->exec($sql_str);
@@ -110,34 +79,62 @@ function run_sql($arg1, $arg2){
         }
         catch(WsException $e){
             $m->rollback();
-            error("run_sql: ".$e->getMessage());
+            errormsg("run_sql(): ".$e->getMessage());
         }
     }
-    else if($arg1 === 'select'){
+    //---------------------------------
+    // select mode
+    //---------------------------------
+    else if($mode === 'select'){
         try{
-            print_r( $m->select($sql_str) );
+            $buff = $m->select($sql_str);
+            switch ($format) {
+                case 'json':
+                    echo json_encode($buff);
+                    echo "\n";
+                    break;
+
+                case 'json-pretty':
+                    echo json_encode($buff, JSON_PRETTY_PRINT);
+                    echo "\n";
+                    break;
+
+                case 'csv':
+                    foreach ($buff as $line) {
+                        fputcsv(STDOUT, $line);
+                    }
+                    echo "\n";
+                    break;
+
+                case 'tsv':
+                    foreach ($buff as $line) {
+                        fputcsv(STDOUT, $line, "\t");
+                    }
+                    echo "\n";
+                    break;
+                    
+                case 'php':
+                default:
+                    print_r($buff);
+                    break;
+            }
         }
         catch(WsException $e){
-            error("run_sql: ".$e->getMessage());
+            errormsg("run_sql(): ".$e->getMessage());
         }
     }
+    //---------------------------------
+    // UnKnown mode
+    //---------------------------------
     else{
-        error("UnKnown Command ($arg1)");
+        errormsg("UnKnown Command ($mode)");
     }
 }
 
-/**
- * Create Template
- */
-function run_create(){
-    
-}
-
 
 /**
- * Error
+ * Usage
  */
-function error($msg){
-    echo "*** Error\n";
-    echo "$msg\n";
+function usage(){
+    echo "Usage: wsql {SQLString} [select|exec] [json|json-pretty|csv|tsv|php]\n";
 }
