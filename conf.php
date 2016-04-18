@@ -105,8 +105,8 @@ $Conf = array(
 		, 'addtrace' => false 				// debug_backtraceの情報を記録するか
 	)
 	
-	//■ログ記録動作
-	, 'Logging' => array(
+	//■自動ログ記録
+	, 'AutoLogging' => array(
 		  'error' => true
 	)
 

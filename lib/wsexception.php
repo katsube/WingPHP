@@ -28,14 +28,19 @@ class WsException extends Exception{
         global $Conf;
         parent::__construct($message, $code, $previous);
     
-        if ( array_key_exists('Logging', $Conf) && array_key_exists('error', $Conf) && $Conf['Logging']['error'] ){
-            $message = $this->getCode();
+        if ( array_key_exists('AutoLogging', $Conf) && array_key_exists('error', $Conf['AutoLogging']) && $Conf['AutoLogging']['error'] ){
+            $message = $this->getMessage();
             $file    = $this->getFile();
             $line    = $this->getLine();
             $code    = $this->getCode();
             $trace   = $this->getTraceAsString();
             
-            addlogfile('ERROR', array($message, $file, $line, $code, $trace));
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $ua = $_SERVER['HTTP_USER_AGENT'];
+            $referer = $_SERVER['HTTP_REFERER'];
+            
+            
+            addlogfile('ERROR', $file, $code, $line, $message, $trace, $ip, $ua, $referer);
         }
     }
     
