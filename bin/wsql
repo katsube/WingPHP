@@ -142,5 +142,8 @@ function run_sql($sql_str, $mode, $format){
  * Usage
  */
 function usage(){
-    echo "Usage: wsql {SQLString} [select|exec] [json|json-pretty|csv|tsv|php]\n";
+    echo "Usage: wsql {SQLString|filepath} [select|exec] [json|json-pretty|csv|tsv|php]\n";
+    echo "  Example.\n";
+    echo "    $ wsql 'select * from test'\n";
+    echo "    $ wsql path/to/file.sql exec\n";
 }
