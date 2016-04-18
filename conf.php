@@ -104,6 +104,11 @@ $Conf = array(
 		, 'separate' => "\t"					// 区切り文字
 		, 'addtrace' => false 				// debug_backtraceの情報を記録するか
 	)
+	
+	//■ログ記録動作
+	, 'Logging' => array(
+		  'error' => true
+	)
 
 	//■View設定
 	, 'Smarty' => array(

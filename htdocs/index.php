@@ -27,6 +27,7 @@ require_once('../conf.php');
 require_once('../lib/global.php');
 require_once('../lib/autoload.php');
 require_once('../lib/framewing.php');
+require_once('../lib/wsexception.php');
 
 $fw = new framewing();
 $fw->go();
