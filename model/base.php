@@ -266,18 +266,23 @@ class BaseModel{
 
 		try{
 			$dbh = new PDO( $account['DSN'], $account['USER'], $account['PASSWORD']
-								, array( PDO::ATTR_PERSISTENT => $account['persistent'] )
+								, array(
+									  PDO::ATTR_PERSISTENT => $account['persistent']
+									, PDO::ATTR_ERRMODE    => PDO::ERRMODE_EXCEPTION
+								  )
 						);
 			
-			return( $dbh );
 		}
 		catch(PDOException $e){
+			echo "fooooobar2";
 			$cd  = $e->getCode();
 			$msg = $e->getMessage();
 
 			$result = sprintf('[_connect] %s', $msg);
 			throw new WsException($result, $cd);
 		}
+
+		return( $dbh );
 	}
 
 	/**
