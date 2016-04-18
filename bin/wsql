@@ -25,13 +25,6 @@
  */
 
 //---------------------------------
-// Initialize
-//---------------------------------
-require_once('_common.php');
-require_once('../model/base.php');
-
-
-//---------------------------------
 // Arguments
 //---------------------------------
 //---------------------
@@ -46,7 +39,14 @@ if( $argc === 1 || preg_match('/^help$/', $argv[1]) ){
 // Validation
 //---------------------
 // SQL (string)
-$sql_str = ($stdin_mode)? $stdin:$argv[1];
+chdir( getenv('PWD') );
+$sql = $argv[1];
+if( is_file($sql) ){
+    $sql_str = file_get_contents($sql);
+}
+else{
+    $sql_str = $sql;
+}
 
 // RunMode ('select' or 'exec')
 $mode = (!empty($argv[2]) && preg_match('/^select|exec$/', $argv[2]))? $argv[2]:'select';
@@ -54,6 +54,12 @@ $mode = (!empty($argv[2]) && preg_match('/^select|exec$/', $argv[2]))? $argv[2]:
 // Export Format ('json' or 'tsv' or 'php')
 $format  = (!empty($argv[3]) && preg_match('/^json|json-pretty|csv|tsv|php$/', $argv[3]))? $argv[3]:'php';
 
+
+//---------------------------------
+// Initialize
+//---------------------------------
+require_once('_common.php');
+require_once('../model/base.php');
 
 //---------------------------------
 // Run SQL
