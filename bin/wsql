@@ -54,6 +54,8 @@ $mode = (!empty($argv[2]) && preg_match('/^select|exec$/', $argv[2]))? $argv[2]:
 // Export Format ('json' or 'tsv' or 'php')
 $format  = (!empty($argv[3]) && preg_match('/^json|json-pretty|csv|tsv|php$/', $argv[3]))? $argv[3]:'php';
 
+//Database Name ('master' or ...)
+$dbname = (!empty($argv[4]))? $argv[4]:'master';
 
 //---------------------------------
 // Initialize
@@ -64,15 +66,28 @@ require_once('../model/base.php');
 //---------------------------------
 // Run SQL
 //---------------------------------
-run_sql($sql_str, $mode, $format);
+run_sql($sql_str, $mode, $format, $dbname);
 
 
 /**
  * Run SQL
  */
-function run_sql($sql_str, $mode, $format){
+function run_sql($sql_str, $mode, $format, $dbname){
 
     $m = new BaseModel();
+
+    //---------------------------------
+    // change db
+    //---------------------------------
+    if( $dbname !== 'master' ){
+        try{
+            $m->usedb($dbname);
+        }
+        catch(WsException $e){
+            errormsg("run_sql(): ".$e->getMessage());
+            exit(1);
+        }
+    }
 
     //---------------------------------
     // Transaction mode
@@ -142,8 +157,8 @@ function run_sql($sql_str, $mode, $format){
  * Usage
  */
 function usage(){
-    echo "Usage: wsql {SQLString|filepath} [select|exec] [json|json-pretty|csv|tsv|php]\n";
+    echo "Usage: wsql {SQLString|filepath} [select|exec] [json|json-pretty|csv|tsv|php] [database name]\n";
     echo "  Example.\n";
     echo "    $ wsql 'select * from test'\n";
-    echo "    $ wsql path/to/file.sql exec\n";
+    echo "    $ wsql path/to/file.sql insert json master2\n";
 }
