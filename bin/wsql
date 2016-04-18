@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 /* [WingPHP]
  *  - Command line tool 
@@ -40,6 +41,7 @@ init($shelldir);
 
 require_once('../../conf.php');
 require_once('../../lib/global.php');
+require_once('../../lib/wsexception.php');
 
 //---------------------------------
 // Do Command
@@ -106,7 +108,7 @@ function run_sql($arg1, $arg2){
             $m->exec($sql_str);
             $m->commit();
         }
-        catch(PDOException $e){
+        catch(WsException $e){
             $m->rollback();
             error("run_sql: ".$e->getMessage());
         }
@@ -115,9 +117,12 @@ function run_sql($arg1, $arg2){
         try{
             print_r( $m->select($sql_str) );
         }
-        catch(Exception $e){
+        catch(WsException $e){
             error("run_sql: ".$e->getMessage());
         }
+    }
+    else{
+        error("UnKnown Command ($arg1)");
     }
 }
 
