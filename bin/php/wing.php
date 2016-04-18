@@ -115,9 +115,6 @@ function run_sql($arg1, $arg2){
         try{
             print_r( $m->select($sql_str) );
         }
-        catch(PDOException $e){
-            error("run_sql: ".$e->getMessage());
-        }
         catch(Exception $e){
             error("run_sql: ".$e->getMessage());
         }
