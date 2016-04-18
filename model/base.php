@@ -110,7 +110,7 @@ class BaseModel{
 			$this->db_location = $account;
 		}
 		else{
-			throw new Exception('[usedb] 404 configration $Conf[DB]', 404);
+			throw new WsException('[usedb] 404 configration $Conf[DB]', 404);
 		}
 	}
 
@@ -186,7 +186,7 @@ class BaseModel{
 			return($ret);
 		}
 		catch( PDOException $e ){
-			throw new Exception('[begin]'.$e->getMessage(), $e->getCode());
+			throw new WsException('[begin]'.$e->getMessage(), $e->getCode());
 		}
 	}
 	
@@ -205,7 +205,7 @@ class BaseModel{
 			return($ret);
 		}
 		catch( PDOException $e ){
-			throw new Exception('[isTransaction]'.$e->getMessage(), $e->getCode());
+			throw new WsException('[isTransaction]'.$e->getMessage(), $e->getCode());
 		}
 	}
 
@@ -221,7 +221,7 @@ class BaseModel{
 			return($ret);
 		}
 		catch( PDOException $e ){
-			throw new Exception('[commit]'.$e->getMessage(), $e->getCode());
+			throw new WsException('[commit]'.$e->getMessage(), $e->getCode());
 		}
 	}
 
@@ -240,7 +240,7 @@ class BaseModel{
 			return($ret);
 		}
 		catch( PDOException $e ){
-			throw new Exception('[rollback]'.$e->getMessage(), $e->getCode());
+			throw new WsException('[rollback]'.$e->getMessage(), $e->getCode());
 		}		
 
 	}
@@ -276,7 +276,7 @@ class BaseModel{
 			$msg = $e->getMessage();
 
 			$result = sprintf('[_connect] %s', $msg);
-			throw new Exception($result, $cd);
+			throw new WsException($result, $cd);
 		}
 	}
 
@@ -330,7 +330,7 @@ class BaseModel{
 		$ret = $st->execute($bind);
 
 		if(!$ret){
-			throw new Exception($this->_getExceptionMessage('_runsql', $st ));
+			throw new WsException($this->_getExceptionMessage('_runsql', $st ));
 		}
 		else{
 			switch($type){
