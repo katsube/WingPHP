@@ -61,6 +61,7 @@ else{
 // Initialize
 //---------------------------------
 require_once('_common.php');
+require_once('../controller/base.php');
 
 //---------------------------------
 // Run Create
@@ -71,17 +72,25 @@ run_create($mode, $classname);
 /**
  * Run Create
  */
-function run_create($mode, $classname){
+function run_create($mode, $name){
+
+    $classname = ucfirst( strtolower($name) );
+    
+    $ctrl = new BaseController();
+    $ctrl->assign('name', $classname);
+    $ctrl->smarty()->configLoad(realpath('package/wcreate.ini'));
 
     //---------------------------------
     // controller mode
     //---------------------------------
     if($mode === 'controller'){
+        $ctrl->display(realpath('package/base/controller.tpl'));
     }
     //---------------------------------
     // model mode
     //---------------------------------
     else if($mode === 'model'){
+        $ctrl->display(realpath('package/base/model.tpl'));
     }
     //---------------------------------
     // UnKnown mode
