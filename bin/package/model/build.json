@@ -16,6 +16,6 @@
         ,          "sql":false
     }
     , "do":[
-        ["generate", "model", "model.tpl"]
+        ["generate", "model", "model.tpl", "php"]
     ]
 }

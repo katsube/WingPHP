@@ -16,6 +16,6 @@
         ,          "sql":false
     }
     , "do":[
-        ["generate", "controller", "controller.tpl"]
+        ["generate", "controller", "controller.tpl", "php"]
     ]
 }
