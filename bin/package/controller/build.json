@@ -1,19 +1,21 @@
 {
     "head":{
-          "name":"BASIC Controller"
+          "name":"Default Controller"
         , "version": "1.0.0"
         , "description": {
             "ja": "シンプルなコントローラー"
         }
     }
-    , "body":{
-        "use":{
-                   "model":false
-            , "controller":true
-            ,       "view":false
-        }
-        , "files":[
-            ["controller.tpl", "controller/", "php"]
-        ]
+    , "use":{
+                 "model":false
+        ,   "controller":true
+        ,         "view":false
+        ,       "htdocs":false
+        ,       "plugin":false
+        , "smartyplugin":false
+        ,          "sql":false
     }
+    , "do":[
+        ["generate", "controller", "controller.tpl"]
+    ]
 }

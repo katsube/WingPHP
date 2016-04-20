@@ -216,11 +216,11 @@ function existsClassName($pkg_name, $pkg_classname){
     $config = readBuildSettings($pkg_name);
 
     $file   = sprintf('%s.php', strtolower($pkg_classname) );
-    if( $config['body']['use']['model'] ){
+    if( $config['use']['model'] ){
         if( is_file("model/$file") )
             return(false);
     }
-    if( $config['body']['use']['controller'] ){
+    if( $config['use']['controller'] ){
         if( is_file("controller/$file") )
             return(false);
     }
