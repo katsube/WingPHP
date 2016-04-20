@@ -30,7 +30,7 @@
  *
  * テンプレートからModel,View,Controller作成する。
  *
- *     $ wpkg install {packagename} [class name]
+ *     $ wpkg create {packagename} [class name]
  *     $ wpkg help
  * 
  * @package    WPackage
@@ -39,7 +39,6 @@
  * @license    The MIT License
  * @access     public
  */
-namespace WPackage;
 
 //---------------------------------
 // Initialize
@@ -54,7 +53,7 @@ require_once('../controller/base.php');
 //---------------------
 // Global valiable
 //---------------------
-$pkg_command   = '';      //"list" or "install"
+$pkg_command   = '';      //"list" or "create"
 $pkg_name      = '';      
 $pkg_classname = '';
 
@@ -73,7 +72,7 @@ if( $argc === 1 || empty($argv[1]) || preg_match('/^(help|h|usage)$/', $argv[1])
 //---------------------
 // command ($argv[1])
 //---------------------
-if( preg_match('/^list|install$/', $argv[1]) ){
+if( !preg_match('/^list|create/', $argv[1]) ){
     errormsg("unknown command: ".$argv[1]);
     exit(1);
 }
@@ -85,7 +84,7 @@ else{
 //-------------------------
 // package name ($argv[2])
 //-------------------------
-if( $pkg_command === 'install' ){
+if( $pkg_command === 'create' ){
 
     //------------------------------
     // package name ($argv[2])
@@ -117,11 +116,14 @@ if( $pkg_command === 'install' ){
 //---------------------------------
 // Run
 //---------------------------------
-if( $pkg_command === 'list' ){
-    run_install($pkg_name, $pkg_classname);
+if( $pkg_command === 'create' ){
+    run_create($pkg_name, $pkg_classname);
+}
+else if($pkg_command === 'list'){
+    run_list();
 }
 else{
-    run_list();
+    errormsg("unknown command: ".$pkg_command);
 }
 
 exit(0);
@@ -132,16 +134,16 @@ exit(0);
 /**
  * Run install
  */
-function run_install($pkg_name, $pkg_classname){
+function run_create($pkg_name, $pkg_classname){
 
     $classname = ucfirst( strtolower($pkg_classname) );
+    $tplname   = sprintf('%s.tpl', strtolower($pkg_classname));
     $filename  = sprintf('%s.php', strtolower($pkg_classname));
-    
+
     $ctrl = new BaseController();
     $ctrl->assign('name', $classname);
-    $ctrl->smarty()->configLoad(realpath('package/wcreate.ini'));
-    
-    $ctrl->fetch(realpath('package/base/model.tpl'));
+    $ctrl->smarty()->configLoad(realpath('wpkg.ini'), 'template');
+    echo $ctrl->smarty()->fetch(realpath("package/$pkg_name/$tplname"));
 }
 
 
