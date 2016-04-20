@@ -1,0 +1,19 @@
+{
+    "head":{
+          "name":"BASIC Controller"
+        , "version": "1.0.0"
+        , "description": {
+            "ja": "シンプルなコントローラー"
+        }
+    }
+    , "body":{
+        "use":{
+                   "model":false
+            , "controller":true
+            ,       "view":false
+        }
+        , "files":[
+            ["controller.tpl", "controller/", "php"]
+        ]
+    }
+}

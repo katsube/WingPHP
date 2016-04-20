@@ -1,0 +1,19 @@
+{
+    "head":{
+          "name":"BASIC Model"
+        , "version": "1.0.0"
+        , "description": {
+            "ja": "最もシンプルなモデル"
+        }
+    }
+    , "body":{
+        "use":{
+                   "model":true
+            , "controller":false
+            ,       "view":false
+        }
+        , "files":[
+            ["model.tpl", "model/", "php"]
+        ]
+    }
+}
