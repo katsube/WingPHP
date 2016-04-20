@@ -92,8 +92,8 @@ else{
 //------------------------------
 //class name ($argv[2]) 
 //------------------------------
-if( !checkClassName($argv[2]) ){
-    errormsg("invalid class name: ".$argv[2]);
+if( empty($argv[2]) ){
+    errormsg("empty class name: ".$argv[2]);
     exit(1);
 }
 else{
@@ -107,23 +107,6 @@ else{
 //---------------------------------
 echo `wpkg create $pkg_name $pkg_classname`;
 exit(0);
-
-
-
-/**
- *  validation to class name
- * 
- * @param  string   $name
- * @return boolean
- */
-function checkClassName($name){
-    if(preg_match('/^[a-zA-Z_][a-zA-Z0-9_]{1,128}$/', $name)){
-        return(true);
-    }
-    else{
-        return(false);
-    }
-}
 
 
 /**
