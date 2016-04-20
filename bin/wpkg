@@ -100,15 +100,10 @@ if( $pkg_command === 'create' ){
     //------------------------------
     //class name ($argv[3]) option
     //------------------------------
-    if( empty($argv[3]) ){
-        $pkg_classname = $pkg_name;
-    }
-    else if( existClassName($argv[3]) ){
-        errormsg("invalid or exists class name: ".$argv[3]);
+    $pkg_classname = ( empty($argv[3]) )?  $pkg_name:$argv[3];
+    if( !checkClassName($pkg_classname) ){
+        errormsg("invalid class name: ".$pkg_classname);
         exit(1);
-    }
-    else{
-        $pkg_classname = $argv[3];
     }
 }
 
@@ -136,14 +131,29 @@ exit(0);
  */
 function run_create($pkg_name, $pkg_classname){
 
-    $classname = ucfirst( strtolower($pkg_classname) );
-    $tplname   = sprintf('%s.tpl', strtolower($pkg_classname));
-    $filename  = sprintf('%s.php', strtolower($pkg_classname));
+    $config = readBuildSettings($pkg_name);
+    if($config === false){
+        errormsg('Can not open build.json');
+        exit(1);
+    }
 
-    $ctrl = new BaseController();
-    $ctrl->assign('name', $classname);
-    $ctrl->smarty()->configLoad(realpath('wpkg.ini'), 'template');
-    echo $ctrl->smarty()->fetch(realpath("package/$pkg_name/$tplname"));
+    foreach($config['task'] as $task){
+        switch($task[0]){
+            case 'generate':
+                task_generate($pkg_name, $pkg_classname, $task);
+                break;
+            
+            case 'copy':
+                break;
+            
+            case 'sql':
+                break;
+            
+            default:
+                break;
+        }
+    }
+    
 }
 
 
@@ -195,39 +205,12 @@ function existsPackage($name){
  * @return boolean
  */
 function checkClassName($name){
-    if(preg_match('/^[a-zA-Z_][a-zA-Z0-9_]{1,}$/', $name)){
+    if(preg_match('/^[a-zA-Z_][a-zA-Z0-9_]{1,128}$/', $name)){
         return(true);
     }
     else{
         return(false);
     }
-}
-
-/**
- *  check exists class name
- * 
- * @param  string   $pkg_name
- * @param  string   $pkg_classname
- * @return boolean
- */
-function existsClassName($pkg_name, $pkg_classname){
-    if( !existsPackage($pkg_name) || empty($pkg_classname) || !checkClassName($pkg_classname) ){
-        return(false);
-    }
-    
-    $config = readBuildSettings($pkg_name);
-
-    $file   = sprintf('%s.php', strtolower($pkg_classname) );
-    if( $config['use']['model'] ){
-        if( is_file("model/$file") )
-            return(false);
-    }
-    if( $config['use']['controller'] ){
-        if( is_file("controller/$file") )
-            return(false);
-    }
-    
-    return(true);
 }
 
 
@@ -238,20 +221,51 @@ function existsClassName($pkg_name, $pkg_classname){
  * @return object
  */
 function readBuildSettings($name){
-    $file = sprintf('"package/%s/build.json', $name);
+    $file = sprintf('package/%s/build.json', $name);
     
     if( !is_file($file) )
         return(false);
 
     $buff = file_get_contents($file);
     if( $buff !== false ){
-        return( json_decode($buff) );
+        return( json_decode($buff, true) );
     }
     else{
         return(false);
     }
 }
 
+
+/**
+ *  [task] generate
+ * 
+ * @param  string $pkg   package name
+ * @param  string $name  class name
+ * @param  array  $task    0:command  "generate"
+ *                       , 1:type     "controller" or "model"
+ *                       , 2:tpl      template file path
+ *                       , 3:prefix   prefix
+ * @return boolean
+ */
+function task_generate($pkg, $name, $task){
+    $type   = $task[1];
+    $tpl    = $task[2];
+    $prefix = $task[3];
+
+    $ctrl = new BaseController();
+    $ctrl->assign('name', ucfirst($name));
+    $ctrl->smarty()->configLoad(realpath('wpkg.ini'), 'template');
+    $buff = $ctrl->smarty()->fetch(realpath("package/$pkg/$tpl"));
+    
+    $putfile = "../$type/$name.$prefix";
+    if( !is_file($putfile) ){
+        file_put_contents($putfile, $buff);
+    }
+    else {
+        errormsg("exists file: $putfile");
+        exit(1);
+    }
+}
 
 /**
  * Usage
