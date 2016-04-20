@@ -90,7 +90,7 @@ if( $pkg_command === 'create' ){
     // package name ($argv[2])
     //------------------------------
     if( ! existsPackage($argv[2]) ){
-        errormsg("empty or unknown package name: ".$argv[2]);
+        errormsg("empty argument or unknown package name: ".$argv[2]);
         exit(1);
     }
     else {
@@ -257,14 +257,36 @@ function task_generate($pkg, $name, $task){
     $ctrl->smarty()->configLoad(realpath('wpkg.ini'), 'template');
     $buff = $ctrl->smarty()->fetch(realpath("package/$pkg/$tpl"));
     
-    $putfile = "../$type/$name.$prefix";
-    if( !is_file($putfile) ){
-        file_put_contents($putfile, $buff);
+    $putfile = sprintf('../%s/%s.%s', $type, $name, $prefix);
+    if( $putfile === false ){
+        errormsg("realpath");
+        exit(1);
     }
-    else {
+    if( is_file($putfile) ){
         errormsg("exists file: $putfile");
         exit(1);
     }
+
+    if( file_put_contents($putfile, $buff) !== false ){
+        task_ok("cretae $putfile");
+        return(true);
+    }
+    else {
+        errormsg("Can not write file: $putfile");
+        exit(1);
+    }
+
+}
+
+/**
+ *  [task] Print OK
+ * 
+ * @param  string $msg
+ * @return void
+ */
+
+function task_ok($msg){
+    printf("OK -> %s\n", $msg);
 }
 
 /**
