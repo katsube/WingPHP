@@ -31,7 +31,8 @@
  * テンプレートからModel,View,Controller作成する。
  *
  *     $ wpkg create {packagename} [class name]
- *     $ wpkg help
+ *     $ wpkg list
+ *     $ wpkg [help]
  * 
  * @package    WPackage
  * @copyright  2016 WingPHP
@@ -293,23 +294,7 @@ function task_ok($msg){
  * Usage
  */
 function usage(){
-    echo "Usage: wcreate {controller|model} [class name]\n";
-    echo "       wcreate package install {package name} [class name]\n";
-    echo "       wcreate package list\n";
-    echo " \n";
-    echo "  Example.\n";
-    echo "    ** make basic controller|model **\n";
-    echo "       $ wcreate controller foo\n";
-    echo "         -> controller/foo.php\n";
-    echo "       $ wcreate model bar\n";
-    echo "         -> model/bar.php\n";
-    echo " \n";
-    echo "    *** install package **\n";
-    echo "      $ wcreate package install user\n";
-    echo "         -> model/user.php\n";
-    echo "         -> controller/user.php\n";
-    echo "         -> wsql bin/package/user/user.sql\n";
-    echo " \n";
-    echo "    *** view package **\n";
-    echo "      $ wcreate package list\n";
+    echo "Usage: wpkg create {package name} [class name]\n";
+    echo "       wpkg list\n";
+    echo "       wpkg [help]\n";
 }
