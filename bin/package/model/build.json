@@ -15,7 +15,7 @@
         , "smartyplugin":false
         ,          "sql":false
     }
-    , "do":[
+    , "task":[
         ["generate", "model", "model.tpl", "php"]
     ]
 }
