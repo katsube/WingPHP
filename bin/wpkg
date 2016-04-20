@@ -41,6 +41,12 @@
  * @access     public
  */
 
+
+//---------------------------------
+// Define
+//---------------------------------
+define('WPKG_INI', 'wpkg.ini');
+
 //---------------------------------
 // Initialize
 //---------------------------------
@@ -162,7 +168,19 @@ function run_create($pkg_name, $pkg_classname){
  * Run list
  */
 function run_list(){
-    ;
+    $ini  = parse_ini_file(WPKG_INI, true);
+    $lang = $ini['ui']['language'];
+    
+    $dir = opendir('package');
+    while ( ($file = readdir($dir)) !== false ){
+        if( $file === '.' || $file === '..' )
+            continue;
+        
+        $config = readBuildSettings($file);
+        $head   = $config['head'];
+        
+        printf("%16s - %s\n", $file, $head['description'][$lang]);
+    }
 }
 
 
@@ -255,7 +273,7 @@ function task_generate($pkg, $name, $task){
 
     $ctrl = new BaseController();
     $ctrl->assign('name', ucfirst($name));
-    $ctrl->smarty()->configLoad(realpath('wpkg.ini'), 'template');
+    $ctrl->smarty()->configLoad(WPKG_INI, 'template');
     $buff = $ctrl->smarty()->fetch(realpath("package/$pkg/$tpl"));
     
     $putfile = sprintf('../%s/%s.%s', $type, $name, $prefix);

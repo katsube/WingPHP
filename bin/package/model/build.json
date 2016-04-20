@@ -1,9 +1,10 @@
 {
     "head":{
-          "name":"Default Model"
+          "name":"Model"
         , "version": "1.0.0"
         , "description": {
-            "ja": "シンプルなモデル"
+              "ja": "シンプルなモデル"
+            , "en": "Simple Model."
         }
     }
     , "use":{
