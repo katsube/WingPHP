@@ -47,7 +47,7 @@
 //---------------------
 // library
 //---------------------
-require_once('_common.php');
+require_once('lib/common.php');
 require_once('../controller/base.php');
 
 

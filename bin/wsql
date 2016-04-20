@@ -60,7 +60,7 @@ $dbname = (!empty($argv[4]))? $argv[4]:'master';
 //---------------------------------
 // Initialize
 //---------------------------------
-require_once('_common.php');
+require_once('lib/common.php');
 require_once('../model/base.php');
 
 //---------------------------------
