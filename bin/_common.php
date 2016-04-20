@@ -27,6 +27,5 @@ function init($dir){
  * Error
  */
 function errormsg($msg){
-    echo "*** Error\n";
-    echo "$msg\n";
+    echo "WingPHP Error: $msg\n";
 }
