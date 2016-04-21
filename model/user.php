@@ -16,9 +16,12 @@ class UserModel extends BaseModel{
 	const DB_PK      = 'id';		//PrimaryKey column name
 	const DB_LOGINID = 'login_id';	//LoginID column name. uniq key.
 	
+	const PW_SEED = 'wzxecrvtbynum,./kjuhygtfrd';
+	
 	private static $column = array(
 									  'id'       => ['integer',    'AUTO_INCREMENT']
 									, 'login_id' => ['varchar(32)','NOT NULL']
+									, 'login_pw' => ['varchar(40)','NOT NULL']
 									, 'name'     => ['varchar(64)']
 									, 'email'    => ['varchar(255)']
 									, 'status'   => ['integer',    'DEFAULT 0']		//0=regist, 1=activate, 9=user remove 
@@ -83,6 +86,7 @@ class UserModel extends BaseModel{
 	 * 
 	 * @param   object  $param = [
 	 *	                                'login_id'
+	 *                                , 'login_pw'
 	 *                                , 'name'
 	 *                                , 'email'
 	 *                            ]
@@ -92,11 +96,12 @@ class UserModel extends BaseModel{
 	public function regist($param){
 		try{
 			if( $this->validation() ){
-				$sql = sprintf('insert into %s(login_id,name,email,regdate,upddate) values(?,?,?,NOW(),NOW())', self::DB_TABLE);
+				$sql = sprintf('insert into %s(login_id,login_pw,name,email,regdate,upddate) values(?,?,?,?,NOW(),NOW())', self::DB_TABLE);
 	
 				$this->begin();
 				$this->exec($sql, array(
 										  $param['login_id']
+										  $this->_passwd($param['login_pw'])
 										, $param['name']
 										, $param['email']));
 				$this->commit();
@@ -175,15 +180,29 @@ class UserModel extends BaseModel{
 	 * ■ Private ■
 	 *--------------------------------------------
 	 * - _validation
+	 * - _passwd
 	 *--------------------------------------------*/
 	/**
 	 * validation
 	 *
-	 * @return void
+	 * @return boolean
 	 * @access private
 	 */
 	private function _validation(){
 		return(true);
 	}
 
+	/**
+	 * Make Passowrd hash
+	 *
+	 * @param  string  $pw
+	 * @return string  sha1
+	 * @access private
+	 */
+	private function _passwd($pw){
+		global $Conf;
+		$str = sprintf('%s%s%s', $Conf['Secret']['key'], $pw, self::PW_SEED);
+		
+		return( sha1($str) );
+	}
 }
