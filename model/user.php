@@ -12,6 +12,19 @@
  */
 class UserModel extends BaseModel{
 
+	const DB_TABLE   = 'user';		//Table name
+	const DB_PK      = 'id';		//PrimaryKey column name
+	const DB_LOGINID = 'login_id';	//LoginID column name. uniq key.
+	
+	private static $column = array(
+									  'id'       => ['integer',    'AUTO_INCREMENT']
+									, 'login_id' => ['varchar(32)','NOT NULL']
+									, 'name'     => ['varchar(64)']
+									, 'email'    => ['varchar(255)']
+									, 'status'   => ['integer',    'DEFAULT 0']		//0=regist, 1=activate, 9=user remove 
+									, 'regdate'  => ['datetime']
+									, 'upddate'  => ['datetime']
+								);
 
 	/**
 	 * constructor
@@ -35,9 +48,85 @@ class UserModel extends BaseModel{
 	/*--------------------------------------------
 	 * ■ Public ■
 	 *--------------------------------------------
+	 * - exists
+	 * - regist
+	 * - remove
+	 * - activate
+	 * - auth
 	 * - get
 	 * - set
 	 *--------------------------------------------*/
+	/**
+	 * Check for the record exists
+	 * 
+	 * @param   integer $login_id
+	 * @return  boolean
+	 * @access  public
+	 */
+	public function exists($login_id){
+		try{
+			$sql  = sprintf('select count(*) as cnt from %s where %s=?', self::DB_TABLE, self::DB_LOGINID);
+			$buff = $this->select1($sql, array($login_id));
+			
+			return(
+				($buff !=== false) && ($buff['cnt'] > 0)
+			);
+		}
+		catch(WsException $we){
+			return(false);
+		}
+	}
+
+
+	/**
+	 * User registration
+	 * 
+	 * @param   object  $param = [
+	 *	                                'login_id'
+	 *                                , 'name'
+	 *                                , 'email'
+	 *                            ]
+	 * @return  boolean
+	 * @access  public
+	 */
+	public function regist($param){
+		try{
+			if( $this->validation() ){
+				$sql = sprintf('insert into %s(login_id,name,email,regdate,upddate) values(?,?,?,NOW(),NOW())', self::DB_TABLE);
+	
+				$this->begin();
+				$this->exec($sql, array(
+										  $param['login_id']
+										, $param['name']
+										, $param['email']));
+				$this->commit();
+
+				return(true);
+			}
+			else{
+				return(false);
+			}
+			
+		}
+		catch(WsException $we){
+			return(false);
+		}
+		
+	}
+
+	public function remove(){
+		
+	}
+	
+	public function activate(){
+		
+	}
+	
+	public function auth(){
+		
+	}
+	
+
 	/**
 	 * get
 	 *
@@ -85,18 +174,16 @@ class UserModel extends BaseModel{
 	/*--------------------------------------------
 	 * ■ Private ■
 	 *--------------------------------------------
-	 * - _foobar
+	 * - _validation
 	 *--------------------------------------------*/
 	/**
-	 * _foobar
-	 *
-	 * [[description here.]]
+	 * validation
 	 *
 	 * @return void
 	 * @access private
 	 */
-	public function _foobar(){
-		;
+	private function _validation(){
+		return(true);
 	}
 
 }
