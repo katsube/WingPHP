@@ -95,7 +95,7 @@ class {$name}Model extends BaseModel{
 	 * @return void
 	 * @access private
 	 */
-	public function _foobar(){
+	private function _foobar(){
 		;
 	}
 
