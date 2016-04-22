@@ -41,8 +41,21 @@ class BaseModel{
 	//--------------------------------------------
 	// メンバ変数
 	//--------------------------------------------
-	private $dbh         = false;
-	private $db_location = 'master';
+	private $dbh = false;
+
+	protected $db_location = 'master';
+
+	protected $table_name   = null;
+	protected $table_column = array(
+									  'id'       => ['type'=>'integer',  'size'=>null,   'opt'=>['autoincrement'=>true]]
+									, 'login_id' => ['type'=>'varchar',  'size'=>32,     'opt'=>['notnull'=>true]]
+									, 'login_pw' => ['type'=>'varchar',  'size'=>40,     'opt'=>['notnull'=>true]]
+									, 'name'     => ['type'=>'varchar',  'size'=>64]
+									, 'email'    => ['type'=>'varchar',  'size'=>255]
+									, 'status'   => ['type'=>'integer',  'size'=>null,   'opt'=>['notnull'=>true, 'default'=>0]]		//0=regist, 1=activate, 9=user remove , 99=BAN
+									, 'regdate'  => ['type'=>'datetime', 'size'=>null]
+									, 'upddate'  => ['type'=>'datetime', 'size'=>null]
+								);
 
 	/**
 	 * コンストラクタ
@@ -73,6 +86,7 @@ class BaseModel{
 	 * - isTransaction
 	 * - commit
 	 * - rollback
+	 * - existsRecord
 	 *--------------------------------------------*/
 	//--------------------------------------------
 	// DBサーバー周りの設定
@@ -244,7 +258,46 @@ class BaseModel{
 		}		
 
 	}
+
+
+	/**
+	 * Check for the record exists
+	 *
+	 * @param  string         $key
+	 * @param  string|number  $value
+	 * @param  string         $table  [option]
+	 * @return bool
+	 * @access public
+	 */
+	public function existsRecord( $key, $value, $table=null ){
+		//-------------------------
+		// Specify the table
+		//-------------------------
+		if( $table === null ){
+			if( $this->table_name === null ){
+				throw new WsException('[existsRecord] Not Unspecified table name');
+			}
+			
+			$table = $this->table_name;
+		}
+		
+		//-------------------------
+		// Run SQL
+		//-------------------------
+		$sql  = sprintf('SELECT count(*) as cnt FROM %s WHERE %s=?', $table, $key);
+		$buff = $this->select1($sql, array($value));
 	
+		if($buff['cnt'] === false ){
+			throw new WsException('[existsRecord] Can not exection SQL: '.$sql);
+		}
+		else if($buff['cnt'] > 0){
+			return(true);
+		}
+		else{
+			return(false);
+		}
+	}
+
 
 	/*--------------------------------------------
 	 * ■ Private ■
@@ -274,7 +327,6 @@ class BaseModel{
 			
 		}
 		catch(PDOException $e){
-			echo "fooooobar2";
 			$cd  = $e->getCode();
 			$msg = $e->getMessage();
 
@@ -331,8 +383,13 @@ class BaseModel{
 		if(!$this->dbh)
 			$this->dbh = $this->_connect();
 
-		$st  = $this->dbh->prepare($sql);
-		$ret = $st->execute($bind);
+		try{
+			$st  = $this->dbh->prepare($sql);
+			$ret = $st->execute($bind);
+		}
+		catch(PDOException $pe){
+			throw new WsException($this->_getExceptionMessage('_runsql', $st ));
+		}
 
 		if(!$ret){
 			throw new WsException($this->_getExceptionMessage('_runsql', $st ));
