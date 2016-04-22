@@ -56,6 +56,8 @@ class BaseModel{
 									, 'regdate'  => ['type'=>'datetime', 'size'=>null]
 									, 'upddate'  => ['type'=>'datetime', 'size'=>null]
 								);
+	protected $select_limit  = null;
+	protected $select_offset = null;
 
 	/**
 	 * コンストラクタ
@@ -87,6 +89,14 @@ class BaseModel{
 	 * - commit
 	 * - rollback
 	 * - existsRecord
+	 * - searchRecord
+	 * - insertRecord
+	 * - updateRecord
+	 * - deleteRecord
+	 * - setTableName
+	 * - setLimit
+	 * - setOffSet
+	 * - setPaging
 	 *--------------------------------------------*/
 	//--------------------------------------------
 	// DBサーバー周りの設定
@@ -269,25 +279,14 @@ class BaseModel{
 	 * @return bool
 	 * @access public
 	 */
-	public function existsRecord( $key, $value, $table=null ){
-		//-------------------------
-		// Specify the table
-		//-------------------------
-		if( $table === null ){
-			if( $this->table_name === null ){
-				throw new WsException('[existsRecord] Not Unspecified table name');
-			}
-			
-			$table = $this->table_name;
-		}
+	public function existsRecord( $where, $value=array(), $table=null ){
+		$value = (is_array($value))?  $value:array($value);
+		$table = $this->_checkTableName($table);
 		
-		//-------------------------
-		// Run SQL
-		//-------------------------
-		$sql  = sprintf('SELECT count(*) as cnt FROM %s WHERE %s=?', $table, $key);
-		$buff = $this->select1($sql, array($value));
+		$sql  = sprintf('SELECT count(*) as cnt FROM %s WHERE %s', $table, $where);
+		$buff = $this->select1($sql, $value);
 	
-		if($buff['cnt'] === false ){
+		if($buff === false ){
 			throw new WsException('[existsRecord] Can not exection SQL: '.$sql);
 		}
 		else if($buff['cnt'] > 0){
@@ -299,6 +298,73 @@ class BaseModel{
 	}
 
 
+	/**
+	 * Search for the Table
+	 *
+	 * もしもgroup by句 や having句、複雑なSQL文が必要な場合は、$this->select()を用いてください。
+	 * $tableは、$this->setTableName()で事前に設定できます。
+	 * $limitは、$this->setPagin(), $this->limit(), $this->setOffset()で事前に設定できます。
+	 * 
+	 * If you need the "group by", "having" and complicated SQL, please using the $this->selet().
+	 * $table is 
+	 * 
+	 * @param  string        $where            "name1=? and name2 like '%foo%'"
+	 * @param  array|string  [option] $value   array(value1, value2 ... valuen) or value1
+	 * @param  string        [option] $limit   "0,10" 
+	 * @param  string        [option] $orderby "id ASC"
+	 * @param  string        [option] $table
+	 * @return bool
+	 * @access public
+	 */
+	public function searchRecord($where, $value=array(), $orderby=null, $limit=null, $table=null){
+		$value   = (is_array($value))?  $value:array($value);
+		$orderby = $this->_checkOrderby($orderby);
+		$limit   = $this->_checkLimit($limit);
+		$table   = $this->_checkTableName($table);
+		
+		$sql  = sprintf('SELECT * FROM %s WHERE %s%s%s', $table, $where, $orderby, $limit);
+		echo $sql;
+		$buff = $this->select($sql, $value);
+		
+		if($buff === false ){
+			throw new WsException('[searchRecord] Can not exection SQL: '.$sql);
+		}
+		else{
+			return($buff);
+		}
+	}
+
+	public function insertRecord(){
+		
+	}
+
+	public function updateRecord(){
+		
+	}
+	
+	
+	public function deleteRecord(){
+		
+	}
+
+	public function setTableName($name){
+		$this->table_name = $name;
+	}
+
+	public function setLimit($limit){
+		$this->select_limit = $limit;		
+	}
+	
+	public function setOffSet($offset){
+		$this->select_offset = $offset;
+	}
+
+	public function setPaging($offset, $limit){
+		$this->setOffSet($offset);
+		$this->setLimit($limit);
+	}
+
+
 	/*--------------------------------------------
 	 * ■ Private ■
 	 *--------------------------------------------
@@ -306,6 +372,7 @@ class BaseModel{
 	 * - _select
 	 * - _runsql
 	 * - _getExceptionMessage
+	 * - _checkTableName
 	 *--------------------------------------------*/
 	/**
 	 * DBに接続する
@@ -423,4 +490,51 @@ class BaseModel{
 		$result = sprintf('[%s] %s', $name, implode(' ', $error_info));
 		return($result);
 	}
+
+	/**
+	 * 
+	 */
+	private function _CheckTableName($table){
+		if( $table === null ){
+			if( $this->table_name === null ){
+				$dbg = debug_backtrace();
+				$iam = $dbg[1]['function'];
+				
+				throw new WsException('['.$iam.'] Not Unspecified Table name');
+			}
+			
+			return( $this->table_name );
+		}
+
+		return($table);
+	}
+
+
+	private function _checkLimit($limit){
+		if($limit === null){
+			if ($this->select_limit !== null && $this->select_offset === null){
+				return(sprintf(' LIMIT %s', $this->select_limit));
+			}
+			else if ($this->select_limit !== null && $this->select_offset !== null){
+				return(sprintf(' LIMIT %s, %s', $this->select_offset, $this->select_limit));
+			}
+			else{
+				return('');
+			}
+		}
+		else{
+			return(sprintf(' LIMIT %s', $limit));
+		}
+	}
+
+	private function _checkOrderby($orderby){
+		if($orderby === null){
+			return('');
+		}
+		else{
+			return(sprintf(' ORDER BY %s', $orderby));
+		}
+	}
+
+
 }
