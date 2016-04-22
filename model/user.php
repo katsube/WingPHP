@@ -19,14 +19,14 @@ class UserModel extends BaseModel{
 	const PW_SEED = 'wzxecrvtbynum,./kjuhygtfrd';
 	
 	private static $column = array(
-									  'id'       => ['integer',    'AUTO_INCREMENT']
-									, 'login_id' => ['varchar(32)','NOT NULL']
-									, 'login_pw' => ['varchar(40)','NOT NULL']
-									, 'name'     => ['varchar(64)']
-									, 'email'    => ['varchar(255)']
-									, 'status'   => ['integer',    'DEFAULT 0']		//0=regist, 1=activate, 9=user remove 
-									, 'regdate'  => ['datetime']
-									, 'upddate'  => ['datetime']
+									  'id'       => ['type'=>'integer',  'size'=>null,   'autoincrement'=>true]
+									, 'login_id' => ['type'=>'varchar',  'size'=>32,     'notnull'=>true]
+									, 'login_pw' => ['type'=>'varchar',  'size'=>40,     'notnull'=>true]
+									, 'name'     => ['type'=>'varchar',  'size'=>64]
+									, 'email'    => ['type'=>'varchar',  'size'=>255]
+									, 'status'   => ['type'=>'integer',  'size'=>null,   'notnull'=>true, 'default'=>0]		//0=regist, 1=activate, 9=user remove , 99=BAN
+									, 'regdate'  => ['type'=>'datetime', 'size'=>null]
+									, 'upddate'  => ['type'=>'datetime', 'size'=>null]
 								);
 
 	/**
@@ -189,8 +189,29 @@ class UserModel extends BaseModel{
 	 * @access private
 	 */
 	private function _validation(){
+		uselib('Util/Validation');
+		$v = new Validation();
+		$v->addList(array(
+				  'login_id' => array(['require', 'alnum', ['bytemin', 4], ['bytemax', 4]])
+				, 'login_pw' => array(['require'])
+				, 'name'     => array(['require'])
+				, 'email'    => array(['require', 'email'])
+			));
+		
 		return(true);
 	}
+
+	/**
+	 * Get table cloumn size
+	 *
+	 * @param  string  $name
+	 * @return boolean
+	 * @access private
+	 */
+	private function _getCloumnSize($name){
+		return( $this->column[$name]['size'] );
+	}
+
 
 	/**
 	 * Make Passowrd hash
