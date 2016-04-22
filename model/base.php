@@ -323,7 +323,6 @@ class BaseModel{
 		$table   = $this->_checkTableName($table);
 		
 		$sql  = sprintf('SELECT * FROM %s WHERE %s%s%s', $table, $where, $orderby, $limit);
-		echo $sql;
 		$buff = $this->select($sql, $value);
 		
 		if($buff === false ){
