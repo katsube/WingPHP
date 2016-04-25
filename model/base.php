@@ -302,16 +302,16 @@ class BaseModel{
 	 * Search for the Table
 	 *
 	 * もしもgroup by句 や having句、複雑なSQL文が必要な場合は、$this->select()を用いてください。
-	 * $tableは、$this->setTableName()で事前に設定できます。
+	 * $tableは、$this->setTableName()で、
 	 * $limitは、$this->setPagin(), $this->limit(), $this->setOffset()で事前に設定できます。
 	 * 
 	 * If you need the "group by", "having" and complicated SQL, please using the $this->selet().
 	 * $table is 
 	 * 
-	 * @param  string        $where            "name1=? and name2 like '%foo%'"
-	 * @param  array|string  [option] $value   array(value1, value2 ... valuen) or value1
-	 * @param  string        [option] $limit   "0,10" 
-	 * @param  string        [option] $orderby "id ASC"
+	 * @param  string                 $where    "name1=? and name2 like '%foo%'"
+	 * @param  array|string  [option] $value    array(value1, value2 ... valuen) or value1
+	 * @param  string        [option] $limit    "0,10" 
+	 * @param  string        [option] $orderby  "id ASC"
 	 * @param  string        [option] $table
 	 * @return bool
 	 * @access public
@@ -333,8 +333,38 @@ class BaseModel{
 		}
 	}
 
-	public function insertRecord(){
+
+	/**
+	 * Insert for the Table
+	 * 
+	 * @param  array             $value   array(value1, value2 ... valuen) or value1
+	 * @param  string   [option] $column  "id,name,value1,value2" 
+	 * @param  string   [option] $table
+	 * @return boolean
+	 * @access public
+	 */
+	public function insertRecord($value, $column=null, $table=null){
+		$table       = $this->_checkTableName($table);
+		$placeholder = rtrim( str_repeat('?,', count($value)), ',' );
+
+		if( $column === null ){
+			$sql = sprintf('INSERT INTO %s VALUES(%s)', $table, $placeholder);
+		}
+		else{
+			$sql = sprintf('INSERT INTO %s (%s) VALUES(%s)', $table, $column, $placeholder);
+		}
 		
+		try{
+			$this->begin();
+			$ret = $this->exec($sql, $value);
+			$this->commit();
+			
+			return($ret);
+		}
+		catch(WsException $we){
+			$this->rollback();
+			throw new WsException('[insertRecord] Can not exection SQL: '.$sql);
+		}
 	}
 
 	public function updateRecord(){
