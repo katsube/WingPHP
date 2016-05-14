@@ -316,10 +316,11 @@ class BaseModel{
 	 * example.
 	 *     $result = $this->searchRecord('id=?', 1);
 	 *     $result = $this->searchRecord('id=? and name=?', [1, 'katsube']);
+	 *     $result = $this->searchRecord('id=? and name=?', [1, 'katsube'], [0,10]);
 	 * 
 	 * @param  string                 $where    "name1=? and name2 like '%foo%'"
 	 * @param  array|string  [option] $value    array(value1, value2 ... valuen) or value1
-	 * @param  string        [option] $limit    "0,10" 
+	 * @param  string        [option] $limit    array(0,10)
 	 * @param  string        [option] $orderby  "id ASC"
 	 * @param  string        [option] $table
 	 * @return bool
@@ -600,7 +601,7 @@ class BaseModel{
 			}
 		}
 		else{
-			return(sprintf(' LIMIT %s', $limit));
+			return(sprintf(' LIMIT %d,%d', $limit[0], $limit[1]));
 		}
 	}
 
