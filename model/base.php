@@ -94,6 +94,7 @@ class BaseModel{
 	 * - updateRecord
 	 * - updateRecordAll
 	 * - deleteRecord
+	 * - truncate
 	 * - setTableName
 	 * - setLimit
 	 * - setOffSet
@@ -424,6 +425,7 @@ class BaseModel{
 		}
 	}
 
+
 	/**
 	 * Update for the All Records
 	 * (alias updateRecord())
@@ -439,10 +441,74 @@ class BaseModel{
 			$this->updateRecord($set, null, $value, $table)
 		);
 	}
-	
-	public function deleteRecord(){
-		
+
+
+	/**
+	 * Delete for the Records
+	 * 
+	 * example.
+	 *    $this->deleteRecord($where, $value);
+	 *    $this->deleteRecord('id=?', 1);
+	 * 
+	 *    //delete for all records
+	 *    $this->deleteRecord('true') //Not recommended
+	 *                                //"delete from tablename where true"
+	 *    $this->truncate();
+	 * 
+	 * @param  string            $where   "name=?"
+	 * @param  array    [option] $value   array(value1, value2 ... valuen) or value1
+	 * @param  string   [option] $table
+	 * @return boolean
+	 * @access public
+	 */
+	public function deleteRecord($where, $value=array(), $table=null){
+		$table = $this->_checkTableName($table);
+		$value = (is_array($value))?  $value:array($value);
+
+		//Build SQL
+		$sql = sprintf('DELETE FROM %s WHERE %s', $table, $where);
+
+		try{
+			$this->begin();
+			$ret = $this->exec($sql, $value);
+			$this->commit();
+			
+			return($ret);
+		}
+		catch(WsException $we){
+			$this->rollback();
+			throw new WsException('[deleteRecord] Can not exection SQL: '.$sql);
+		}
 	}
+	
+	/**
+	 * Truncate Tble
+	 * 
+	 * example.
+	 *    $this->truncate();
+	 * 
+	 * @param  string   [option] $table
+	 * @return boolean
+	 * @access public
+	 */
+	public function truncate($table=null){
+		$table = $this->_checkTableName($table);
+		
+		$sql = sprintf('TRUNCATE TABLE %s', $table);
+
+		try{
+			$this->begin();
+			$ret = $this->exec($sql);
+			$this->commit();
+			
+			return($ret);
+		}
+		catch(WsException $we){
+			$this->rollback();
+			throw new WsException('[truncate] Can not exection SQL: '.$sql);
+		}
+	}
+
 
 	public function setTableName($name){
 		$this->table_name = $name;
