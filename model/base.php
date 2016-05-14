@@ -92,6 +92,7 @@ class BaseModel{
 	 * - searchRecord
 	 * - insertRecord
 	 * - updateRecord
+	 * - updateRecordAll
 	 * - deleteRecord
 	 * - setTableName
 	 * - setLimit
@@ -349,7 +350,7 @@ class BaseModel{
 	 * 
 	 * example.
 	 *   $this->insertRecord([1, 'katsube']);
-	 *   $this->insertRecord([2], 'id', 'tablename');
+	 *   $this->insertRecord([2], 'id');
 	 *   
 	 * @param  array             $value   array(value1, value2 ... valuen) or value1
 	 * @param  string   [option] $column  "id,name,value1,value2" 
@@ -386,26 +387,30 @@ class BaseModel{
 	 * Update for the Record
 	 * 
 	 * example.
-	 *     $this->updateRecord();
+	 *    $this->updateRecord($set, $where, $value);
+	 *    $this->updateRecord('name=?', 'id=?', [$name, $id]);
 	 * 
+	 *    //Update for all record
+	 *    $this->updateRecord('name=?', null, $name);
+	 *    $this->updateRecordAll('name=?', $name);
+	 *
+	 * @param  string            $set     "name=?"
+	 * @param  string            $where   "id=? and name=?"
+	 * @param  array             $value   array(value1, value2 ... valuen) or value1
+	 * @param  string   [option] $table
 	 * @return boolean
 	 * @access public
 	 */
-	public function updateRecord(){
-		$table       = $this->_checkTableName($table);
-		$placeholder = rtrim( str_repeat('?,', count($value)), ',' );
+	public function updateRecord($set, $where, $value, $table=null){
+		$table = $this->_checkTableName($table);
+		$value = (is_array($value))?  $value:array($value);
 
+		//Build SQL
+		$sql = sprintf('UPDATE %s SET %s', $table, $set);
+		if( $where!==null ){
+			$sql .= sprintf(' WHERE %s', $where);
+		}
 
-		$sql = sprintf('UPDATE %s SET %s WHERE %s', $table, );
-		$sql = sprintf('UPDATE %s SET %s', $table, );
-		
-		if( $column === null ){
-			$sql = sprintf('INSERT INTO %s VALUES(%s)', $table, $placeholder);
-		}
-		else{
-			$sql = sprintf('INSERT INTO %s (%s) VALUES(%s)', $table, $column, $placeholder);
-		}
-		
 		try{
 			$this->begin();
 			$ret = $this->exec($sql, $value);
@@ -415,11 +420,25 @@ class BaseModel{
 		}
 		catch(WsException $we){
 			$this->rollback();
-			throw new WsException('[insertRecord] Can not exection SQL: '.$sql);
+			throw new WsException('[updateRecord] Can not exection SQL: '.$sql);
 		}
-		
 	}
-	
+
+	/**
+	 * Update for the All Records
+	 * (alias updateRecord())
+	 * 
+	 * @param  string            $set     "name=?"
+	 * @param  array             $value   array(value1, value2 ... valuen) or value1
+	 * @param  string   [option] $table
+	 * @return boolean
+	 * @access public
+	 */
+	public function updateRecordAll($set, $value, $table=null){
+		return(
+			$this->updateRecord($set, null, $value, $table)
+		);
+	}
 	
 	public function deleteRecord(){
 		
