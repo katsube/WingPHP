@@ -273,10 +273,16 @@ class BaseModel{
 	/**
 	 * Check for the record exists
 	 *
+	 * example.
+	 *     $ret = $this->existsRecord('id=?', 'foobar');
+	 *     if($ret){
+	 *        // ....
+	 * 	   }
+	 * 
 	 * @param  string         $key
 	 * @param  string|number  $value
 	 * @param  string         $table  [option]
-	 * @return bool
+	 * @return boolean
 	 * @access public
 	 */
 	public function existsRecord( $where, $value=array(), $table=null ){
@@ -306,7 +312,10 @@ class BaseModel{
 	 * $limitは、$this->setPagin(), $this->limit(), $this->setOffset()で事前に設定できます。
 	 * 
 	 * If you need the "group by", "having" and complicated SQL, please using the $this->selet().
-	 * $table is 
+	 * 
+	 * example.
+	 *     $result = $this->searchRecord('id=?', 1);
+	 *     $result = $this->searchRecord('id=? and name=?', [1, 'katsube']);
 	 * 
 	 * @param  string                 $where    "name1=? and name2 like '%foo%'"
 	 * @param  array|string  [option] $value    array(value1, value2 ... valuen) or value1
@@ -337,6 +346,10 @@ class BaseModel{
 	/**
 	 * Insert for the Table
 	 * 
+	 * example.
+	 *   $this->insertRecord([1, 'katsube']);
+	 *   $this->insertRecord([2], 'id', 'tablename');
+	 *   
 	 * @param  array             $value   array(value1, value2 ... valuen) or value1
 	 * @param  string   [option] $column  "id,name,value1,value2" 
 	 * @param  string   [option] $table
@@ -367,7 +380,42 @@ class BaseModel{
 		}
 	}
 
+
+	/**
+	 * Update for the Record
+	 * 
+	 * example.
+	 *     $this->updateRecord();
+	 * 
+	 * @return boolean
+	 * @access public
+	 */
 	public function updateRecord(){
+		$table       = $this->_checkTableName($table);
+		$placeholder = rtrim( str_repeat('?,', count($value)), ',' );
+
+
+		$sql = sprintf('UPDATE %s SET %s WHERE %s', $table, );
+		$sql = sprintf('UPDATE %s SET %s', $table, );
+		
+		if( $column === null ){
+			$sql = sprintf('INSERT INTO %s VALUES(%s)', $table, $placeholder);
+		}
+		else{
+			$sql = sprintf('INSERT INTO %s (%s) VALUES(%s)', $table, $column, $placeholder);
+		}
+		
+		try{
+			$this->begin();
+			$ret = $this->exec($sql, $value);
+			$this->commit();
+			
+			return($ret);
+		}
+		catch(WsException $we){
+			$this->rollback();
+			throw new WsException('[insertRecord] Can not exection SQL: '.$sql);
+		}
 		
 	}
 	
