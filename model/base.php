@@ -482,7 +482,7 @@ class BaseModel{
 	}
 	
 	/**
-	 * Truncate Tble
+	 * Truncate Table
 	 * 
 	 * example.
 	 *    $this->truncate();
@@ -510,18 +510,47 @@ class BaseModel{
 	}
 
 
+	/**
+	 * Setter $this->table_name
+	 * 
+	 * @param  string   $name
+	 * @return void
+	 * @access public
+	 */
 	public function setTableName($name){
 		$this->table_name = $name;
 	}
 
+	/**
+	 * Setter $this->select_limit
+	 * 
+	 * @param  integer   $limit
+	 * @return void
+	 * @access public
+	 */
 	public function setLimit($limit){
 		$this->select_limit = $limit;		
 	}
 	
+	/**
+	 * Setter $this->select_offset
+	 * 
+	 * @param  integer   $offset
+	 * @return void
+	 * @access public
+	 */
 	public function setOffSet($offset){
 		$this->select_offset = $offset;
 	}
 
+	/**
+	 * Setter Offset & Limit
+	 * 
+	 * @param  integer   $offset
+	 * @param  integer   $limit
+	 * @return void
+	 * @access public
+	 */
 	public function setPaging($offset, $limit){
 		$this->setOffSet($offset);
 		$this->setLimit($limit);
@@ -654,8 +683,14 @@ class BaseModel{
 		return($result);
 	}
 
+
+
 	/**
+	 * TableName selector
 	 * 
+	 * @param  string   $table
+	 * @return string
+	 * @access private
 	 */
 	private function _CheckTableName($table){
 		if( $table === null ){
@@ -673,6 +708,13 @@ class BaseModel{
 	}
 
 
+	/**
+	 * LIMIT selector
+	 * 
+	 * @param  array   $limit
+	 * @return string
+	 * @access private
+	 */
 	private function _checkLimit($limit){
 		if($limit === null){
 			if ($this->select_limit !== null && $this->select_offset === null){
@@ -690,6 +732,13 @@ class BaseModel{
 		}
 	}
 
+	/**
+	 * ORDER BY selector
+	 * 
+	 * @param  string   $orderby
+	 * @return string
+	 * @access private
+	 */
 	private function _checkOrderby($orderby){
 		if($orderby === null){
 			return('');
