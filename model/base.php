@@ -43,21 +43,12 @@ class BaseModel{
 	//--------------------------------------------
 	private $dbh = false;
 
-	protected $db_location = 'master';
+	protected $db_location   = 'master';
 
-	protected $table_name   = null;
-	protected $table_column = array(
-									  'id'       => ['type'=>'integer',  'size'=>null,   'opt'=>['autoincrement'=>true]]
-									, 'login_id' => ['type'=>'varchar',  'size'=>32,     'opt'=>['notnull'=>true]]
-									, 'login_pw' => ['type'=>'varchar',  'size'=>40,     'opt'=>['notnull'=>true]]
-									, 'name'     => ['type'=>'varchar',  'size'=>64]
-									, 'email'    => ['type'=>'varchar',  'size'=>255]
-									, 'status'   => ['type'=>'integer',  'size'=>null,   'opt'=>['notnull'=>true, 'default'=>0]]		//0=regist, 1=activate, 9=user remove , 99=BAN
-									, 'regdate'  => ['type'=>'datetime', 'size'=>null]
-									, 'upddate'  => ['type'=>'datetime', 'size'=>null]
-								);
-	protected $select_limit  = null;
-	protected $select_offset = null;
+	protected $table_name    = null;
+
+	protected $select_limit  = 5;
+	protected $select_offset = 0;
 
 	/**
 	 * コンストラクタ
