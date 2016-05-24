@@ -163,6 +163,11 @@ $Conf = array(
 		
 			#他のヘッダー(Sender, Reply-toなど)もここに記述すると反映されます。
 		)
+		, 'log' => array(
+			  'logging'  => false
+			, 'snapshot' => false
+			, 'snapdir'  => '../log/mail/'
+		)
 	)
 
 	//■validation設定

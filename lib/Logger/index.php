@@ -94,11 +94,12 @@ class Logger {
 	/*--------------------------------------------
 	 * ■ Public ■
 	 *--------------------------------------------
-	 * - debug
-	 * - info
-	 * - warning
-	 * - error
-	 * - critical
+	 * - __call
+	 *      debug()
+	 *      info()
+	 *      warning()
+	 *      error()
+	 *      critical()
 	 * - setName
 	 * - setWriteLevel
 	 * - setAlertLevel
@@ -134,6 +135,10 @@ class Logger {
                 return( $this->_write(self::LV_CRITICAL, $param) );
                 break;
         
+            case 'snapshot':
+                return( $this->_writeSnapshot($param) );
+                break;
+            
             default:
                 throw new WsException('Undefined method: '.$name, 404);
                 break;
@@ -357,7 +362,38 @@ class Logger {
         }
     }
     
-    
+    /**
+     * write Snapshot
+     * 
+     * @param  array   $param   [0] ... filepath or directory
+     *                          [1] ... message
+     * @return boolean
+     * @access private
+     */
+    private function _writeSnapshot($param){
+        if( count($param) !== 2){
+            return(false);
+        }
+        
+        $path    = $param[0];
+        $message = $param[1];
+        
+        if( is_dir($path) ){
+            $time      = time();
+            $yyyymmdd  = date('Ymd', $time);
+            $hhmmss    = date('His', $time);
+            
+            $directory = sprintf('%s/%s', $path, $yyyymmdd);
+            $path      = sprintf('%s/%s%s_%s.txt', $directory, $yyyymmdd, $hhmmss, gen_uniqid());
+        
+            if( ! is_dir($directory) ){
+                mkdir($directory);
+            }
+        }
+        
+        return( lockfwrite($path, $message, true) );
+    }
+
     
     /**
      * Generate Message
