@@ -133,10 +133,23 @@ function addlogfile(){
 			);
 
 	// 書き込む文字列のチェック
-	$len = count($args);
+	$len      = count($args);
 	$separate = $Conf['Log']['separate'];
+	$replace  = function($str){
+		return( preg_replace("/($separate|\r|\n)/", '', $str) );
+	};
 	for($i=1; $i<$len; $i++ ){			//args[0] はファイル識別子なので飛ばす
-		$args[$i] = preg_replace("/($separate|\r|\n)/", '', $args[$i]);
+		if(is_array($args[$i])){
+			$tmp  = $args[$i];
+			$buff = array();
+			foreach($tmp as $value){
+				$buff[] = $replace($value);
+			}
+			$args[$i] = implode($separate, $buff);
+		}
+		else{
+			$args[$i] = $replace($args[$i]);
+		}
 	}
 
 	// 書き込む文字列を作成
