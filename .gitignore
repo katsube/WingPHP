@@ -4,3 +4,5 @@ log/*.txt
 log/mail/*.txt
 log/mail/*/*.txt
 !.gitkeep
+
+tests/_output/*
