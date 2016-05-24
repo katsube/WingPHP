@@ -57,12 +57,6 @@ $Conf = array(
 		#)
 	)
 
-	// ■BaseModel設定用
-	, 'Model' => array(
-		// errorを廃止しました (2016/04/14)
-		//  今後、実行時エラーが発生した場合はthrow new Exceptionが発動します
-	)
-
 	//■秘密鍵
 	, 'Secret' => array(
 		'key' => 'qwertyuiop'		// 適当な文字列に変更してください。
@@ -98,13 +92,38 @@ $Conf = array(
 						// ログ識別子 => ファイル名
 						  'ERROR'  => 'errorlog_'
 						, 'COMMON' => 'commonlog_'
+						, 'TEST'   => 'test_'
 					)
 		, 'add'       => 'Ymd'				// ファイル名の末尾につける文字列。date関数の書式と同じです。なにもつけない場合はfalseを指定。
 		, 'ext'       => 'txt'				// 拡張子
-		, 'separate' => "\t"					// 区切り文字
+		, 'separate' => "\t"				// 区切り文字
 		, 'addtrace' => false 				// debug_backtraceの情報を記録するか
 	)
 	
+	//■Logger設定
+	, 'Logger' => array(
+		'storage' => array(
+			'file' => array(
+				//addlogfileの設定が使用されます
+			 )
+		)
+		, 'alert' => array(
+			  'on'   => false
+			, 'type' => 'email'
+		  	
+		  	
+		  	, 'email' => array(
+			  	  'to'      => 'katsubemakito@gmail.com'
+				, 'from'    => 'info@wingphp.net'
+			  	, 'subject' => '[Alert]'
+			)
+			  	
+			, 'slack' => array(
+			  	// not implemented
+			)
+		)
+	)
+
 	//■自動ログ記録
 	, 'AutoLogging' => array(
 		  'error' => true

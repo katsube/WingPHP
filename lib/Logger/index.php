@@ -29,19 +29,24 @@
  * example.<code>
  *     uselib('Logger');
  *
- *     $log = new Logger();   // new Logger(['level'=>Logger::WARNING, 'storage'=>Logger:FILE]);
+ *     $log = new Logger();
  *
  *     // config
  *     $log->setName('foobar');
- *     $log->setWriteLevel(Logger::DEBUG);  //DEBUG | INFO | WARNING | ERROR
- *     $log->setStorage(Logger::FILE);      //FILE
- *                                          //sorry, other options do not exist now.
+ *     $log->setWriteLevel(Logger::LV_DEBUG);       // LV_DEBUG | LV_INFO | LV_WARNING | LV_ERROR | LV_CRITICAL
+ *     $log->setAlertLevel(Logger::LV_CRITICAL);    // LV_DEBUG | LV_INFO | LV_WARNING | LV_ERROR | LV_CRITICAL
+ *     $log->setAlertDo(false);                     // true | false
+ *     $log->setAlertType(Logger::AL_EMAIL);        // AL_EMAIL | AL_SLACK
+ *     $log->setStorage(Logger::ST_FILE);           // ST_FILE
+ *     $log->setPushSTDOUT(false);                  // true | false
+ *     $log->setPushSTDERR(false);                  // true | false
  * 
  *     // write log
  *     $log->debug("debug message");
  *     $log->info("information message");
  *     $log->warning("warning message");
  *     $log->error("error message");
+ *     $log->critical("critical erro message");
  * </code>
  *
  * @package    Logger
@@ -51,43 +56,38 @@
  * @access     public
  */
 class Logger {
-    const LV_DEBUG   = 1;
-    const LV_INFO    = 2;
-    const LV_WARNING = 3;
-    const LV_ERROR   = 4;
+    const LV_DEBUG    = 100;
+    const LV_INFO     = 200;
+    const LV_WARNING  = 300;
+    const LV_ERROR    = 400;
+    const LV_CRITICAL = 500;
 
-    const FILE = 101;
+    const ST_FILE   = 'FILE';
 
-    private $log_name = 'common';
+    const AL_EMAIL  = 'email';
+    const AL_SLACK  = 'slack';      // not implemented
 
-    private $write_lv      = self::LV_WARNING;
-    private $write_storage = self::FILE;
+    private $log_name = 'COMMON';
+
+    private $write_lv      = self::LV_DEBUG;
+    private $write_storage = self::ST_FILE;
     private $write_handle  = null;
 
+    private $alert_lv      = self::LV_CRITICAL;
+    private $alert_do      = false;
+    private $alert_type    = self::AL_EMAIL;
+
+    private $push_stdout  = false;
+    private $push_stderr  = false;
+    
 
 	/**
 	 * コンストラクタ
 	 *
 	 * @access public
 	 */
-	public function __construct($opt=null){
-	    if($opt !== null && is_array($opt) ){
-	        if( array_key_exists('level', $opt) ){
-	            $ret = $this->setWriteLevel($opt['lv']);
-	            if($ret === false)
-	                throw new WsException("illegal arguments to level");
-	        }
-	        if( array_key_exists('storage', $opt) ){
-	            $ret = $this->setStorage($opt['storage']);
-	            if($ret === false)
-	                throw new WsException("illegal arguments to storage");
-	        }
-	        if( array_key_exists('name', $opt) ){
-	            $ret = $this->setName($opt['name']);
-	            if($ret === false)
-	                throw new WsException("illegal arguments to name");
-	        }
-	    }
+	public function __construct(){
+        ;
 	}
 
 
@@ -98,53 +98,48 @@ class Logger {
 	 * - info
 	 * - warning
 	 * - error
+	 * - critical
 	 * - setName
 	 * - setWriteLevel
+	 * - setAlertLevel
+	 * - setAlertDo
+	 * - setAlertType
 	 * - setStorage
+	 * - setPushSTDOUT
+	 * - setPushSTDERR
 	 *--------------------------------------------*/
-    /**
-     * add Debug Message.
-     * 
-     * @param  string  $msg
-     * @return boolean
-     * @access public
-     */
-    public function debug($msg){
-        return( $this->_write($msg, self::LV_DEBUG) );
+
+	/**
+	 * メソッドのオーバーライド
+	 */
+	function __call($name, $param){
+        switch($name){
+            case 'debug':
+                return( $this->_write(self::LV_DEBUG, $param) );
+                break;
+            
+            case 'info':
+                return( $this->_write(self::LV_INFO, $param) );
+                break;
+
+            case 'warning':
+                return( $this->_write(self::LV_WARNING, $param) );
+                break;
+
+            case 'error':
+                return( $this->_write(self::LV_ERROR, $param) );
+                break;
+
+            case 'critical':
+                return( $this->_write(self::LV_CRITICAL, $param) );
+                break;
+        
+            default:
+                throw new WsException('Undefined method: '.$name, 404);
+                break;
+        }
     }
 
-    /**
-     * add Information Message.
-     * 
-     * @param  string  $msg
-     * @return boolean
-     * @access public
-     */
-    public function info($msg){
-        return( $this->_write($msg, self::LV_INFO) );
-    }
-
-    /**
-     * add Warning Message.
-     * 
-     * @param  string  $msg
-     * @return boolean
-     * @access public
-     */
-    public function warning($msg){
-        return( $this->_write($msg, self::LV_WARNING) );
-    }
-
-    /**
-     * add Error Message.
-     * 
-     * @param  string  $msg
-     * @return boolean
-     * @access public
-     */
-    public function Error($msg){
-       return( $this->_write($msg, self::LV_ERROR) );
-    }
 
     /**
      * set LogName
@@ -175,6 +170,7 @@ class Logger {
             case self::LV_INFO:
             case self::LV_WARNING:
             case self::LV_ERROR:
+            case self::LV_CRITICAL:
                 $this->write_lv = $lv;
                 return(true);
             
@@ -182,6 +178,64 @@ class Logger {
                 return(false);
         }
     }
+
+    /**
+     * set AlertLevel
+     * 
+     * @param  integer  $lv
+     * @return boolean
+     * @access public
+     */
+    public function setAlertLevel($lv){
+        switch($lv){
+            case self::LV_DEBUG:
+            case self::LV_INFO:
+            case self::LV_WARNING:
+            case self::LV_ERROR:
+            case self::LV_CRITICAL:
+                $this->alert_lv = $lv;
+                return(true);
+            
+            default:
+                return(false);
+        }
+    }
+
+    /**
+     * set Alert On/Off
+     * 
+     * @param  boolean  $flag
+     * @return boolean
+     * @access public
+     */
+    public function setAlertDo($flag){
+        if( is_bool($flag) ){
+            $this->alert_do = $flag;
+            return(true);
+        }
+        
+        return(false);
+    }
+
+    /**
+     * set AlertType
+     * 
+     * @param  string  $type
+     * @return boolean
+     * @access public
+     */
+    public function setAlertType($type){
+        switch($lv){
+            case self::AL_EMAIL:
+            //case self::AL_SLACK:
+                $this->alert_type = $type;
+                return(true);
+            
+            default:
+                return(false);
+        }
+    }
+
 
     /**
      * set Storage type
@@ -192,7 +246,9 @@ class Logger {
      */
     public function setStorage($type){
         switch($type){
-            case self::FILE:
+            case self::ST_FILE:
+            case self::ST_STDOUT:
+            case self::ST_STDERR:
                 $this->write_storage = $type;
                 return(true);
             
@@ -200,26 +256,121 @@ class Logger {
                 return(false);
         }
     }
+    
+    /**
+     * set PushSTDOUT
+     * 
+     * @param  boolean  $flag
+     * @return boolean
+     * @access public
+     */
+    public function setPushSTDOUT($flag){
+        if( is_bool($flag) ){
+            $this->push_stdout = $flag;
+            return(true);
+        }
+        
+        return(false);
+    }
 
+    /**
+     * set PushSTDERR
+     * 
+     * @param  boolean  $flag
+     * @return boolean
+     * @access public
+     */
+    public function setPushSTDERR($flag){
+        if( is_bool($flag) ){
+            $this->push_stderr = $flag;
+            return(true);
+        }
+        
+        return(false);
+    }
 
 	/*--------------------------------------------
 	 * ■ Private ■
 	 *--------------------------------------------
 	 * - _writeLog
+	 * _ _genMessage
 	 *--------------------------------------------*/
     /**
      * write Message
      * 
-     * @param  string  $msg
-     * @param  integer $lv
-     * @return mixed   null  = not enough write level.
-     *                 true  = success
-     *                 false = failed
-     * @access public
+     * @param  integer       $lv
+     * @param  string|array  $msg
+     * @return mixed         null  = not enough write level.
+     *                       true  = success
+     *                       false = failed
+     * @access private
      */
-    private function _write($msg, $lv){
-        if( $this->write_lv > $lv ){
-            return(null);
+    private function _write($lv, $msg){
+        $message   = $this->_genMessage($msg);
+        $time      = time();
+        $timestamp = sprintf('%s %s', date('Y-m-d', $time), date('H:i:s', $time));
+
+        //-----------------------------
+        // Write
+        //-----------------------------
+        //Write to File
+        if( $this->write_lv <= $lv){
+            switch( $this->write_storage ){
+                case self::ST_FILE:
+                    addlogfile($this->log_name, $lv, $message);
+                    break;
+                
+                default:
+                    break;
+            }
         }
+
+        //Push STDOUT
+        if($this->push_stdout){
+            file_put_contents('php://stdout', sprintf("[%s] %s\n", $timestamp, $message) );
+        }
+        
+        //Push STDERR
+        if($this->push_stderr){
+            file_put_contents('php://stderr', sprintf("[%s] %s\n", $timestamp, $message) );
+        }
+
+        //-----------------------------
+        // Alert
+        //-----------------------------
+        if( $this->alert_do ){
+            if( $this->alert_lv <= $lv ){
+                switch($this->alert_type){
+                    case self::AL_EMAIL:
+                        //not implemented
+                        break;
+                    
+                    case self::AL_SLACK:
+                        //not implemented
+                        break;
+                
+                    default:
+                        break;
+                    
+                }
+            }
+        }
+    }
+    
+    
+    
+    /**
+     * Generate Message
+     * 
+     * @param  string|array  $msg
+     * @return string
+     * @access private
+     */
+    private function _genMessage($msg){
+        if(is_array($msg)){
+            return( implode(' ', $msg) );
+        }
+        
+        return($msg);
     }
 }
