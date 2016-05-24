@@ -111,12 +111,11 @@ $Conf = array(
 		, 'alert' => array(
 			  'on'   => false
 			, 'type' => 'email'
-		  	
-		  	
+
 		  	, 'email' => array(
-			  	  'to'      => 'katsubemakito@gmail.com'
-				, 'from'    => 'info@wingphp.net'
-			  	, 'subject' => '[Alert]'
+			  	  'To'      => 'monitoring@example.com'				//Sendmailの設定を上書きします
+				, 'From'    => 'alert@example.org'					//Sendmailの設定を上書きします
+			  	, 'Subject' => '[Alert] Notification (WingPHP)'		//Sendmailの設定を上書きします
 			)
 			  	
 			, 'slack' => array(
@@ -164,8 +163,8 @@ $Conf = array(
 			#他のヘッダー(Sender, Reply-toなど)もここに記述すると反映されます。
 		)
 		, 'log' => array(
-			  'logging'  => false
-			, 'snapshot' => false
+			  'on'       => true
+			, 'snapshot' => true
 			, 'snapdir'  => '../log/mail/'
 		)
 	)

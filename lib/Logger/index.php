@@ -87,7 +87,17 @@ class Logger {
 	 * @access public
 	 */
 	public function __construct(){
-        ;
+        global $Conf;
+        if(array_key_exists('Logger', $Conf)){
+            if(array_key_exists('alert', $Conf['Logger'])){
+                if(array_key_exists('on', $Conf['Logger']['alert'])){
+                    $this->setAlertDo($Conf['Logger']['alert']['on']);
+                }
+                if(array_key_exists('type', $Conf['Logger']['alert'])){
+                    $this->setAlertType($Conf['Logger']['alert']['type']);
+                }
+            }
+        }
 	}
 
 
@@ -347,7 +357,7 @@ class Logger {
             if( $this->alert_lv <= $lv ){
                 switch($this->alert_type){
                     case self::AL_EMAIL:
-                        //not implemented
+                        $this->_sendAlertMail($lv, $timestamp, $message);
                         break;
                     
                     case self::AL_SLACK:
@@ -404,9 +414,35 @@ class Logger {
      */
     private function _genMessage($msg){
         if(is_array($msg)){
-            return( implode(' ', $msg) );
+            global $Conf;
+            return( implode($Conf['Log']['separate'], $msg) );
         }
         
         return($msg);
+    }
+
+    /**
+     * Alert Mail
+     * 
+     * @param  integer  $lv
+     * @param  string   $timestamp
+     * @param  string   $message
+     * @return string
+     * @access private
+     */
+    private function _sendAlertMail($lv, $timestamp, $message){
+        global $Conf;
+        $body =   "Level: $lv\n"
+                . "date: $timestamp\n"
+                . "-----------------------\n"
+                . $message . "\n"
+                . "-----------------------\n"
+                . "";
+
+        uselib('Sendmail');
+        $mail = new Sendmail();
+        $mail->headers($Conf['Logger']['alert']['email']);
+        $mail->body($body);
+        $mail->doit();
     }
 }

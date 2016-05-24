@@ -96,7 +96,16 @@ class Sendmail {
             //Header
             if(array_key_exists('header', $Conf['Sendmail']))
                 $this->headers($Conf['Sendmail']['header']);
+        
+            //Logging
+            if(array_key_exists('log', $Conf['Sendmail'])){
+                if(array_key_exists('on', $Conf['Sendmail']['log'])){
+                    $this->setLogging($Conf['Sendmail']['log']['on']);
+                }
+            }
+            
         }
+	
 	}
 
 
@@ -165,15 +174,32 @@ class Sendmail {
         mb_language($this->language);
         mb_internal_encoding($this->encode);
 
-        $to      = $this->headers['To'];
-        $subject = $this->headers['Subject'];
+        $to      = $this->header['To'];
+        $subject = $this->header['Subject'];
         $body    = $this->_makeBody();
         $headers = $this->_makeHeader();
 
-        
         $ret = mb_send_mail($to, $subject, $body, $headers);
         if(!$ret){
             throw new WsException('[Sendmail::doit] Can not Sendmail', 500);
+        }
+        
+        if($this->logging){
+            global $Conf;
+            
+            uselib('Logger');
+            $log = new Logger();
+            $log->setName('MAIL');
+            $log->info('Sendmail', $to);
+            
+            if( $Conf['Sendmail']['log']['snapshot'] ){
+                $log->snapshot(
+                      $Conf['Sendmail']['log']['snapdir']
+                    , $headers
+                        . "\r\n"
+                        . $body
+                );
+            }
         }
     }
 
