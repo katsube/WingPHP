@@ -207,3 +207,20 @@ function lockfwrite($path, $str, $reset=false){
 function array_end($array){
 	return( end($array) );
 }
+
+
+/**
+ * ユニークなIDを生成する
+ *
+ * 擬似的に重複する可能性が少ない文字列を生成する。
+ * (16^40通り)
+ *
+ * @return string   40byte
+ * @access public
+ */
+function gen_uniqid($seed=null){
+	if($seed === null)
+		$seed = mt_rand();
+	
+	return( sha1(uniqid($seed, true)) );
+}
