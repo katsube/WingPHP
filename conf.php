@@ -92,6 +92,7 @@ $Conf = array(
 						// ログ識別子 => ファイル名
 						  'ERROR'  => 'errorlog_'
 						, 'COMMON' => 'commonlog_'
+						, 'MAIL'   => 'mail_'
 						, 'TEST'   => 'test_'
 					)
 		, 'add'       => 'Ymd'				// ファイル名の末尾につける文字列。date関数の書式と同じです。なにもつけない場合はfalseを指定。
@@ -150,6 +151,19 @@ $Conf = array(
 		  , 'default' => 'index.html'
 	)
 
+
+	//■Sendmail設定
+	// Sendmailライブラリのデフォルト値を設定できます。
+	// プログラム中から上書きすることも可能です。
+	, 'Sendmail' => array(
+		  'language' => 'Japanese'	//mb_language
+		, 'encode'   => 'UTF-8'		//mb_internal_encoding
+		, 'header'   => array(
+			'From' => 'info@example.com'
+		
+			#他のヘッダー(Sender, Reply-toなど)もここに記述すると反映されます。
+		)
+	)
 
 	//■validation設定
 	, 'validation' => array(
