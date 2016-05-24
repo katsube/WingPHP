@@ -71,7 +71,6 @@ class Logger {
 
     private $write_lv      = self::LV_DEBUG;
     private $write_storage = self::ST_FILE;
-    private $write_handle  = null;
 
     private $alert_lv      = self::LV_CRITICAL;
     private $alert_do      = false;
