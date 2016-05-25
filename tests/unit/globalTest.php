@@ -5,6 +5,9 @@ class globalTest extends \Codeception\TestCase\Test
 {
     use \Codeception\Specify;
 
+    const GENUNIQID_LEN  = 40;      //gen_uniqid() 生成される文字列長
+    const GENUNIQID_LOOP = 100;     //gen_uniqid() ユニーク性を検証する個数
+
     /**
      * @var \UnitTester
      */
@@ -18,11 +21,39 @@ class globalTest extends \Codeception\TestCase\Test
     protected function _after(){
     }
 
-    public function testGenUniqID(){
+    public function test_gen_uniqid(){
+        //------------------------------
+        //生成されるIDが40byteの文字列
+        //------------------------------
         $this->specify("generate 40byte strings", function() {
-            $id = gen_uniqid();
-            $this->assertTrue(is_string($id));
-            $this->assertTrue(strlen($id) === 40);
+            $id1 = gen_uniqid();
+            $this->assertTrue(is_string($id1));
+            $this->assertTrue(strlen($id1) === self::GENUNIQID_LEN);
+        });
+        $this->specify("generate 40byte strings (seed)", function() {
+            $id2 = gen_uniqid('foobar');
+            $this->assertTrue(is_string($id2));
+            $this->assertTrue(strlen($id2) === self::GENUNIQID_LEN);
+        });
+
+        //------------------------------
+        //生成するIDがユニーク
+        //------------------------------
+        $this->specify("uniq", function() {
+            $id = array();
+            for($i=0; $i<self::GENUNIQID_LOOP; $i++){
+                $id[] = gen_uniqid();
+            }
+        
+            $this->assertTrue( count(array_unique($id)) === self::GENUNIQID_LOOP );
+        });
+        $this->specify("uniq (seed)", function() {
+            $id = array();
+            for($i=0; $i<self::GENUNIQID_LOOP; $i++){
+                $id[] = gen_uniqid('foobar');
+            }
+        
+            $this->assertTrue( count(array_unique($id)) === self::GENUNIQID_LOOP );
         });
     }
 }
