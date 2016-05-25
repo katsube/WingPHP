@@ -50,7 +50,7 @@
  * @access     public
  */
 class Cache {
-	private $strage = null;
+	private $storage = null;
 
 	/**
 	 * コンストラクタ
@@ -58,23 +58,23 @@ class Cache {
 	 * @param  array  $strage  
 	 * @access public
 	 */
-	public function __construct($strage, $opt=null){
+	public function __construct($storage, $opt=null){
 		switch( $strage ){
 			//ファイルキャッシュ
 			case 'File':
-				uselib('Cache/Strage/File');
-				$this->strage = new FileCacheStrage($opt);
+				uselib('Cache/Storage/File');
+				$this->strage = new FileCacheStorage($opt);
 				break;
 
 			//MemCached
 			case 'MemCache':
-				uselib('Cache/Strage/MemCache');
-				$this->strage = new MemCacheStrage($opt);
+				uselib('Cache/Storage/MemCache');
+				$this->strage = new MemCacheStorage($opt);
 				break;
 
 			//？
 			default:
-				die("do not support strage $strage");
+				die("do not support storage $storage");
 		}
 	}
 
@@ -84,7 +84,7 @@ class Cache {
 	function __call($name, $param){
 		return( 
 			call_user_func_array(
-				  array($this->strage, $name)
+				  array($this->storage, $name)
 				, $param
 			)
 		);

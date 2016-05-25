@@ -1,6 +1,6 @@
 <?php
 /* [WingPHP]
- *  - lib/Cache/Strage/File.php
+ *  - lib/Cache/Storage/File.php
  *  
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
@@ -23,15 +23,15 @@
  * THE SOFTWARE.
  */
  
-uselib('Cache/Strage/if.cachestrage');
+uselib('Cache/Storage/if.cachestorage');
 
 /**
- * FileCacheStrageクラス
+ * FileCacheStorageクラス
  * 
  * example.<code>
- *     uselib('Cache/Strage/FileCacheStrage');
+ *     uselib('Cache/Storage/FileCacheStorage');
  *
- *     $cache = FileCacheStrage();
+ *     $cache = FileCacheStorage();
  *     $cache->expire(60 * 60);           //キャッシュの有効時間を1時間に
  *
  *     if(!$cache->exists('name'))
@@ -45,13 +45,13 @@ uselib('Cache/Strage/if.cachestrage');
  *     $cache->flush();
  * </code>
  *
- * @package    FileCacheStrage
+ * @package    FileCacheStorage
  * @copyright  2010 WingPHP
  * @author     M.Katsube < katsubemakito@gmail.com >
  * @license    The MIT License
  * @access     public
  */
-class FileCacheStrage implements CacheStrageIF{
+class FileCacheStorage implements CacheStorageIF{
 	public $path   = null;
 	public $expire = 0;
 
