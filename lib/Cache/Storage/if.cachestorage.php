@@ -1,6 +1,6 @@
 <?php
 /* [WingPHP]
- *  - lib/Util/if.cachestrage.php
+ *  - lib/Util/if.cachestorage.php
  *  
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
@@ -32,7 +32,7 @@
  * @license    The MIT License
  * @access     public
  */
- interface CacheStrageIF{
+ interface CacheStorageIF{
 	public function set($id, $value);
 	public function get($id);
 	public function del($id);

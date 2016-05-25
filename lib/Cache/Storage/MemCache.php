@@ -1,6 +1,6 @@
 <?php
 /* [WingPHP]
- *  - lib/Cache/Strage/MemCache.php
+ *  - lib/Cache/Storage/MemCache.php
  *  
  * The MIT License
  * Copyright (c) 2009 WingPHP < http://wingphp.net >
@@ -23,15 +23,15 @@
  * THE SOFTWARE.
  */
  
-uselib('Cache/Strage/if.cachestrage');
+uselib('Cache/Storage/if.cachestorage');
 
 /**
- * MemCacheStrageクラス
+ * MemCacheStorageクラス
  * 
  * example.<code>
- *     uselib('Cache/Strage/MemCache');
+ *     uselib('Cache/Storage/MemCache');
  *
- *     $cache = MemCacheStrage();
+ *     $cache = MemCacheStorage();
  *     $cache->expire(60 * 60);           //キャッシュの有効時間を1時間に
  *
  *     if(!$cache->exists('name'))
@@ -45,13 +45,13 @@ uselib('Cache/Strage/if.cachestrage');
  *     $cache->flush();
  * </code>
  *
- * @package    MemCacheStrage
+ * @package    MemCacheStorage
  * @copyright  2010 WingPHP
  * @author     M.Katsube < katsubemakito@gmail.com >
  * @license    The MIT License
  * @access     public
  */
-class MemCacheStrage implements CacheStrageIF{
+class MemCacheStorage implements CacheStorageIF{
 	public  $expire   = 0;
 	public  $compress = MEMCACHE_COMPRESSED;
 	private $memcache = null;
