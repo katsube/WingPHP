@@ -55,21 +55,24 @@ class Cache {
 	/**
 	 * コンストラクタ
 	 *
-	 * @param  array  $strage  
+	 * @param  array  $storage  
 	 * @access public
 	 */
 	public function __construct($storage, $opt=null){
-		switch( $strage ){
+		switch( $storage ){
 			//ファイルキャッシュ
 			case 'File':
+			case 'file':
 				uselib('Cache/Storage/File');
-				$this->strage = new FileCacheStorage($opt);
+				$this->storage = new FileCacheStorage($opt);
 				break;
 
 			//MemCached
 			case 'MemCache':
+			case 'Memcache':
+			case 'memcache':
 				uselib('Cache/Storage/MemCache');
-				$this->strage = new MemCacheStorage($opt);
+				$this->storage = new MemCacheStorage($opt);
 				break;
 
 			//？
