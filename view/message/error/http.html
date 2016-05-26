@@ -1,1 +1,1 @@
-<h1>{$code} {$message|escape:'html'}</h1>
+<h1>{$code}{if isset($message)}{$message|escape:'html'}{/if}</h1>
