@@ -88,14 +88,75 @@ function location($url, $sec=0){
 /**
  * HTTPエラー表示を行う
  *
- * 標準のErrorControllerへリダイレクトするラッパー関数。
+ * 
  *
  * @param  int  $code  HTTPステータスコード
  * @access public
  */
-function http_error($code){
-	$path = sprintf('/message/error/%s%s', $code, $_SERVER['REQUEST_URI']);
-	location($path);
+function http_error($code, $msg=null){
+	$msgmap = array(
+		//--------------------------------
+		//400系
+		//--------------------------------
+		  '400' => 'Bad Request'
+		, '401' => 'Unauthorized'
+		, '402' => 'Payment Required'
+		, '403' => 'Forbidden'
+		, '404' => 'Not Found'
+		, '405' => 'Method Not Allowed'
+		, '406' => 'Not Acceptable'
+		, '407' => 'Proxy Authentication Required'
+		, '408' => 'Request Timeout'
+		, '409' => 'Conflict'
+		, '410' => 'Gone'
+		, '411' => 'Length Required'
+		, '412' => 'Precondition Failed'
+		, '413' => 'Payload Too Large'
+		, '414' => 'URI Too Long'
+		, '415' => 'Unsupported Media Type'
+		, '416' => 'Range Not Satisfiable'
+		, '417' => 'Expectation Failed'
+		, '418' => 'I\'m a teapot'
+		, '422' => 'Unprocessable Entity'
+		, '423' => 'Locked'
+		, '424' => 'Failed Dependency'
+		, '426' => 'Upgrade Required'
+		, '451' => 'Unavailable For Legal Reasons'
+
+		//--------------------------------
+		//500系
+		//--------------------------------
+		, '500' => 'Internal Server Error'
+		, '501' => 'Not Implemented'
+		, '502' => 'Bad Gateway'
+		, '503' => 'Service Unavailable'
+		, '504' => 'Gateway Timeout'
+		, '505' => 'HTTP Version Not Supported'
+		, '506' => 'Variant Also Negotiates'
+		, '507' => 'Insufficient Storage'
+		, '509' => 'Bandwidth Limit Exceeded'
+		, '510' => 'Not Extended'
+	);
+
+	//--------------------------------
+	// 表示用メッセージ
+	//--------------------------------
+	if( !array_key_exists($code, $msgmap) ){
+		$msg = '';
+	}
+	else if( $msg === null ){
+		$msg = $msgmap[$code];
+	}
+
+	//--------------------------------
+	// 表示
+	//--------------------------------
+	$ctrl = new BaseController();
+	$ctrl->assign('TITLE',   sprintf('%s - %s', $code, $msg));
+	$ctrl->assign('code',    $code);
+	$ctrl->assign('message', $msg);
+	$ctrl->layout('layout/base.html');
+	$ctrl->display('message/error/http.html');
 }
 
 /**
