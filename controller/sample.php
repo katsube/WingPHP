@@ -134,6 +134,7 @@ class SampleController extends BaseController{
 		//------------------------------------------
 		$this->layout('layout/base.html');
 		$this->assign('TITLE', 'Validation');
+		$this->assign('FOOTERJS', 'sample/validation/index.js');
 		$this->display('sample/validation/index.html');
 	}
 
