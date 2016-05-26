@@ -8,6 +8,33 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
+{* -----------------------------------------------
+    コントローラーからCSSを呼びます
+   -----------------------------------------------
+      $this->assign('HEADERCSSLINK', 'foo.css');
+          <link href="/css/foo.css" rel="stylesheet">
+
+      $this->assign('HEADERCSSLINK', ['foo.css', 'bar.css']);   //配列で複数渡せます
+          <link href="/css/foo.css" rel="stylesheet">
+          <link href="/css/bar.css" rel="stylesheet">
+   ----------------------------------------------- *}
+{if !empty($HEADCSSLINK) && $HEADCSSLINK}
+	{if is_array($HEADCSSLINK) }{foreach from=$HEADCSSLINK item=i}<link href="/css/{$i}" rel="stylesheet">{/foreach}
+	{else}<link href="/css/{$HEADCSSLINK}" rel="stylesheet">{/if}
+{/if}
+
+{* -----------------------------------------------
+     コントローラーで指定したCSSを埋め込みます
+   -----------------------------------------------
+      $this->assign('HEADCSS', 'foo.css');
+          <style type="text/css">/* ここにfoo.cssの中身 */</style>
+   ----------------------------------------------- *}
+{if !empty($HEADCSS) && $HEADCSS}
+<style type="text/css">
+	{include file=$HEADCSS}
+</style>
+{/if}
+
 <style type="text/css">
 body {
 	min-height: 2000px;
@@ -32,15 +59,33 @@ footer{
 	{include file="_common/footer.html"}
 </div>
 {/strip}
-
+{strip}
 <script src="//code.jquery.com/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+{* -----------------------------------------------
+    コントローラーからJSを呼びます
+   -----------------------------------------------
+      $this->assign('FOOTERJSLINK', 'foo.js');
+          <script src="/js/foo.js"></script>
+
+      $this->assign('FOOTERJSLINK', ['foo.js', 'bar.js']);   //配列で複数渡せます
+          <script src="/js/foo.js"></script>
+          <script src="/js/bar.js"></script>
+   ----------------------------------------------- *}
 {if !empty($FOOTERJSLINK) && $FOOTERJSLINK}
 	{if is_array($FOOTERJSLINK) }{foreach from=$FOOTERJSLINK item=i}<script src="/js/{$i}"></script>{/foreach}
 	{else}<script src="/js/{$FOOTERJSLINK}"></script>{/if}
 {/if}
-{if !empty($FOOTERJS) && $FOOTERJS}
-	<script>{include file=$FOOTERJS}</script>
-{/if}
+{/strip}
+{strip}
+{* -----------------------------------------------
+     コントローラーで指定したJSを埋め込みます
+   -----------------------------------------------
+      $this->assign('FOOTERJS', 'foo.js');
+      <script><!-- ここにfoo.jsの中身 --></script>
+   ----------------------------------------------- *}
+{/strip}
+{if !empty($FOOTERJS) && $FOOTERJS}<script>
+{include file=$FOOTERJS}</script>{/if}
 </body>
 </html>

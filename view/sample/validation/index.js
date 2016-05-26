@@ -1,3 +1,4 @@
+{literal}
 $(document).ready(function(){
 	//------------------------------------------------
 	// タブをクリックでアンカー移動
@@ -26,3 +27,4 @@ $(document).ready(function(){
 		}
 	})();
 });
+{/literal}
