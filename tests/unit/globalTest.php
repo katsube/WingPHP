@@ -4,7 +4,7 @@ require_once('lib/global.php');
 
 class globalTest extends \Codeception\TestCase\Test
 {
-    use Codeception\Util\Fixtures
+    use Codeception\Util\Fixtures;
 
     
     const LOCKFWRITE_TMPNAME = '__TEST_CODECPTION_';
