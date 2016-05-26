@@ -156,6 +156,8 @@ function http_error($code, $msg=null){
 	$ctrl->assign('code',    $code);
 	$ctrl->assign('message', $msg);
 	$ctrl->layout('layout/base.html');
+	
+	header("HTTP/1.1 $code");
 	$ctrl->display('message/error/http.html');
 }
 
