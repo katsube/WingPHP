@@ -198,7 +198,8 @@ function addlogfile(){
 	// 書き込む文字列のチェック
 	$len      = count($args);
 	$separate = $Conf['Log']['separate'];
-	$replace  = function($str){
+	
+	$replace  = function($str, $separate){
 		return( preg_replace("/($separate|\r|\n)/", '', $str) );
 	};
 	for($i=1; $i<$len; $i++ ){			//args[0] はファイル識別子なので飛ばす
@@ -206,12 +207,12 @@ function addlogfile(){
 			$tmp  = $args[$i];
 			$buff = array();
 			foreach($tmp as $value){
-				$buff[] = $replace($value);
+				$buff[] = $replace($value, $separate);
 			}
 			$args[$i] = implode($separate, $buff);
 		}
 		else{
-			$args[$i] = $replace($args[$i]);
+			$args[$i] = $replace($args[$i], $separate);
 		}
 	}
 
