@@ -39,7 +39,7 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
         ob_start();
         http_error(500);
         $output = ob_get_contents();
-        ob_end_flush();
+        ob_end_clean();
         
         $this->assertEquals( http_response_code(), 500 );
         $this->assertEquals( preg_match("/<title>500 - Internal Server Error/", $output), 1 );
@@ -56,7 +56,7 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
         ob_start();
         http_error(200, 'OK');
         $output = ob_get_contents();
-        ob_end_flush();
+        ob_end_clean();
         
         $this->assertEquals( http_response_code(), 200 );
         $this->assertEquals( preg_match("/<title>200 - OK/", $output), 1 );

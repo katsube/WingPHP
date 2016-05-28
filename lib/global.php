@@ -152,7 +152,7 @@ function http_error($code, $msg=null){
 	// 表示
 	//--------------------------------
 	$ctrl = new BaseController();
-	$ctrl->smarty()->caching = 0;
+	$ctrl->caching(false);
 	$ctrl->assign('TITLE',   sprintf('%s - %s', $code, $msg));
 	$ctrl->assign('code',    $code);
 	$ctrl->assign('message', $msg);
