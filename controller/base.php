@@ -69,6 +69,7 @@ class BaseController{
 	 * - layout
 	 * - assign
 	 * - display
+	 * - caching
 	 *--------------------------------------------*/
 	/**
 	 * view用のSmartyオブジェクトを返却
@@ -114,7 +115,7 @@ class BaseController{
 	/**
 	 * viewを出力する
 	 *
-	 * @param  string
+	 * @param  string  $file
 	 * @access public
 	 * @todo   キャッシュ関連の対応を行う。
 	 */
@@ -137,6 +138,26 @@ class BaseController{
 		}
 	}
 
+	/**
+	 * View(Smarty)のキャッシュ機能のON/OFF
+	 *
+	 * @param  boolean $flag
+	 * @return boolean  true:設定成功
+	 *                 false:設定失敗
+	 * @access public
+	 */
+	public function caching($flag){
+		if( !is_bool($flag) ){
+			return(false);
+		}
+		else{
+			if(!$this->smarty)
+				$this->_setSmarty();
+				
+			$this->smarty->caching = ($flag ===true)?  1:0;
+			return(true);
+		}
+	}
 
 	/*--------------------------------------------
 	 * ■ Private ■
