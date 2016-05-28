@@ -1,6 +1,7 @@
 <?php
 require_once('../conf.php');
 require_once('../lib/global.php');
+require_once('../lib/autoload.php');
 
 class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
 {
@@ -11,6 +12,8 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
 
     /**
      * test uselib()
+     * 
+     * @covers ::uselib
      */
     public function testFunction_uselib(){
         
@@ -18,6 +21,8 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
 
     /**
      * test location()
+     * 
+     * @covers ::location
      */
     public function testFunction_location(){
         
@@ -25,16 +30,26 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
 
     /**
      * test http_error()
+     * 
+     * @covers ::http_error
+     * @runInSeparateProcess
      */
     public function testFunction_http_error(){
-        //$_SERVER['REQUEST_URI'] = '/hoge';
+        ob_start();
+        http_error(500);
+        $output = ob_get_contents();
+        ob_end_clean();
         
-        //$this->expectOutputString('/message/error/500/hoge');
-        //http_error(500);
+        $this->assertEquals( http_response_code(), 500 );
+        $this->assertEquals( preg_match("/<title>500 - Internal Server Error/", $output), 1 );
+        $this->assertEquals( preg_match("/<h1>500 Internal Server Error<\/h1>/", $output), 1 );
     }
+
 
     /**
      * test addlogfile() - 1
+     *
+     * @covers ::addlogfile
      */
     public function testFunction_addlogfile1(){
         global $Conf;
@@ -54,6 +69,8 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
 
     /**
      * test addlogfile() - 2
+     * 
+     * @covers ::addlogfile
      */
     public function testFunction_addlogfile2(){
         global $Conf;
@@ -70,6 +87,8 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
     
     /**
      * test addlogfile() - 3
+     * 
+     * @covers ::addlogfile
      */
     public function testFunction_addlogfile3(){
         global $Conf;
@@ -90,6 +109,8 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
     
     /**
      * test addlogfile() - 4
+     * 
+     * @covers ::addlogfile
      */
     public function testFunction_addlogfile4(){
         global $Conf;
@@ -114,6 +135,8 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
 
     /**
      * test addlogfile() - 5
+     * 
+     * @covers ::addlogfile
      */
     public function testFunction_addlogfile5(){
         global $Conf;
@@ -134,6 +157,8 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
 
     /**
      * test addlogfile() - 6
+     * 
+     * @covers ::addlogfile
      */
     public function testFunction_addlogfile6(){
         global $Conf;
@@ -173,6 +198,8 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
 
     /**
      * test lockfwrite()
+     * 
+     * @covers ::lockfwrite
      */
     public function testFunction_lockfwrite(){
         $str  = 'Hello!';
@@ -197,6 +224,8 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
 
     /**
      * test array_end()
+     * 
+     * @covers ::array_end
      */
     public function testFunction_array_end(){
         $arr   = array("apple", "banana", "muscat");
@@ -213,6 +242,8 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
 
     /**
      * test gen_uniqid() - 生成文字列の妥当性
+     * 
+     * @covers ::gen_uniqid
      */
     public function testFunction_gen_uniqid1(){
         $id1 = gen_uniqid();
@@ -228,6 +259,8 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
 
     /**
      * test gen_uniqid() - ランダム性の検証
+     * 
+     * @covers ::gen_uniqid
      */
     public function testFunction_gen_uniqid2(){
         $id1 = array();
