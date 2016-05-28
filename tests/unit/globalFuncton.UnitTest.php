@@ -23,6 +23,7 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
      * test location()
      * 
      * @covers ::location
+     * @runInSeparateProcess
      */
     public function testFunction_location(){
         
@@ -34,17 +35,33 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
      * @covers ::http_error
      * @runInSeparateProcess
      */
-    public function testFunction_http_error(){
+    public function testFunction_http_error1(){
         ob_start();
         http_error(500);
         $output = ob_get_contents();
-        ob_end_clean();
+        ob_end_flush();
         
         $this->assertEquals( http_response_code(), 500 );
         $this->assertEquals( preg_match("/<title>500 - Internal Server Error/", $output), 1 );
         $this->assertEquals( preg_match("/<h1>500 Internal Server Error<\/h1>/", $output), 1 );
     }
 
+    /**
+     * test http_error()
+     * 
+     * @covers ::http_error
+     * @runInSeparateProcess
+     */
+    public function testFunction_http_error2(){
+        ob_start();
+        http_error(200, 'OK');
+        $output = ob_get_contents();
+        ob_end_flush();
+        
+        $this->assertEquals( http_response_code(), 200 );
+        $this->assertEquals( preg_match("/<title>200 - OK/", $output), 1 );
+        $this->assertEquals( preg_match("/<h1>200 OK<\/h1>/", $output), 1 );
+    }
 
     /**
      * test addlogfile() - 1

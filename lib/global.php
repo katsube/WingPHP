@@ -141,7 +141,7 @@ function http_error($code, $msg=null){
 	//--------------------------------
 	// 表示用メッセージ
 	//--------------------------------
-	if( !array_key_exists($code, $msgmap) ){
+	if( !array_key_exists($code, $msgmap) && $msg === null){
 		$msg = '';
 	}
 	else if( $msg === null ){
@@ -152,6 +152,7 @@ function http_error($code, $msg=null){
 	// 表示
 	//--------------------------------
 	$ctrl = new BaseController();
+	$ctrl->smarty()->caching = 0;
 	$ctrl->assign('TITLE',   sprintf('%s - %s', $code, $msg));
 	$ctrl->assign('code',    $code);
 	$ctrl->assign('message', $msg);
@@ -159,6 +160,7 @@ function http_error($code, $msg=null){
 	
 	header("HTTP/1.1 $code");
 	$ctrl->display('message/error/http.html');
+	unset($ctrl);
 }
 
 /**
