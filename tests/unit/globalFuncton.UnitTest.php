@@ -14,19 +14,22 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
      * test uselib()
      * 
      * @covers ::uselib
+     * @todo Implement uselib() function.
+     * @runInSeparateProcess
      */
     public function testFunction_uselib(){
-        
+        $this->markTestIncomplete('not implements uselib()');
     }
 
     /**
      * test location()
      * 
      * @covers ::location
+     * @todo Implement location() function.
      * @runInSeparateProcess
      */
     public function testFunction_location(){
-        
+        $this->markTestIncomplete('not implements location()');
     }
 
     /**
