@@ -8,25 +8,71 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
     const GENUNIQID_LEN      = 40;                  //gen_uniqid() 生成される文字列長
     const GENUNIQID_LOOP     = 10000;               //gen_uniqid() ユニーク性を検証する個数
 
-    /**
-     * setUp
-     * 
-     */
-    protected function setUp(){
-        ;
-    }
-
 
     /**
      * test uselib()
      * 
      * @covers ::uselib
-     * @todo Implement uselib() function.
      * @runInSeparateProcess
      */
-    public function testFunction_uselib(){
-        $this->markTestIncomplete('not implements uselib()');
+    public function testFunction_uselib1(){
+        //$this->markTestIncomplete('not implements uselib()');
+        global $Conf;
+        $dir = $Conf['Lib']['dir'];
+
+        $ret  = uselib('Cache');
+        $path = sprintf('%s/Cache/index.php', $dir);
+        $this->assertContains($path, $ret);
+        $this->assertEquals(count($ret), 1);
     }
+
+    /**
+     * test uselib()
+     * 
+     * @covers ::uselib
+     * @runInSeparateProcess
+     */
+    public function testFunction_uselib2(){
+        global $Conf;
+        $dir = $Conf['Lib']['dir'];
+
+        $ret  = uselib('Cache/index');
+        $path = sprintf('%s/Cache/index.php', $dir);
+        $this->assertContains($path, $ret);
+        $this->assertEquals(count($ret), 1);
+    }
+
+    /**
+     * test uselib()
+     * 
+     * @covers ::uselib
+     * @runInSeparateProcess
+     */
+    public function testFunction_uselib3(){
+        global $Conf;
+        $dir = $Conf['Lib']['dir'];
+
+        $ret  = uselib('Cache', 'Logger');
+        $path1 = sprintf('%s/Cache/index.php', $dir);
+        $path2 = sprintf('%s/Logger/index.php', $dir);
+        
+        $this->assertContains($path1, $ret);
+        $this->assertContains($path2, $ret);
+        $this->assertEquals(count($ret), 2);
+    }
+
+    /**
+     * test uselib()
+     * 
+     * @covers ::uselib
+     * @runInSeparateProcess
+     * @expectedException WsException
+     * @expectedExceptionCode 500
+     */
+    public function testFunction_uselib4(){
+        uselib('NotFound');
+    }
+
 
     /**
      * test location()
