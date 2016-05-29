@@ -265,10 +265,9 @@ function lockfwrite($path, $str, $reset=false){
 
 		return(true);
 	}
-	else{
-		fclose($fp);
-		return(false);
-	}
+
+	fclose($fp);
+	return(false);
 }
 
 
