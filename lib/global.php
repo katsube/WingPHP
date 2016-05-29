@@ -142,7 +142,7 @@ function http_error($code, $msg=null){
 	// 表示用メッセージ
 	//--------------------------------
 	if( !array_key_exists($code, $msgmap) && $msg === null){
-		$msg = '';
+		throw new WsException('Undefined HTTP Error code', 500);
 	}
 	else if( $msg === null ){
 		$msg = $msgmap[$code];
@@ -158,7 +158,7 @@ function http_error($code, $msg=null){
 	$ctrl->assign('message', $msg);
 	$ctrl->layout('layout/base.html');
 	
-	header("HTTP/1.1 $code");
+	header("HTTP/1.1 $code $msg");
 	$ctrl->display('message/error/http.html');
 	unset($ctrl);
 }
