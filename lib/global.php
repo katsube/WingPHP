@@ -36,31 +36,41 @@
  *</code>
  *
  * @param  string ライブラリ名
+ * @return array  読み込んだライブラリのパス
  * @access private
  */
 function uselib(){
 	global $Conf;
-	$dir  = $Conf['Lib']['dir'];
-	$args = func_get_args();
+	$paths = array();
+	$dir   = $Conf['Lib']['dir'];
+	$args  = func_get_args();
 
 	foreach ($args as $file){
+		//---------------------------------
 		//通常
+		//---------------------------------
 		$path = sprintf('%s/%s.php', $dir, $file);
 		if( is_file($path) ){
 			require_once($path);
+			array_push($paths, $path);
 			continue;
 		}
 
+		//---------------------------------
 		//ディレクトリ指定
+		//---------------------------------
 		$path  = sprintf('%s/%s', $dir, $file);
 		$path2 = sprintf('%s/index.php', $path);
 		if( is_dir($path) && is_file($path2)){
 			require_once($path2);
+			array_push($paths, $path2);
 			continue;
 		}
 
-		die("Can not open library $file");
+		throw new WsException("Can not open library $file", 500);
 	}
+
+	return($paths);
 }
 
 
