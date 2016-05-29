@@ -9,6 +9,15 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
     const GENUNIQID_LOOP     = 10000;               //gen_uniqid() ユニーク性を検証する個数
 
     /**
+     * setUp
+     * 
+     */
+    protected function setUp(){
+        ;
+    }
+
+
+    /**
      * test uselib()
      * 
      * @covers ::uselib
@@ -25,16 +34,32 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
      * @covers ::location
      * @runInSeparateProcess
      */
-    public function testFunction_location(){
-        $responce = get_headers(TestsUtil::makeURL('/tests/location1'));
+    public function testFunction_location1(){
+        if( !extension_loaded('xdebug') ){
+            $this->markTestSkipped('xdebug do not loaded.');
+        }
         
-        //302が発行されているか
-        $assert1 = preg_grep("/HTTP\/1.1 302 Moved Temporarily/i", $responce);
-        $this->assertTrue(count($assert1)>=1);
+        location('/tests/msg/location1');
+        $header = xdebug_get_headers();
         
-        //Locationヘッダが出力されているか
-        $assert2 = preg_grep("/Location: \/tests\/msg\/location1/i", $responce);
-        $this->assertTrue(count($assert2)>=1);
+        $this->assertContains('Location: /tests/msg/location1', $header);
+    }
+
+    /**
+     * test location()
+     * 
+     * @covers ::location
+     * @runInSeparateProcess
+     */
+    public function testFunction_location2(){
+        
+        ob_start();
+        header('200 OK');
+        location('/tests/msg/location2', 3);
+        $output = ob_get_contents();
+        ob_end_clean();
+        
+        $this->assertEquals(preg_match('/<meta http-equiv="refresh" content="3;url=\/tests\/msg\/location2">/', $output), 1, print_r($output, true));
     }
 
     /**

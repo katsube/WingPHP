@@ -75,7 +75,7 @@ function uselib(){
  * @access public
  */
 function location($url, $sec=0){
-	if( ! headers_sent() ){
+	if( ! headers_sent() && $sec === 0){
 		$head = sprintf('Location: %s', $url);
 		header($head);
 	}
