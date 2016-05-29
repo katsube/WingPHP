@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true">
+    <testsuites>
+        <testsuite name="WingPHP Test Suite">
+            <directory suffix="Test.php">./unit/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>../</directory>
+            <exclude>
+                <directory>../htdocs</directory>
+                <directory>../lib/Markdown/parsedown</directory>
+                <directory>../lib/Smarty/3.1</directory>
+                <directory>../log</directory>
+                <directory>../temp</directory>
+                <directory>../vendor</directory>
+                <directory>../view</directory>
+                <directory>../tests</directory>
+                <file>../.gitignore</file>
+                <file>../composer.json</file>
+                <file>../composer.lock</file>
+                <file>../copyright.txt</file>
+                <file>../HOW2USE.ja.txt</file>
+                <file>../INSTALL.ja.txt</file>
+            </exclude>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="./report/" lowUpperBound="35" highLowerBound="70"/>
+    </logging>
+</phpunit>
