@@ -95,6 +95,19 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( preg_match("/<h1>200 OK<\/h1>/", $output), 1 );
     }
 
+
+    /**
+     * test http_error()
+     * 
+     * @covers ::http_error
+     * @runInSeparateProcess
+     * @expectedException WsException
+     * @expectedExceptionCode 500
+     */
+    public function testFunction_http_error3(){
+        http_error(100);
+    }
+
     /**
      * test addlogfile() - 1
      *
