@@ -242,18 +242,19 @@ function addlogfile(){
  * 真っ白なファイルに戻した上で書き込みたい場合は、$reset に true を指定すると
  * ファイルサイズをゼロにし、ファイルポインタを冒頭に戻し書き込む。
  *
- * @param  string   $path   書き込み先ファイルのパス
- * @param  string   $str    ファイルに書き込む文字列
- * @param  boolean  $reset  ファイルサイズをゼロにするか
+ * @param  string   $path      書き込み先ファイルのパス
+ * @param  string   $str       ファイルに書き込む文字列
+ * @param  boolean  $reset     ファイルサイズをゼロにするか
+ * @param  integer  $lock_mode flockのロックモードを指定
  * @return boolean  成功時:true, 失敗時:false
  * @access public
  */
-function lockfwrite($path, $str, $reset=false){
+function lockfwrite($path, $str, $reset=false, $lock_mode=LOCK_EX){
 	$fp = fopen($path, 'a');
 	if( !$fp )
 		return(false);
 
-	if (flock($fp, LOCK_EX)){
+	if (flock($fp, $lock_mode)){
 		if($reset){
 			ftruncate($fp, 0);
 			rewind($fp);

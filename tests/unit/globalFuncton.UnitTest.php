@@ -52,7 +52,6 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
      * @runInSeparateProcess
      */
     public function testFunction_location2(){
-        
         ob_start();
         header('200 OK');
         location('/tests/msg/location2', 3);
@@ -251,7 +250,7 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
      * 
      * @covers ::lockfwrite
      */
-    public function testFunction_lockfwrite(){
+    public function testFunction_lockfwrite1(){
         $str  = 'Hello!';
         $dir  = sys_get_temp_dir();
         $file = tempnam($dir, self::LOCKFWRITE_TMPNAME);
@@ -268,6 +267,25 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
         //ファイルを真っ白にして書き込む
         lockfwrite($file, $str, true);
         $this->assertEquals(file_get_contents($file), $str);
+
+        unlink($file);
+    }
+
+
+    /**
+     * test lockfwrite()
+     * 
+     * @covers ::lockfwrite
+     */
+    public function testFunction_lockfwrite2(){
+        $str  = 'Hello!';
+        $dir  = sys_get_temp_dir();
+        $file = tempnam($dir, self::LOCKFWRITE_TMPNAME);
+        
+        //ファイルがロックされ書き込めないとfalse
+        $fp = fopen($file, 'a');
+        flock($fp, LOCK_EX);
+        $this->assertFalse(lockfwrite($file, $str, false, LOCK_EX|LOCK_NB));
 
         unlink($file);
     }
