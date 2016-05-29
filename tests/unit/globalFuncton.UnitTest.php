@@ -1,7 +1,5 @@
 <?php
-require_once('../conf.php');
-require_once('../lib/global.php');
-require_once('../lib/autoload.php');
+require_once('define.php');
 
 class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
 {
@@ -25,11 +23,18 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
      * test location()
      * 
      * @covers ::location
-     * @todo Implement location() function.
      * @runInSeparateProcess
      */
     public function testFunction_location(){
-        $this->markTestIncomplete('not implements location()');
+        $responce = get_headers(TestsUtil::makeURL('/tests/location1'));
+        
+        //302が発行されているか
+        $assert1 = preg_grep("/HTTP\/1.1 302 Moved Temporarily/i", $responce);
+        $this->assertTrue(count($assert1)>=1);
+        
+        //Locationヘッダが出力されているか
+        $assert2 = preg_grep("/Location: \/tests\/msg\/location1/i", $responce);
+        $this->assertTrue(count($assert2)>=1);
     }
 
     /**
