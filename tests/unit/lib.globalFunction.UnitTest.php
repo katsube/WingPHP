@@ -16,7 +16,6 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
      * @runInSeparateProcess
      */
     public function testFunction_uselib1(){
-        //$this->markTestIncomplete('not implements uselib()');
         global $Conf;
         $dir = $Conf['Lib']['dir'];
 
