@@ -402,5 +402,4 @@ class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( count(array_unique($id1)), self::GENUNIQID_LOOP );
         $this->assertEquals( count(array_unique($id2)), self::GENUNIQID_LOOP );
     }
-
 }
