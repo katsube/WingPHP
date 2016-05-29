@@ -23,19 +23,34 @@
  * THE SOFTWARE.
  */
 
+/**
+ * autoload
+ * 
+ * @param  string  $className
+ * @return mixed   Model|Controller  string  ロードしたファイルパス
+ *                 Smarty            boolean false固定
+ *                 lib               array   uselibの戻り値をそのまま
+ * @access public
+ */
 function _wingAutoload($className){
 	if( preg_match('/^(.*)(Model|Controller)$/', $className, $match) > 0 ){
 		$file = strtolower($match[1]) . '.php';
 		$dir  = strtolower($match[2]);
 
-		if( is_file("../$dir/$file") )
+		if( is_file("../$dir/$file") ){
 			include_once("../$dir/$file");
+			return("../$dir/$file");
+		}
+		else{
+			throw new WsException("Can not open Model|Controller $className", 500);
+		}
 	}
 	else if( preg_match('/^Smarty_/', $className) > 0 ){		//Smarty3.1
 		return(false);
 	}
 	else{
-		uselib($className);
+		$ret = uselib($className);
+		return($ret);
 	}
 }
 
