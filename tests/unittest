@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ ! -L ../htdocs/report ]; then
+    ln -s ../tests/report ../htdocs/report	
+fi
+
+phpunit --coverage-html report unit/
