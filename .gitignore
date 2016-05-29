@@ -3,6 +3,8 @@ temp/smarty/templates_c/*.php
 log/*.txt
 log/mail/*.txt
 log/mail/*/*.txt
+htdocs/report
+tests/report/*
 vendor/
 !.gitkeep
 
