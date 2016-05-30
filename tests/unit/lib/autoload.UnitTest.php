@@ -23,12 +23,10 @@ class autoloadUnitTest extends PHPUnit_Framework_TestCase
      * 
      * @covers ::_wingAutoload
      * @runInSeparateProcess
-     * @runInSeparateProcess
-     * @expectedException WsException
-     * @expectedExceptionCode 500
      */
     public function testFunction_wingAutoload2(){
-        _wingAutoload('NotFoundTestModel');
+        $ret = _wingAutoload('NotFoundTestModel');
+        $this->assertFalse($ret);
     }
 
 

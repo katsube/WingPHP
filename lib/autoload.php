@@ -42,8 +42,12 @@ function _wingAutoload($className){
 			return("../$dir/$file");
 		}
 		else{
-			throw new WsException("Can not open Model|Controller $className", 500);
+			return(false);
 		}
+		// framewing::go() の is_callable() 時に例外が発生してしまうのでコメントアウト
+		//else{
+		//	throw new WsException("Can not open Model|Controller $className", 500);
+		//}
 	}
 	else if( preg_match('/^Smarty_/', $className) > 0 ){		//Smarty3.1
 		return(false);
