@@ -59,12 +59,13 @@ $Conf = array(
 
 	//■秘密鍵
 	, 'Secret' => array(
-		'key' => 'qwertyuiop'		// 適当な文字列に変更してください。
+		'key' => 'abcdefghij1234567890'		// 適当な文字列に変更してください。
+											// （16byte以上を推奨）
 	)
 
 	//■セッション設定
 	, 'Session' => array(
-		'name' => 'SESSID'
+		'name' => 'SESSID'					//半角英数字のみ使用してください
 	)
 
 	//■ライブラリ
