@@ -78,7 +78,9 @@ class framewing{
 	 * 存在しない、何らかの理由により実行できない場合はerrorコントローラーに
 	 * リダイレクトする。
 	 *
-	 * @return void
+	 * @return integer  200  Controllerを呼び出し
+	 *                  201  SmartyDirect
+	 *                  404  ファイルが存在しない
 	 * @access public
 	 */
 	public function go(){
@@ -94,6 +96,8 @@ class framewing{
 
 			$obj = new $ctrl();
 			call_user_func(array($obj, $mthd), $this->param);
+		
+			return(200);
 		}
 		//-----------------------------
 		// viewが存在する
@@ -101,12 +105,16 @@ class framewing{
 		else if( $this->_exists_view() ){
 			$ctrl = new BaseController();
 			$ctrl->display($this->static_file);
+
+			return(201);
 		}
 		//-----------------------------
 		// 404
 		//-----------------------------
 		else{
 			http_error(404);
+
+			return(404);
 		}
 	}
 
