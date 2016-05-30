@@ -35,10 +35,39 @@ class FramewingUnitTest extends PHPUnit_Framework_TestCase
     /**
      * test Framewing go()
      * 
-     *@covers framewing::go
+     * @covers framewing::go
+     * @dataProvider GoProvider
+     * @runInSeparateProcess
      */
-    public function testGo(){
+    public function testGo($ctrl, $method, $param, $code){
+        $wing = new framewing();
+        $wing->ctrl_name   = $ctrl;
+        $wing->method_name = $method;
+        $wing->param       = $param;
         
+        ob_start();
+        $ret = $wing->go();
+        ob_end_clean();
+        
+        $this->assertEquals($ret, $code);
+    }
+
+    /**
+     * test Framewing go() - SmartyDirect
+     * 
+     * @covers framewing::go
+     * @dataProvider GoSmartyDirectProvider
+     * @runInSeparateProcess
+     */
+    public function testGo_Smartydirect($url, $code){
+        $_REQUEST['_q'] = $url;
+        $wing = new framewing();
+        
+        ob_start();
+        $ret  = $wing->go();
+        ob_end_clean();
+        
+        $this->assertEquals($ret, $code);
     }
     
     /**
@@ -58,7 +87,7 @@ class FramewingUnitTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected['param'],  $wing->param);
     }
     
-     /**
+    /**
      * test Framewing _exists_view()
      * 
      *@covers framewing::_exists_view
@@ -83,4 +112,20 @@ class FramewingUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
     
+    public function GoProvider(){
+        return(array(
+              array('UndefinedController', 'index',         array(), 404)       //存在しない
+            , array('BaseController',      'display',       array(), 404)       //スーパークラス
+            , array('TestsController',     '_cannotaccess', array(), 404)       //先頭に'_'がつくpublicなメソッド
+            , array('TestsController',     'foobar',        array(), 404)       //privateなメソッド
+            , array('TestsController',     'canaccess',     array(), 200)       //正常な呼び出し
+        ));
+    }
+    
+    public function GoSmartyDirectProvider(){
+        return(array(
+              array('/smartydirect/index.html', 201)
+            , array('/smartydirect/', 201)
+        ));
+    }
 }

@@ -58,6 +58,13 @@ class TestsController extends BaseController{
 		$str = $arg[0];
 		echo $str;
 	}
+
+	public function canaccess(){
+		;
+	}
+	public function _cannotaccess(){
+		;
+	}
 	 
 	/*--------------------------------------------
 	 * ■ Private ■
@@ -65,7 +72,7 @@ class TestsController extends BaseController{
 	 * - _foobar
 	 *--------------------------------------------*/
 	/**
-	 * _foobar
+	 * foobar
 	 *
 	 * [[_foobar method description.]]
 	 *
@@ -73,7 +80,7 @@ class TestsController extends BaseController{
 	 * @return void
 	 * @access private
 	 */
-	public function _foobar(){
+	private function foobar(){
 		;
 	}
 }
