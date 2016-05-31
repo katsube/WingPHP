@@ -73,8 +73,8 @@ class FramewingUnitTest extends PHPUnit_Framework_TestCase
     /**
      * test Framewing _parse()
      * 
-     *@covers framewing::_parse
-     *@dataProvider URLProvider
+     * @covers framewing::_parse
+     * @dataProvider URLProvider
      */
     public function testParse($url, $expected){
         if( $url !== null )
@@ -90,16 +90,38 @@ class FramewingUnitTest extends PHPUnit_Framework_TestCase
     /**
      * test Framewing _exists_view()
      * 
-     *@covers framewing::_exists_view
+     * @covers framewing::_exists_view
      */
-    public function testExistsView(){
-        
+    public function testExistsView_run(){
+        global $Conf;
+        $Conf['SmartyDirect']['run'] = false;
+
+        $wing = TestPrivate::on( new framewing() );
+        $ret  = $wing->_exists_view();
+        $this->assertFalse($ret);
     }
 
+    /**
+     * test Framewing _exists_view()
+     * 
+     * @covers framewing::_exists_view
+     * @dataProvider ExistsViewProvider
+     */
+    public function testExistsView_exists($url, $result){
+        global $Conf;
+        $Conf['SmartyDirect']['run'] = true;
+        $_REQUEST['_q'] = $url;
+    
+        $wing = TestPrivate::on( new framewing() );
+        $ret  = $wing->_exists_view();
+        $this->assertEquals($ret, $result);
+    }
     
     public function URLProvider(){
         return(array(
               array(null,                  ['ctrl'=>'IndexController', 'method'=>'index', 'param'=>[]])
+            , array('',                    ['ctrl'=>'IndexController', 'method'=>'index', 'param'=>[]])
+
             , array('/',                   ['ctrl'=>'IndexController', 'method'=>'index', 'param'=>[]])
             , array('/foo' ,               ['ctrl'=>'FooController',   'method'=>'index', 'param'=>[]])
             , array('/foo/',               ['ctrl'=>'FooController',   'method'=>'index', 'param'=>[]])
@@ -109,6 +131,15 @@ class FramewingUnitTest extends PHPUnit_Framework_TestCase
             , array('/foo/bar/hoge/',      ['ctrl'=>'FooController',   'method'=>'bar',   'param'=>['hoge', '']])
             , array('/foo/bar/hoge/huga',  ['ctrl'=>'FooController',   'method'=>'bar',   'param'=>['hoge', 'huga']])
             , array('/foo/bar/hoge/huga/', ['ctrl'=>'FooController',   'method'=>'bar',   'param'=>['hoge', 'huga', '']])
+            
+            , array('foo' ,               ['ctrl'=>'FooController',   'method'=>'index', 'param'=>[]])
+            , array('foo/',               ['ctrl'=>'FooController',   'method'=>'index', 'param'=>[]])
+            , array('foo/bar',            ['ctrl'=>'FooController',   'method'=>'bar',   'param'=>[]])
+            , array('foo/bar/',           ['ctrl'=>'FooController',   'method'=>'bar',   'param'=>['']])
+            , array('foo/bar/hoge',       ['ctrl'=>'FooController',   'method'=>'bar',   'param'=>['hoge']])
+            , array('foo/bar/hoge/',      ['ctrl'=>'FooController',   'method'=>'bar',   'param'=>['hoge', '']])
+            , array('foo/bar/hoge/huga',  ['ctrl'=>'FooController',   'method'=>'bar',   'param'=>['hoge', 'huga']])
+            , array('foo/bar/hoge/huga/', ['ctrl'=>'FooController',   'method'=>'bar',   'param'=>['hoge', 'huga', '']])
         ));
     }
     
@@ -128,4 +159,14 @@ class FramewingUnitTest extends PHPUnit_Framework_TestCase
             , array('/smartydirect/', 201)
         ));
     }
+
+    public function ExistsViewProvider(){
+        return(array(
+              array('/smartydirect/index.html', true)
+            , array('/smartydirect/', true)                     //デフォルトファイル名
+            , array('/smartydirect/404.html', false)            //存在しない
+            , array('/smartydirect/index.html | ls', false)     //汚染
+        ));
+    }
+    
 }
