@@ -1,7 +1,7 @@
 <?php
 require_once('define.php');
 
-class globalFunctionUnitTest extends PHPUnit_Framework_TestCase
+class globalUnitTest extends PHPUnit_Framework_TestCase
 {
     
     const LOCKFWRITE_TMPNAME = '__TEST_PHPUNIT_';
