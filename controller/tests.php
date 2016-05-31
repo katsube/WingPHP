@@ -49,19 +49,46 @@ class TestsController extends BaseController{
 		;
 	}
 
+	/**
+	 * location1
+	 *
+	 * @see tests/unit/globalFunction.UnitTest.php
+	 * @return void
+	 * @access public
+	 */
 	public function location1(){
 		location('/tests/msg/location1');
 	}
 
 
+	/**
+	 * msg
+	 *
+	 * @see tests/unit/globalFunction.UnitTest.php
+	 * @return void
+	 * @access public
+	 */
 	public function msg($arg){
 		$str = $arg[0];
 		echo $str;
 	}
 
+	/**
+	 * Can Access
+	 *
+	 * @return void
+	 * @access public
+	 */
 	public function canaccess(){
 		;
 	}
+
+	/**
+	 * Can **not** Access
+	 *
+	 * @return void
+	 * @access public
+	 */
 	public function _cannotaccess(){
 		;
 	}
@@ -74,9 +101,7 @@ class TestsController extends BaseController{
 	/**
 	 * foobar
 	 *
-	 * [[_foobar method description.]]
-	 *
-	 * @param  string   $hoge
+	 * @param  void
 	 * @return void
 	 * @access private
 	 */

@@ -116,7 +116,18 @@ class FramewingUnitTest extends PHPUnit_Framework_TestCase
         $ret  = $wing->_exists_view();
         $this->assertEquals($ret, $result);
     }
-    
+
+
+
+
+
+    /**
+     * [DataProvider] testConstruct(), testParse()
+     * 
+     * @param void
+     * @return array
+     * @access public
+     */
     public function URLProvider(){
         return(array(
               array(null,                  ['ctrl'=>'IndexController', 'method'=>'index', 'param'=>[]])
@@ -143,6 +154,13 @@ class FramewingUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
     
+    /**
+     * [DataProvider] testGo()
+     * 
+     * @param void
+     * @return array
+     * @access public
+     */
     public function GoProvider(){
         return(array(
               array('UndefinedController', 'index',         array(), 404)       //存在しない
@@ -153,6 +171,13 @@ class FramewingUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
     
+    /**
+     * [DataProvider] testGo_smarty()
+     * 
+     * @param void
+     * @return array
+     * @access public
+     */
     public function GoSmartyDirectProvider(){
         return(array(
               array('/smartydirect/index.html', 201)
@@ -160,6 +185,13 @@ class FramewingUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * [DataProvider] testExistsView_exists()
+     * 
+     * @param void
+     * @return array
+     * @access public
+     */
     public function ExistsViewProvider(){
         return(array(
               array('/smartydirect/index.html', true)
