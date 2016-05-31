@@ -36,6 +36,9 @@ class TestsController extends BaseController{
 	 *--------------------------------------------
 	 * - index
 	 * - location1
+	 * - msg
+	 * - canaccess
+	 * - cannotaccess
 	 *--------------------------------------------*/
 	/**
 	 * index page
