@@ -47,6 +47,7 @@ class WsExceptiongUnitTest extends PHPUnit_Framework_TestCase
                   $tmp_file
                 , file_get_contents($file)
             );
+            unlink($file);
         }
 
         $wsex = new WsException($message, $code);
