@@ -130,13 +130,13 @@ class ValidationMessage{
 	 * @return string $cd未指定:すべてのメッセージ, $cd指定時:個別, $cd指定時未存在:null
 	 * @access public
 	 */
-	public function gets($cds){
+	public function gets($cds=array()){
 		$result = array();
 
 		$len = count($cds);
 		for($i=0; $i<$len; $i++){
-			$cd     = $cds[$i];
-			$result = array_merge($result, array($cd => $this->get($cd)));
+			$cd = $cds[$i];
+			$result[$cd] = $this->get($cd);
 		}
 
 		return($result);
