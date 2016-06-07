@@ -102,12 +102,14 @@ class ValidationMessage{
 	 * $cdを未指定の場合はすべての、
 	 * $cdを指定した場合は該当する項目を返却する。
 	 *
-	 * @param  string $cd メッセージCD
+	 * @param  string $cd    メッセージCD
+	 * @param  string $lang  言語CD
 	 * @return string $cd未指定:すべてのメッセージ, $cd指定時:個別, $cd指定時未存在:null
 	 * @access public
 	 */
-	public function get($cd=null){
-		$lang = $this->lang;
+	public function get($cd=null, $lang=null){
+		if($lang===null)
+			$lang = $this->lang;
 
 		if( $cd === null ){
 			return( $this->msg[$lang] );
@@ -126,17 +128,21 @@ class ValidationMessage{
 	 * メッセージをまとめて取得する。
 	 * 第一引数$cd配列内で指定された項目を配列として返却する。
 	 *
-	 * @param  string $cd メッセージCD
+	 * @param  string $cd    メッセージCD
+	 * @param  string $lang  言語CD
 	 * @return string $cd未指定:すべてのメッセージ, $cd指定時:個別, $cd指定時未存在:null
 	 * @access public
 	 */
-	public function gets($cds=array()){
-		$result = array();
+	public function gets($cds=array(), $lang=null){
+		if($lang===null)
+			$lang = $this->lang;
 
-		$len = count($cds);
+		$result = array();
+		$len    = count($cds);
+		
 		for($i=0; $i<$len; $i++){
 			$cd = $cds[$i];
-			$result[$cd] = $this->get($cd);
+			$result[$cd] = $this->get($cd, $lang);
 		}
 
 		return($result);
@@ -148,13 +154,16 @@ class ValidationMessage{
 	 * メッセージをオブジェクト内にセットする。
 	 * 同一の$CDが存在する場合は上書きされる。
 	 *
-	 * @param  string $cd  メッセージCD
-	 * @param  string $msg メッセージ内容
+	 * @param  string $cd   メッセージCD
+	 * @param  string $msg  メッセージ内容
+	 * @param  string $lang 言語CD
 	 * @return void
 	 * @access public
 	 */
-	public function set($cd, $msg){
-		$lang = $this->lang;
+	public function set($cd, $msg='', $lang=null){
+		if($lang===null)
+			$lang = $this->lang;
+
 		$this->msg[$lang][$cd] = $msg;
 	}
 
