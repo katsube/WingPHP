@@ -57,15 +57,19 @@ class UtilValidationMessageUnitTest extends PHPUnit_Framework_TestCase
         $msg  = new ValidationMessage();
 
         //正常取得    
-        $this->assertEquals( $msg->get('url'), 'URLの書式ではありません' );
-        $this->assertEquals( $msg->get('email'), 'メールアドレスの書式ではありません' );
-        $this->assertEquals( $msg->get('require'), '必須項目が入力されていません' );
+        $this->assertEquals( $msg->get('url'), 'URLの書式ではありません');
+        $this->assertEquals( $msg->get('email'), 'メールアドレスの書式ではありません');
+        $this->assertEquals( $msg->get('require'), '必須項目が入力されていません');
     
         //全部取得
         $this->assertEquals($msg->get(), $this->errormsg);
 
         //NotFound
         $this->assertEquals($msg->get('404'), null);
+
+        //言語CD指定
+        $this->assertEquals( $msg->get('url', 'ja'), 'URLの書式ではありません');
+        $this->assertEquals( $msg->get('url', 'en'), null);
     }
     
     /**
@@ -87,6 +91,10 @@ class UtilValidationMessageUnitTest extends PHPUnit_Framework_TestCase
         //NotFound
         $this->assertEquals($msg->gets(['404']), array('404'=>null) );
         $this->assertEquals($msg->gets(['url', '404']), array('url'=>'URLの書式ではありません', '404'=>null) );
+    
+        //言語CD指定
+        $this->assertEquals($msg->gets(['url'], 'ja'), array('url'=>'URLの書式ではありません') );
+        $this->assertEquals($msg->gets(['url'], 'en'), array('url'=>null) );
     }
     
     /**
