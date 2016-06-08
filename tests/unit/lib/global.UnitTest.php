@@ -397,6 +397,11 @@ class globalUnitTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_hash(['foo'=>'bar', 'hoge'=>'fuga']));
         $this->assertTrue(is_hash(['foo'=>'bar', 1]));      //うーん…
 
+        $this->assertFalse(is_hash(12345));
+        $this->assertFalse(is_hash('abcdefg'));
+        $this->assertFalse(is_hash(null));
+        $this->assertFalse(is_hash(false));
+        $this->assertFalse(is_hash(true));
         $this->assertFalse(is_hash([]));
         $this->assertFalse(is_hash([1]));
         $this->assertFalse(is_hash([1,2,3,4,5]));

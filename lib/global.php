@@ -314,6 +314,9 @@ function array_end($array){
  * @access public
  */
 function is_hash($hash){
+	if(!is_array($hash))
+		return(false);
+
 	$count = 0;
 	foreach($hash as $key => $value){
 		if($key !== $count++){
