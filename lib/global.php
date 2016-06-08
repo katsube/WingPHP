@@ -46,7 +46,7 @@ function uselib(){
 	$args  = func_get_args();
 
 	if( ! is_dir($dir) ){
-		$dir = sprintf('%s/', __DIR__ );
+		$dir = sprintf('%s', __DIR__ );
 	}
 
 	foreach ($args as $file){

@@ -72,6 +72,28 @@ class globalUnitTest extends PHPUnit_Framework_TestCase
         uselib('NotFound');
     }
 
+    /**
+     * test uselib()
+     * 
+     * @covers ::uselib
+     * @runInSeparateProcess
+     */
+    public function testFunction_uselib5(){
+        global $Conf;
+        $dir_org = $Conf['Lib']['dir'];
+        $dir_404 = '/notfound/wingphp';
+        $dir_gbl = dirname(realpath('../lib/global.php'));
+        $Conf['Lib']['dir'] = $dir_404;                     //存在しないパスを設定しておく
+
+
+        $ret   = uselib('Cache', 'Logger');
+        $path1 = sprintf('%s/Cache/index.php', $dir_gbl);
+        $path2 = sprintf('%s/Logger/index.php', $dir_gbl);
+        
+        $this->assertContains($path1, $ret);
+        $this->assertContains($path2, $ret);
+        $this->assertEquals(count($ret), 2);
+    }
 
     /**
      * test location()
