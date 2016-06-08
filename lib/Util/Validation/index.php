@@ -362,12 +362,16 @@ class Validation{
 	 * 同名のデータが存在する場合は上書きされる。
 	 *
 	 * @param  array $data 検証用データ格納用
-	 * @return void
+	 * @return boolean
 	 * @access public
 	 */
 	public function addData($target){
-		if( is_array($target) )
+		if( $this->_validData($target) ){
 			$this->target = array_merge($this->target, $target);
+			return(true);
+		}
+		
+		return(false);
 	}
 
 	/**
@@ -544,7 +548,7 @@ class Validation{
 	 */
 	private function _validList($list){
 		//---------------------------------
-		//配列であるか
+		//配列か
 		//---------------------------------
 		if( !is_array($list) )
 			return(false);
@@ -577,4 +581,17 @@ class Validation{
 		return(true);
 	}
 
+	/**
+	 * Dataに追加する配列の検証
+	 *
+	 * @param  array   $data 検証リスト
+	 * @return boolean
+	 * @access private
+	 */
+	private function _validData($data){
+		if( !is_hash($data) || $data === array() )
+			return(false);
+
+		return(true);
+	}
 }
