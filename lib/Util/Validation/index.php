@@ -592,6 +592,12 @@ class Validation{
 		if( !is_hash($data) || $data === array() )
 			return(false);
 
+		foreach($data as $key => $value){
+			if(!is_string($key)){
+				return(false);
+			}
+		}
+
 		return(true);
 	}
 }
