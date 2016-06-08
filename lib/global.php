@@ -45,6 +45,10 @@ function uselib(){
 	$dir   = $Conf['Lib']['dir'];
 	$args  = func_get_args();
 
+	if( ! is_dir($dir) ){
+		$dir = sprintf('%s/', __DIR__ );
+	}
+
 	foreach ($args as $file){
 		//---------------------------------
 		//通常
@@ -67,7 +71,7 @@ function uselib(){
 			continue;
 		}
 
-		throw new WsException("Can not open library $file", 500);
+		throw new WsException("Can not open library $file ($path2)", 500);
 	}
 
 	return($paths);
