@@ -136,7 +136,10 @@ class Validation{
 	 * @access public
 	 */
 	function __construct($mode='self', $lang='ja'){
-		$this->mode = $mode;
+		if( $mode === 'self' || $mode === 'form' )
+			$this->mode = $mode;
+		else
+			$this->mode = 'self';
 
 		//-------------------------------
 		// 検証ルールを差込む
