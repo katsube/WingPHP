@@ -303,6 +303,28 @@ function array_end($array){
 
 
 /**
+ * ハッシュか配列か判定する
+ *
+ * 添字が連番になっていなければハッシュ、
+ * 添字が連番になっていれば配列と判定する簡易的な関数
+ * (多次元配列、連番が飛んでいる物にも非対応)
+ *
+ * @param  array    対象配列(ハッシュ)
+ * @return boolean
+ * @access public
+ */
+function is_hash($hash){
+	$count = 0;
+	foreach($hash as $key => $value){
+		if($key !== $count++){
+            return(true);
+		}
+	}
+
+	return(false);
+}
+
+/**
  * ユニークなIDを生成する
  *
  * 擬似的に重複する可能性が少ない文字列を生成する。

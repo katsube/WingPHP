@@ -365,6 +365,22 @@ class globalUnitTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($arr, array("apple", "banana", "muscat"));
     }
 
+    /**
+     * test is_hash()
+     * 
+     * @covers ::is_hash
+     */
+    public function testFunction_is_hash(){
+        $this->assertTrue(is_hash(['foo'=>'bar']));
+        $this->assertTrue(is_hash(['foo'=>'bar', 'hoge'=>'fuga']));
+        $this->assertTrue(is_hash(['foo'=>'bar', 1]));      //うーん…
+
+        $this->assertFalse(is_hash([]));
+        $this->assertFalse(is_hash([1]));
+        $this->assertFalse(is_hash([1,2,3,4,5]));
+        $this->assertFalse(is_hash([0,1,2,3,4,5]));
+    }
+
 
     /**
      * test gen_uniqid() - 生成文字列の妥当性
