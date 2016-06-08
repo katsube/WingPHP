@@ -318,12 +318,18 @@ class Validation{
 	 * @param  string  $name ルール名
 	 * @param  object  $func 実行する無名関数(ClosureObject)
 	 * @param  string  $msg  エラー時のメッセージ(任意)
-	 * @return void
+	 * @return boolean
 	 * @access public
 	 */
 	public function addRule($name, $func, $msg=null, $lang='ja'){
-		$this->rule[$name] = $func;
-		$this->vmsg->set($name, $msg, $lang);
+		if( is_string($name) && is_callable($func) ){
+			$this->rule[$name] = $func;
+			$this->vmsg->set($name, $msg, $lang);
+			
+			return(true);
+		}
+		
+		return(false);
 	}
 
 	/**
