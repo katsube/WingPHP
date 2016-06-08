@@ -252,24 +252,26 @@ class Validation{
 	 *
 	 * 次のように第一引数にルールを指定する。
 	 *   array(
-	 *        '名前1' => array('検証名1', '検証名2' ... '検証名n');
-	 *      , '名前2' => array(callback($name));
+	 *        '名前1' => array('ルール名1', 'ルール名2' ... 'ルール名n');
+	 *      , '名前2' => array('ルール名n');
 	 *   );
 	 * 検証名は複数記入できる。
 	 *   - 複数記入した場合はand条件になる。
-	 * 独自の関数を指定することができる
-	 *   - 検証名との併記も可能
-	 *   - 独自関数を複数併記することも可能
 	 * 2回目以降呼び出された場合は、既存のリストに追加される。
 	 *
-	 * @param  array $rule ルール格納用
-	 * @return void
+	 * @param  array   $list 追加する検証リスト
+	 * @return boolean
 	 * @access public
 	 */
-	public function addList($list){
-		if( is_array($list) )
+	public function addList($list=null){
+		if($this->_validList($list)){
 			$this->list = array_merge($this->list, $list);
+			return(true);
+		}
+
+		return(false);
 	}
+
 
 	/**
 	 * 検証リストをリセットする
@@ -319,9 +321,9 @@ class Validation{
 	 * @return void
 	 * @access public
 	 */
-	public function addRule($name, $func, $msg=null){
+	public function addRule($name, $func, $msg=null, $lang='ja'){
 		$this->rule[$name] = $func;
-		$this->vmsg->set($name, $msg);
+		$this->vmsg->set($name, $msg, $lang);
 	}
 
 	/**
@@ -520,4 +522,53 @@ class Validation{
 		array_push( $this->error[$name], $cd);
 		$this->errormsg[$cd] = 1;
 	}
+
+	
+	
+	
+	
+	
+	
+	/**
+	 * Listに追加する配列の検証
+	 *
+	 * @param  array   $list 検証リスト
+	 * @return boolean
+	 * @access private
+	 */
+	private function _validList($list){
+		//---------------------------------
+		//配列であるか
+		//---------------------------------
+		if( !is_array($list) )
+			return(false);
+		
+		//---------------------------------
+		//なめる
+		//---------------------------------
+		foreach($list as $key => $value){
+			//---------------------------------
+			// 文字列 => 配列 であるか
+			//---------------------------------
+			if( ! (is_string($key) && is_array($value)) ){
+				return(false);
+			}
+			
+			//---------------------------------
+			// value検証
+			//---------------------------------
+			foreach( $value as $tmp ){
+				if(    (is_string($tmp) && array_key_exists($tmp, $this->rule))								// ルールに存在するか
+					|| (is_array($tmp)  && is_string($tmp[0]) && array_key_exists($tmp[0], $this->rule))){	// ルールに存在するか
+					continue;
+				}
+				else{
+					return(false);
+				}
+			}
+		}
+					
+		return(true);
+	}
+
 }
