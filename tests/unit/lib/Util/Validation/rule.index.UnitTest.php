@@ -257,7 +257,7 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         return(array(
               array('katsubemakito@gmail.com', true)
             , array('katsube.makito@gmail.com', true)
-            //, array('katsube.makito+wingphp@gmail.com', true)
+            , array('katsube.makito+wingphp@gmail.com', true)
         ));
     }    
 
