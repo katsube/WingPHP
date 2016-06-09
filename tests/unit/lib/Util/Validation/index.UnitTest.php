@@ -176,7 +176,28 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
      * @covers Validation::getData
      */
     public function testGetData(){
+        $data = array(
+                      'foo'   => 'hello'
+                    , 'bar'   => 12345
+                    , 'hoge'  => true
+                    , 'huga'  => false
+                    , 'munya' => null
+                    , 'arr'   => [1,2,3,4,5]
+                );
         
+        $v = new Validation();
+        $v->addData($data);
+    
+        //全件取得
+        $this->assertEquals($data, $v->getData());
+        
+        //個別に取得
+        foreach($data as $key => $value){
+            $this->assertEquals($value, $v->getData($key));
+        }
+        
+        //存在しない
+        $this->assertFalse( $v->getData('404') );
     }
     
     /**
