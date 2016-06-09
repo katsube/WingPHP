@@ -212,6 +212,8 @@ class Validation{
 
 			// 配列の要素が、すべて指定したリスト内のいずれかと合致するか
 			, 'gin' => function($val, $opt){
+				if(is_null($val) || $val === '')
+					return(true);
 				if(!is_array($val) || !is_array($opt) )
 					return(false);
 
