@@ -212,16 +212,21 @@ class Validation{
 
 			// 配列の要素が、すべて指定したリスト内のいずれかと合致するか
 			, 'gin' => function($val, $opt){
-				if( is_null($val) || $val === "")
-					return(true);
-				if(!is_array($val))
+				if(!is_array($val) || !is_array($opt) )
 					return(false);
 
 				$len = count($val);
 				for ($i=0; $i < $len; $i++){
-					if( is_null($val[$i]) || $val[$i] === "")
-						continue;
-					if( !in_array($val[$i], $opt) )
+					$value = $val[$i];
+					$flag  = false;
+					foreach($opt as $tmp){
+						if($tmp === $value){
+							$flag = true;
+							break;
+						}
+					}
+					
+					if(!$flag)
 						return(false);
 				}
 
