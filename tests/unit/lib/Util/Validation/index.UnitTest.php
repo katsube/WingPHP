@@ -179,10 +179,13 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
         $data = array(
                       'foo'   => 'hello'
                     , 'bar'   => 12345
+                    , 'float' => 12.345
                     , 'hoge'  => true
                     , 'huga'  => false
                     , 'munya' => null
-                    , 'arr'   => [1,2,3,4,5]
+                    , 'arr1'  => [1,2,3,4,5]
+                    , 'arr2'  => ['foo'=>'bar']
+                    , 'func'  => function(){ return(true); }
                 );
         
         $v = new Validation();
@@ -206,7 +209,16 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
      * @covers Validation::clearData
      */
     public function testClearData(){
+        $data = array(
+                      'foo' => 'hello'
+                    , 'bar' => 12345
+                );
         
+        $v = new Validation();
+        $v->addData($data);
+        $v->clearData();
+        
+        $this->assertEquals(array(), $v->getData());
     }
     
     /**
