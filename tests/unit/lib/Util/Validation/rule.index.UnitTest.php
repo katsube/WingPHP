@@ -373,7 +373,20 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
     
     public function NumProvider(){
         return(array(
-            array(123456789, true)
+              array(12345, true)
+            , array('12345', true)
+            , array(0, true)
+            , array(-100, true)
+            , array(123.456, true)
+
+            , array('', true)
+            , array(null, true)
+
+            , array('1234５', false)
+            , array('１２３４５', false)
+            , array('abcde', false)
+            , array(true, false)
+            , array(false, false)
         ));
     }
 
