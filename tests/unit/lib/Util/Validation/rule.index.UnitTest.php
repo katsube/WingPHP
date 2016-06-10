@@ -406,7 +406,7 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array('12345', false)
             , array('12.345', false)
             , array('Hello1', false)
-            , array('Ａbcd', false)
+            , array('Ａbcd', false)             //全角まじり
             , array(true, false)
             , array(false, false)
             , array([], false)
@@ -415,7 +415,28 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
 
     public function AlnumProvider(){
         return(array(
-            array('Hello123', true)
+              array('hello', true)
+            , array('Hello', true)
+            , array('HELLO', true)
+            , array('a', true)
+            , array('1', true)
+            , array('12345', true)
+            , array(1, true)
+            , array(12345, true)
+            , array('Hello12345', true)
+
+            , array('', true)
+            , array(null, true)
+
+            , array('Hello World', false)       //半角スペース
+            , array('HelloWorld!', false)       //記号
+            , array('-12345', false)
+            , array('12.345', false)
+            , array('Ａbcd', false)             //全角まじり
+            , array('１2345', false)            //全角まじり
+            , array(true, false)
+            , array(false, false)
+            , array([], false)
         ));
     }
 
