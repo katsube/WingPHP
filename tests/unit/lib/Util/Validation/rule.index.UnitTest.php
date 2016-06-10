@@ -63,7 +63,7 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
      * 
      * @dataProvider TelProvider
      */
-    public function testTEL($tel, $expected){
+    public function testTel($tel, $expected){
         $rule = $this->rule['tel'];
         $this->assertEquals( $expected, $rule($tel) );
     }
@@ -327,7 +327,47 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
 
     public function TelProvider(){
         return(array(
-            array('090-1234-5678', true)
+            //固定電話等
+              array('03-1234-5678', true)       //0A-BCDE-FGHJ
+            , array('055-123-4567', true)       //0AB-CDE-FGHJ
+            , array('0852-55-4567', true)       //0ABC-DE-FGHJ
+            , array('01234-6-7890', true)       //0ABCD-E-FGHJ
+
+            //発信者課金ポケベル電話番号
+            , array('020-123-4567', true)       //020-CDE-FGHJK
+
+            //IP電話の電話番号
+            , array('050-1234-5678', true)      //050-CDEF-GHJK
+
+            //FMC電話番号
+            , array('060-1234-5678', true)      //060-CDEF-GHJK
+
+            //PHS電話番号
+            , array('070-123-45678', true)      //070-CDE-FGHJK
+
+            //携帯電話の電話番号
+            , array('080-123-45678', true)      //080-CDE-FGHJK
+            , array('090-123-45678', true)      //090-CDE-FGHJK
+            
+            //着信課金用電話番号
+            , array('0120-123-456', true)       //0120-DEF-GHJ
+            , array('0120-123-4567', true)      //0800-DEF-GHJK
+
+            //統一番号用電話番号
+            , array('0570-123-456', true)       //0570-DEF-GHJ
+
+            //情報料代理徴収用電話番号            
+            , array('0990-123-456', true)       //0990-DEF-GHJ
+            
+            , array('', true)
+            , array(null, true)
+            
+
+            , array('0901234-5678', false)      //書式エラー
+            , array('09012345678', false)       //書式エラー
+            , array('90-1234-5678', false)      //先頭が0から始まらない
+            , array('090-1２34-5678', false)    //全角まじり
+            , array('050-CDEF-GHJK', false)     //数字じゃない
         ));
     }
     
