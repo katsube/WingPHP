@@ -387,12 +387,29 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array('abcde', false)
             , array(true, false)
             , array(false, false)
+            , array([], false)
         ));
     }
 
     public function AlphaProvider(){
         return(array(
-            array('Hello', true)
+              array('hello', true)
+            , array('Hello', true)
+            , array('HELLO', true)
+            , array('a', true)
+
+            , array('', true)
+            , array(null, true)
+
+            , array('Hello World', false)       //半角スペース
+            , array('HelloWorld!', false)       //記号
+            , array('12345', false)
+            , array('12.345', false)
+            , array('Hello1', false)
+            , array('Ａbcd', false)
+            , array(true, false)
+            , array(false, false)
+            , array([], false)
         ));
     }
 
