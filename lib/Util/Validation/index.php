@@ -146,21 +146,21 @@ class Validation{
 		//-------------------------------
 		//ToDo: 気持ち悪いのであとで他ファイルに分割したい。
 		$this->rule = array(
-			  'url'    => function($val){ return( is_null($val) || $val == "" || preg_match(Regex::URL,   $val) ); }		// 書式 URL
-			, 'email'  => function($val){ return( is_null($val) || $val == "" || preg_match(Regex::EMAIL, $val) ); }		// 書式 メールアドレス
-			, 'ip4'    => function($val){ return( is_null($val) || $val == "" || preg_match(Regex::IP4,   $val) ); }		// 書式 IPv4形式
-			, 'postcd' => function($val){ return( is_null($val) || $val == "" || preg_match(Regex::POST,  $val) ); }		// 書式 郵便番号 000-0000
-			, 'tel'    => function($val){ return( is_null($val) || $val == "" || preg_match(Regex::TEL,   $val) ); }		// 書式 電話番号 0123-12-1234, 03-12-1234, 090-1234-1234
+			  'url'    => function($val){ return( is_null($val) || $val === "" || preg_match(Regex::URL,   $val) ); }		// 書式 URL
+			, 'email'  => function($val){ return( is_null($val) || $val === "" || preg_match(Regex::EMAIL, $val) ); }		// 書式 メールアドレス
+			, 'ip4'    => function($val){ return( is_null($val) || $val === "" || preg_match(Regex::IP4,   $val) ); }		// 書式 IPv4形式
+			, 'postcd' => function($val){ return( is_null($val) || $val === "" || preg_match(Regex::POST,  $val) ); }		// 書式 郵便番号 000-0000
+			, 'tel'    => function($val){ return( is_null($val) || $val === "" || preg_match(Regex::TEL,   $val) ); }		// 書式 電話番号 0123-12-1234, 03-12-1234, 090-1234-1234
 
-			, 'num'   => function($val){ return( is_null($val) || $val == "" || preg_match(Regex::NUM,   $val) ); }		// 書式 半角数字(文字列としての数字も真)
-			, 'alpha' => function($val){ return( is_null($val) || $val == "" || preg_match(Regex::ALPHA, $val) ); }		// 書式 半角英字
-			, 'alnum' => function($val){ return( is_null($val) || $val == "" || preg_match(Regex::ALNUM, $val) ); }		// 書式 半角英数字
+			, 'num'   => function($val){ return( is_null($val) || $val === "" || is_numeric($val) ); }					// 書式 半角数字(文字列としての数字も真)
+			, 'alpha' => function($val){ return( is_null($val) || $val === "" || preg_match(Regex::ALPHA, $val) ); }		// 書式 半角英字
+			, 'alnum' => function($val){ return( is_null($val) || $val === "" || preg_match(Regex::ALNUM, $val) ); }		// 書式 半角英数字
 
 			, 'require' => function($val){ return( isset($val) && $val !== '' ); }		// 必須項目
-			, 'bytemax' => function($val, $opt){ return( is_null($val) || $val == "" || strlen($val) <= $opt[0] );  }		// 最大バイト長
-			, 'bytemin' => function($val, $opt){ return( is_null($val) || $val == "" || strlen($val) >= $opt[0] ); }		// 最小バイト長
-			, 'max'     => function($val, $opt){ return( is_null($val) || $val == "" || $val <= $opt[0] ); }				// 最大値
-			, 'min'     => function($val, $opt){ return( is_null($val) || $val == "" || $val >= $opt[0] ); }				// 最小値
+			, 'bytemax' => function($val, $opt){ return( is_null($val) || $val === "" || strlen($val) <= $opt[0] );  }		// 最大バイト長
+			, 'bytemin' => function($val, $opt){ return( is_null($val) || $val === "" || strlen($val) >= $opt[0] ); }		// 最小バイト長
+			, 'max'     => function($val, $opt){ return( is_null($val) || $val === "" || $val <= $opt[0] ); }				// 最大値
+			, 'min'     => function($val, $opt){ return( is_null($val) || $val === "" || $val >= $opt[0] ); }				// 最小値
 
 			// ToDo:
 			//, 'datemax' => function($val, $opt){}
@@ -169,10 +169,10 @@ class Validation{
 			//, 'timemin' => function($val, $opt){}
 			//, 'datebetween' => function($val, $opt){}
 
-			, 'match' => function($val, $opt){ return( is_null($val) || $val == "" || preg_match($opt[0], $val) ); }		// 指定した正規表現にマッチするか
-			, 'eq'    => function($val, $opt){ return( is_null($val) || $val == "" || $val === $opt[0] ); }				// 指定した文字列と同じか
-			, 'ne'    => function($val, $opt){ return( is_null($val) || $val == "" || $val !== $opt[0] ); }				// 指定した文字列と違うか
-			, 'in'    => function($val, $opt){ return( is_null($val) || $val == "" || in_array($val, $opt)); }			// 指定したリスト内のいずれかと合致するか
+			, 'match' => function($val, $opt){ return( is_null($val) || $val === "" || preg_match($opt[0], $val) ); }		// 指定した正規表現にマッチするか
+			, 'eq'    => function($val, $opt){ return( is_null($val) || $val === "" || $val === $opt[0] ); }				// 指定した文字列と同じか
+			, 'ne'    => function($val, $opt){ return( is_null($val) || $val === "" || $val !== $opt[0] ); }				// 指定した文字列と違うか
+			, 'in'    => function($val, $opt){ return( is_null($val) || $val === "" || in_array($val, $opt)); }			// 指定したリスト内のいずれかと合致するか
 
 			// 日付が妥当な物か
 			//   $v->addList(array( 'year'=>['date', $q->year, $q->month, $q->day] ));	//yearで引っ掛けてチェックする
