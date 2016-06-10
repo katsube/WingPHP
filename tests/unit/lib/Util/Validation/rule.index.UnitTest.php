@@ -244,6 +244,8 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array('https://www.wingphp.net/', true)
             , array('http://localhost/', true)
             , array('http://127.0.0.1/', true)
+            , array('', true)
+            , array(null, true)
             
             , array('http//www.wingphp.net/?q=hello', false)
             , array('http:/www.wingphp.net/?q=hello', false)
@@ -258,18 +260,68 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
               array('katsubemakito@gmail.com', true)
             , array('katsube.makito@gmail.com', true)
             , array('katsube.makito+wingphp@gmail.com', true)
+            , array('katsube.makito+1234@gmail.com', true)
+            , array('katsube.makito+_-/@gmail.com', true)
+            , array('+@gmail.com', true)
+            , array('katsubemakito@example_-.com', true)
+            , array('katsubemakito@example.co.jp', true)
+
+            , array('', true)
+            , array(null, true)
+
+            , array('katsubemakito@gmail', false)
+            , array('katsubemakito@', false)
+            , array('katsubemakito', false)
+            , array('@gmail.com', false)
+            , array('@gmail', false)
+            , array('@', false)
+            , array('かつべ@gmail.com', false)
+            , array('katsubemakito@じーめーる.com', false)
         ));
     }    
 
     public function IP4Provider(){
         return(array(
-            array('127.0.0.1', true)
+              array('0.0.0.0', true)
+            , array('127.0.0.1', true)
+            , array('255.255.255.255', true)
+            
+            , array('', true)
+            , array(null, true)
+
+            , array('256.255.255.255', false)
+            , array('255.256.255.255', false)
+            , array('255.255.256.255', false)
+            , array('255.255.255.256', false)
+            , array('256.256.256.256', false)
+            , array('266.266.266.266', false)
+            , array('.0.0.0', false)
+            , array('0..0.0', false)
+            , array('0.0..0', false)
+            , array('0.0.0.', false)
+            , array('0.0.', false)
+            , array('0.', false)
+            , array('0', false)
         ));
     }
 
     public function PostcdProvider(){
         return(array(
-            array('2210002', true)
+              array('1000002', true)
+            , array(1000002, true)
+            , array('100-0002', true)
+
+            , array('', true)
+            , array(null, true)
+
+            , array('-1000002', false)
+            , array('1-000002', false)
+            , array('10-00002', false)
+            , array('1000-002', false)
+            , array('10000-02', false)
+            , array('100000-2', false)
+            , array('1000002-', false)
+            , array('１００−０００２', false)
         ));
     }
 
