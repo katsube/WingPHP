@@ -162,7 +162,7 @@ class Validation{
 													&& preg_match(Regex::ALNUM, $val) )
 							); }
 
-			, 'require' => function($val){ return( isset($val) && $val !== '' ); }		// 必須項目
+			, 'require' => function($val){ return( isset($val) && $val !== '' && $val !== [] ); }		// 必須項目
 			, 'bytemax' => function($val, $opt){ return( is_null($val) || $val === "" || strlen($val) <= $opt[0] );  }		// 最大バイト長
 			, 'bytemin' => function($val, $opt){ return( is_null($val) || $val === "" || strlen($val) >= $opt[0] ); }		// 最小バイト長
 			, 'max'     => function($val, $opt){ return( is_null($val) || $val === "" || $val <= $opt[0] ); }				// 最大値

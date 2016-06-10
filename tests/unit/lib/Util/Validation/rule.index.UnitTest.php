@@ -443,6 +443,18 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
     public function RequireProvider(){
         return(array(
             array('foobar', true)
+            , array('a', true)
+            , array('1', true)
+            , array('12345', true)
+            , array(1, true)
+            , array(12345, true)
+            , array(12.345, true)
+            , array(true, true)
+            , array(false, true)
+
+            , array('', false)
+            , array(null, false)
+            , array([], false)
         ));
     }
 
