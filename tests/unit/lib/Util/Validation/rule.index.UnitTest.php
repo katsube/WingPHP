@@ -233,7 +233,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
 
 
 
-
+    /**
+     * DataProvider - URL
+     * 
+     */
     public function UrlProvider(){
         return(array(
               array('http://wingphp.net', true)
@@ -255,6 +258,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - Email
+     * 
+     */
     public function EmailProvider(){
         return(array(
               array('katsubemakito@gmail.com', true)
@@ -280,6 +287,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }    
 
+    /**
+     * DataProvider - IP4
+     * 
+     */
     public function IP4Provider(){
         return(array(
               array('0.0.0.0', true)
@@ -305,6 +316,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - PostCD
+     * 
+     */
     public function PostcdProvider(){
         return(array(
               array('1000002', true)
@@ -325,6 +340,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - Tel
+     * 
+     */
     public function TelProvider(){
         return(array(
             //固定電話等
@@ -371,6 +390,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
     
+    /**
+     * DataProvider - Num
+     * 
+     */
     public function NumProvider(){
         return(array(
               array(12345, true)
@@ -391,6 +414,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - Alpha
+     * 
+     */
     public function AlphaProvider(){
         return(array(
               array('hello', true)
@@ -413,6 +440,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - Alnum
+     * 
+     */
     public function AlnumProvider(){
         return(array(
               array('hello', true)
@@ -440,6 +471,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - Require
+     * 
+     */
     public function RequireProvider(){
         return(array(
             array('foobar', true)
@@ -458,6 +493,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - ByteMax
+     * 
+     */
     public function ByteMaxProvider(){
         return(array(
               array('foobar', 100, true)
@@ -477,6 +516,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - ByteMin
+     * 
+     */
     public function ByteMinProvider(){
         return(array(
               array('foobar', 1, true)
@@ -496,6 +539,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - Max
+     * 
+     */
     public function MaxProvider(){
         return(array(
               array(10, 100, true)
@@ -517,6 +564,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - Min
+     * 
+     */
     public function MinProvider(){
         return(array(
               array(100, 10, true)
@@ -538,6 +589,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - Match
+     * 
+     */
     public function MatchProvider(){
         return(array(
               array('HelloWorld', '/^Hello/', true)
@@ -551,6 +606,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - Eq
+     * 
+     */
     public function EqProvider(){
         return(array(
               array('HelloWorld', 'HelloWorld', true)
@@ -570,6 +629,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - Ne
+     * 
+     */
     public function NeProvider(){
         return(array(
               array('Hello', 'World', true)
@@ -589,6 +652,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - In
+     * 
+     */
     public function InProvider(){
         return(array(
               array('fizz', ['foo', 'bar', 'fizz', 'buzz'], true)
@@ -608,6 +675,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - Data
+     * 
+     */
     public function DateProvider(){
         return(array(
               array( 2016, 10,  5,  true)
@@ -620,6 +691,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - Time
+     * 
+     */
     public function TimeProvider(){
         return(array(
               array( 0,  0,  0,  true)
@@ -630,6 +705,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - GRequire
+     * 
+     */
     public function Grequire1Provider(){
         return(array(
               array([1,2,3], true)
@@ -642,6 +721,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         ));
     }
 
+    /**
+     * DataProvider - GIn
+     * 
+     */
     public function GinProvider(){
         return(array(
               array([], [], true)
