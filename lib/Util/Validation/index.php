@@ -155,16 +155,30 @@ class Validation{
 			, 'num'   => function($val){ return( is_null($val) || $val === "" || is_numeric($val) ); }					// 書式 半角数字(文字列としての数字も真)
 			, 'alpha' => function($val){ return( is_null($val) || $val === "" || (is_string($val) && preg_match(Regex::ALPHA, $val)) ); }		// 書式 半角英字
 			, 'alnum' => function($val){	// 書式 半角英数字
-							return(
-									   is_null($val)
-									|| $val === ""
-									|| ( (is_string($val) || is_numeric($val))
-													&& preg_match(Regex::ALNUM, $val) )
-							); }
+								return(
+										   is_null($val)
+										|| $val === ""
+										|| ( (is_string($val) || is_numeric($val))
+														&& preg_match(Regex::ALNUM, $val) )
+								);
+							}
 
 			, 'require' => function($val){ return( isset($val) && $val !== '' && $val !== [] ); }		// 必須項目
-			, 'bytemax' => function($val, $opt){ return( is_null($val) || $val === "" || strlen($val) <= $opt[0] );  }		// 最大バイト長
-			, 'bytemin' => function($val, $opt){ return( is_null($val) || $val === "" || strlen($val) >= $opt[0] ); }		// 最小バイト長
+			, 'bytemax' => function($val, $opt){
+								return(			// 最大バイト長
+											is_null($val)
+										|| $val === ""
+										|| (is_string($val) && strlen($val) <= $opt[0])
+								);
+							}
+			, 'bytemin' => function($val, $opt){
+								return(			// 最小バイト長
+											is_null($val)
+										|| $val === ""
+										|| (is_string($val) && strlen($val) >= $opt[0])
+								);
+			
+							}
 			, 'max'     => function($val, $opt){ return( is_null($val) || $val === "" || $val <= $opt[0] ); }				// 最大値
 			, 'min'     => function($val, $opt){ return( is_null($val) || $val === "" || $val >= $opt[0] ); }				// 最小値
 

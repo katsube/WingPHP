@@ -460,13 +460,39 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
 
     public function ByteMaxProvider(){
         return(array(
-            array('foobar', 100, true)
+              array('foobar', 100, true)
+            , array('a', 1, true)
+            , array('あ', 3, true)          //UTF8前提
+
+            , array('', 1, true)
+            , array(null, 1, true)
+            
+            , array('foobar', 1, false)
+            , array(1, 100, false)
+            , array(12345, 100, false)
+            , array(123.45, 100, false)
+            , array([], 100, false)
+            , array(true, 100,false)
+            , array(false, 100, false)
         ));
     }
 
     public function ByteMinProvider(){
         return(array(
-            array('foobar', 1, true)
+              array('foobar', 1, true)
+            , array('a', 1, true)
+            , array('あ', 3, true)          //UTF8前提
+
+            , array('', 1, true)
+            , array(null, 1, true)
+            
+            , array('foobar', 100, false)
+            , array(1, 100, false)
+            , array(12345, 100, false)
+            , array(123.45, 100, false)
+            , array([], 100, false)
+            , array(true, 100,false)
+            , array(false, 100, false)
         ));
     }
 
