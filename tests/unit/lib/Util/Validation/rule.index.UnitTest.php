@@ -498,13 +498,43 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
 
     public function MaxProvider(){
         return(array(
-            array(10, 100, true)
+              array(10, 100, true)
+            , array(1, 1, true)
+            , array(0, 0, true)
+            , array(3.1, 3.2, true)
+            , array(3.1, 3.1, true)
+            , array(-5, 0, true)
+            , array(-10, -5, true)
+
+            , array('', 1, true)
+            , array(null, 1, true)
+            
+            , array(200, 100, false)
+            , array('foobar', 100, false)
+            , array([], 100, false)
+            , array(true, 100,false)
+            , array(false, 100, false)
         ));
     }
 
     public function MinProvider(){
         return(array(
-            array(10, 1, true)
+              array(100, 10, true)
+            , array(1, 1, true)
+            , array(0, 0, true)
+            , array(3.2, 3.1, true)
+            , array(3.1, 3.1, true)
+            , array(0, -5, true)
+            , array(-5, -10, true)
+
+            , array('', 1, true)
+            , array(null, 1, true)
+            
+            , array(100, 200, false)
+            , array('foobar', 100, false)
+            , array([], 100, false)
+            , array(true, 100,false)
+            , array(false, 100, false)
         ));
     }
 

@@ -179,8 +179,21 @@ class Validation{
 								);
 			
 							}
-			, 'max'     => function($val, $opt){ return( is_null($val) || $val === "" || $val <= $opt[0] ); }				// 最大値
-			, 'min'     => function($val, $opt){ return( is_null($val) || $val === "" || $val >= $opt[0] ); }				// 最小値
+			, 'max'     => function($val, $opt){
+								return(			// 最大値
+											is_null($val)
+										|| $val === ""
+										|| (is_numeric($val) && $val <= $opt[0])
+								);
+				
+							}
+			, 'min'     => function($val, $opt){
+								return(			// 最小値
+											is_null($val)
+										|| $val === ""
+										|| ( is_numeric($val) && $val >= $opt[0])
+								);
+							}
 
 			// ToDo:
 			//, 'datemax' => function($val, $opt){}
