@@ -591,7 +591,20 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
 
     public function InProvider(){
         return(array(
-            array('fizz', ['foo', 'bar', 'fizz', 'buzz'], true)
+              array('fizz', ['foo', 'bar', 'fizz', 'buzz'], true)
+            , array(128, [1,2,4,8,16,32,64,128,256,512,1024], true)
+            , array(true, [true, false], true)
+            , array(false, [true, false], true)
+            , array([], [[], [1,2,3], ['a','b','c']], true)
+
+            , array('', 'foo', true)
+            , array(null, 'foo', true)
+
+            , array('fizz', ['foo', 'bar', 'buzz'], false)
+            , array(18, [1,2,4,8,16,32,64,128,256,512,1024], false)
+            , array('hoge', [true, false], false)
+            , array('huga', [true, false], false)
+            , array([], [[1,2,3], ['a','b','c']], false)
         ));
     }
 

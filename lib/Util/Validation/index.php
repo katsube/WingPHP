@@ -205,7 +205,19 @@ class Validation{
 			, 'match' => function($val, $opt){ return( is_null($val) || $val === "" || preg_match($opt[0], $val) ); }		// 指定した正規表現にマッチするか
 			, 'eq'    => function($val, $opt){ return( is_null($val) || $val === "" || $val === $opt[0] ); }				// 指定した文字列と同じか
 			, 'ne'    => function($val, $opt){ return( is_null($val) || $val === "" || $val !== $opt[0] ); }				// 指定した文字列と違うか
-			, 'in'    => function($val, $opt){ return( is_null($val) || $val === "" || in_array($val, $opt)); }			// 指定したリスト内のいずれかと合致するか
+			
+			// 指定したリスト内のいずれかと合致するか
+			, 'in'    => function($val, $opt){
+				if( is_null($val) || $val === "")
+					return(true);
+				
+				foreach ($opt as $tmp) {
+					if( $val === $tmp )
+						return(true);
+				}
+				
+				return(false);
+			}
 
 			// 日付が妥当な物か
 			//   $v->addList(array( 'year'=>['date', $q->year, $q->month, $q->day] ));	//yearで引っ掛けてチェックする
