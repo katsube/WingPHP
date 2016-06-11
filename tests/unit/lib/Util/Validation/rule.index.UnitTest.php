@@ -540,19 +540,52 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
 
     public function MatchProvider(){
         return(array(
-            array('HelloWorld', '/^Hello/', true)
+              array('HelloWorld', '/^Hello/', true)
+            , array('HelloWorld', '/^hello/i', true)
+            , array(12345, '/^12345$/', true)
+
+            , array('', '//', true)
+            , array(null, '//', true)
+
+            , array('HelloWorld!', '/d$/', false)
         ));
     }
 
     public function EqProvider(){
         return(array(
-            array('Hello', 'Hello', true)
+              array('HelloWorld', 'HelloWorld', true)
+            , array(12345, 12345, true)
+            , array(-12345, -12345, true)
+            , array(123.45, 123.45, true)
+            , array([], [], true)
+            , array([1,2,3], [1,2,3], true)
+            , array(true, true,true)
+            , array(false, false, true)
+
+            , array('', 'foo', true)
+            , array(null, 'foo', true)
+
+            , array('HelloWorld!', 'Hello', false)
+            , array(12345, '12345', false)
         ));
     }
 
     public function NeProvider(){
         return(array(
-            array('Hello', 'World', true)
+              array('Hello', 'World', true)
+            , array(12345, '12345', true)
+            , array(12345, 54321, true)
+            , array(-12345, -54321, true)
+            , array(123.45, 123.451, true)
+            , array([1,2,3], [4,5,6], true)
+            , array(true, false,true)
+            , array(false, true, true)
+
+            , array('', 'foo', true)
+            , array(null, 'foo', true)
+
+            , array('HelloWorld!', 'HelloWorld!', false)
+            , array([], [], false)
         ));
     }
 
