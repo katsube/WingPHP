@@ -146,51 +146,128 @@ class Validation{
 		//-------------------------------
 		//ToDo: 気持ち悪いのであとで他ファイルに分割したい。
 		$this->rule = array(
-			  'url'    => function($val){ return( is_null($val) || $val === "" || preg_match(Regex::URL,   $val) ); }		// 書式 URL
-			, 'email'  => function($val){ return( is_null($val) || $val === "" || preg_match(Regex::EMAIL, $val) ); }		// 書式 メールアドレス
-			, 'ip4'    => function($val){ return( is_null($val) || $val === "" || preg_match(Regex::IP4,   $val) ); }		// 書式 IPv4形式
-			, 'postcd' => function($val){ return( is_null($val) || $val === "" || preg_match(Regex::POST,  $val) ); }		// 書式 郵便番号 000-0000
-			, 'tel'    => function($val){ return( is_null($val) || $val === "" || preg_match(Regex::TEL,   $val) ); }		// 書式 電話番号 0123-12-1234, 03-12-1234, 090-1234-1234
-
-			, 'num'   => function($val){ return( is_null($val) || $val === "" || is_numeric($val) ); }					// 書式 半角数字(文字列としての数字も真)
-			, 'alpha' => function($val){ return( is_null($val) || $val === "" || (is_string($val) && preg_match(Regex::ALPHA, $val)) ); }		// 書式 半角英字
-			, 'alnum' => function($val){	// 書式 半角英数字
+			//---------------------
+			// 基本
+			//---------------------
+			//必須項目
+			'require' => function($val){
 								return(
-										   is_null($val)
-										|| $val === ""
-										|| ( (is_string($val) || is_numeric($val))
-														&& preg_match(Regex::ALNUM, $val) )
+										isset($val) && $val !== '' && $val !== []
 								);
 							}
 
-			, 'require' => function($val){ return( isset($val) && $val !== '' && $val !== [] ); }		// 必須項目
-			, 'bytemax' => function($val, $opt){
-								return(			// 最大バイト長
+			//---------------------
+			// 書式
+			//---------------------
+			//URL
+			, 'url' => function($val){
+			  					return(
+			  								is_null($val)
+			  							|| $val === ''
+			  							|| preg_match(Regex::URL, $val) === 1
+			  					);
+							}
+			//EMail
+			, 'email' => function($val){
+								return(
 											is_null($val)
-										|| $val === ""
+										|| $val === ''
+										|| preg_match(Regex::EMAIL, $val) === 1
+								); 
+							}
+			//IPv4
+			, 'ip4' => function($val){
+								return(
+											is_null($val)
+										|| $val === ''
+										|| preg_match(Regex::IP4, $val) === 1
+								);
+							}
+
+			//郵便番号(ハイフンあり、なし両対応)
+			, 'postcd' => function($val){
+								return(
+											is_null($val)
+										|| $val === ''
+										|| preg_match(Regex::POST, $val) === 1
+								);
+							}
+
+			//電話番号(ハイフンあり)
+			, 'tel'=> function($val){
+								return(
+											is_null($val)
+										|| $val === ''
+										|| preg_match(Regex::TEL, $val) === 1
+								);
+							}
+			
+			//---------------------
+			// 文字列
+			//---------------------
+			//半角数字(文字列としての数字も真)
+			, 'num' => function($val){
+								return(
+											is_null($val)
+										|| $val === ''
+										|| is_numeric($val)
+								);
+							}
+			
+			//半角英字
+			, 'alpha' => function($val){
+								return(
+											is_null($val)
+										|| $val === ''
+										|| (is_string($val) && preg_match(Regex::ALPHA, $val) === 1)
+								);
+							}
+
+			//半角英数字
+			, 'alnum' => function($val){
+								return(
+										   is_null($val)
+										|| $val === ''
+										|| ( (is_string($val) || is_numeric($val))
+														&& preg_match(Regex::ALNUM, $val) === 1 )
+								);
+							}
+			//最大バイト長
+			, 'bytemax' => function($val, $opt){
+								return(
+											is_null($val)
+										|| $val === ''
 										|| (is_string($val) && strlen($val) <= $opt[0])
 								);
 							}
+
+			// 最小バイト長
 			, 'bytemin' => function($val, $opt){
-								return(			// 最小バイト長
+								return(
 											is_null($val)
-										|| $val === ""
+										|| $val === ''
 										|| (is_string($val) && strlen($val) >= $opt[0])
 								);
 			
 							}
-			, 'max'     => function($val, $opt){
-								return(			// 最大値
+
+			//---------------------
+			// 数
+			//---------------------
+			// 最大値
+			, 'max' => function($val, $opt){
+								return(
 											is_null($val)
-										|| $val === ""
+										|| $val === ''
 										|| (is_numeric($val) && $val <= $opt[0])
 								);
 				
 							}
-			, 'min'     => function($val, $opt){
-								return(			// 最小値
+			// 最小値
+			, 'min' => function($val, $opt){
+								return(
 											is_null($val)
-										|| $val === ""
+										|| $val === ''
 										|| ( is_numeric($val) && $val >= $opt[0])
 								);
 							}
@@ -202,9 +279,35 @@ class Validation{
 			//, 'timemin' => function($val, $opt){}
 			//, 'datebetween' => function($val, $opt){}
 
-			, 'match' => function($val, $opt){ return( is_null($val) || $val === "" || preg_match($opt[0], $val) ); }		// 指定した正規表現にマッチするか
-			, 'eq'    => function($val, $opt){ return( is_null($val) || $val === "" || $val === $opt[0] ); }				// 指定した文字列と同じか
-			, 'ne'    => function($val, $opt){ return( is_null($val) || $val === "" || $val !== $opt[0] ); }				// 指定した文字列と違うか
+			//---------------------
+			// 比較
+			//---------------------
+			// 指定した正規表現にマッチするか
+			, 'match' => function($val, $opt){
+								return(
+											is_null($val)
+										|| $val === ''
+										|| preg_match($opt[0], $val) === 1
+								);
+							}
+			
+			// 指定した文字列と同じか
+			, 'eq' => function($val, $opt){
+								return(
+											is_null($val)
+										|| $val === ''
+										|| $val === $opt[0]
+								);
+							}
+			
+			// 指定した文字列と違うか
+			, 'ne' => function($val, $opt){
+								return(
+											is_null($val)
+										|| $val === ''
+										|| $val !== $opt[0]
+								);
+							}
 			
 			// 指定したリスト内のいずれかと合致するか
 			, 'in'    => function($val, $opt){
@@ -219,6 +322,9 @@ class Validation{
 				return(false);
 			}
 
+			//---------------------
+			// 時間
+			//---------------------
 			// 日付が妥当な物か
 			//   $v->addList(array( 'year'=>['date', $q->year, $q->month, $q->day] ));	//yearで引っ掛けてチェックする
 			, 'date'  => function($val, $opt){
@@ -226,7 +332,13 @@ class Validation{
 				$month = $opt[0];
 				$day   = $opt[1];
 
-				return( checkdate($month, $day, $year) );
+				if( is_null($year) || $year === '' )
+					return(true);
+
+				if( is_int($year) && is_int($month) && is_int($day) )
+					return( checkdate($month, $day, $year) );
+				else
+					return(false);
 			}
 
 			// 時間が妥当な物か(24時間制)
@@ -235,15 +347,27 @@ class Validation{
 				$min  = $opt[0];
 				$sec  = $opt[1];
 
-				return(
-					   ( 0 <= $hour && $hour <= 23 )
-					&& ( 0 <= $min  && $min  <= 59 )
-					&& ( 0 <= $sec  && $sec  <= 59 )
-				);
+				if( is_null($hour) || $hour === '' )
+					return(true);
+
+				if( is_int($hour) && is_int($min) && is_int($sec) )
+					return(
+						   ( 0 <= $hour && $hour <= 23 )
+						&& ( 0 <= $min  && $min  <= 59 )
+						&& ( 0 <= $sec  && $sec  <= 59 )
+					);
+				else
+					return(false);
 			}
 
+			//---------------------
+			// リスト
+			//---------------------
 			// 配列の要素中、1つ以上が入力されている
 			, 'grequire1' => function($val){
+				if( is_null($val) || $val === '' )
+					return(true);
+
 				if(!is_array($val))
 					return(false);
 
@@ -259,6 +383,7 @@ class Validation{
 			, 'gin' => function($val, $opt){
 				if(is_null($val) || $val === '')
 					return(true);
+
 				if(!is_array($val) || !is_array($opt) )
 					return(false);
 

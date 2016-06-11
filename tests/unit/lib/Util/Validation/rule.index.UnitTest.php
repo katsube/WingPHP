@@ -17,6 +17,15 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         $this->rule = $v->getRule();
     }
 
+    /**
+     * Test Rule - require
+     * 
+     * @dataProvider RequireProvider
+     */
+    public function testRequire($require, $expected){
+        $rule = $this->rule['require'];
+        $this->assertEquals( $expected, $rule($require) );
+    }
 
     /**
      * Test Rule - url
@@ -96,16 +105,6 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
     public function testAlnum($alnum, $expected){
         $rule = $this->rule['alnum'];
         $this->assertEquals( $expected, $rule($alnum) );
-    }
-
-    /**
-     * Test Rule - require
-     * 
-     * @dataProvider RequireProvider
-     */
-    public function testRequire($require, $expected){
-        $rule = $this->rule['require'];
-        $this->assertEquals( $expected, $rule($require) );
     }
 
     /**
@@ -232,6 +231,27 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
 
 
 
+    /**
+     * DataProvider - Require
+     * 
+     */
+    public function RequireProvider(){
+        return(array(
+            array('foobar', true)
+            , array('a', true)
+            , array('1', true)
+            , array('12345', true)
+            , array(1, true)
+            , array(12345, true)
+            , array(12.345, true)
+            , array(true, true)
+            , array(false, true)
+
+            , array('', false)
+            , array(null, false)
+            , array([], false)
+        ));
+    }
 
     /**
      * DataProvider - URL
@@ -472,28 +492,6 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * DataProvider - Require
-     * 
-     */
-    public function RequireProvider(){
-        return(array(
-            array('foobar', true)
-            , array('a', true)
-            , array('1', true)
-            , array('12345', true)
-            , array(1, true)
-            , array(12345, true)
-            , array(12.345, true)
-            , array(true, true)
-            , array(false, true)
-
-            , array('', false)
-            , array(null, false)
-            , array([], false)
-        ));
-    }
-
-    /**
      * DataProvider - ByteMax
      * 
      */
@@ -685,6 +683,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array( 2016, 10,  5,  true)
             , array(    1,  1,  1,  true)
             , array(32767, 12, 31,  true)
+
+            , array('', 1, 1, true)
+            , array(null, 1, 1, true)
+            
             , array( 2015,  2, 29, false)
             , array( 2015, 15,  1, false)
             , array( 2015,  1, 32, false)
@@ -699,6 +701,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         return(array(
               array( 0,  0,  0,  true)
             , array(23, 59, 59,  true)
+
+            , array('', 1, 1, true)
+            , array(null, 1, 1, true)
+
             , array(24,  0,  0, false)
             , array( 0, 60,  0, false)
             , array( 0,  0, 60, false)
@@ -714,6 +720,10 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
               array([1,2,3], true)
             , array([null,1,null], true)
             , array([null,1,null], true)
+
+            , array('', true)
+            , array(null, true)
+
             , array('not array', false)
             , array([], false)
             , array([null,null,null], false)
@@ -738,6 +748,9 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array([1,2,3], [1,2,3], true)
             , array(['Hello', 'World', 'Foo', 'Bar'], ['Hello', 'World', 'Foo', 'Bar'], true)
             , array(['Foo'], ['Bar', 'Hello', 'World', 'Foo'], true)
+
+            , array('', [], true)
+            , array(null, [], true)
 
             , array([1], [0], false)
             , array(['Hello'], ['hello'], false)
