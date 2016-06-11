@@ -162,24 +162,24 @@ class Validation{
 			//URL
 			, 'url' => function($val){
 			  					return(
-			  								is_null($val)
-			  							|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 			  							|| preg_match(Regex::URL, $val) === 1
 			  					);
 							}
 			//EMail
 			, 'email' => function($val){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| preg_match(Regex::EMAIL, $val) === 1
 								); 
 							}
 			//IPv4
 			, 'ip4' => function($val){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| preg_match(Regex::IP4, $val) === 1
 								);
 							}
@@ -187,8 +187,8 @@ class Validation{
 			//郵便番号(ハイフンあり、なし両対応)
 			, 'postcd' => function($val){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| preg_match(Regex::POST, $val) === 1
 								);
 							}
@@ -196,8 +196,8 @@ class Validation{
 			//電話番号(ハイフンあり)
 			, 'tel'=> function($val){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| preg_match(Regex::TEL, $val) === 1
 								);
 							}
@@ -208,8 +208,8 @@ class Validation{
 			//半角数字(文字列としての数字も真)
 			, 'num' => function($val){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| is_numeric($val)
 								);
 							}
@@ -217,8 +217,8 @@ class Validation{
 			//半角英字
 			, 'alpha' => function($val){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| (is_string($val) && preg_match(Regex::ALPHA, $val) === 1)
 								);
 							}
@@ -226,8 +226,8 @@ class Validation{
 			//半角英数字
 			, 'alnum' => function($val){
 								return(
-										   is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| ( (is_string($val) || is_numeric($val))
 														&& preg_match(Regex::ALNUM, $val) === 1 )
 								);
@@ -235,8 +235,8 @@ class Validation{
 			//最大バイト長
 			, 'bytemax' => function($val, $opt){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| (is_string($val) && strlen($val) <= $opt[0])
 								);
 							}
@@ -244,8 +244,8 @@ class Validation{
 			// 最小バイト長
 			, 'bytemin' => function($val, $opt){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| (is_string($val) && strlen($val) >= $opt[0])
 								);
 			
@@ -257,8 +257,8 @@ class Validation{
 			// 最大値
 			, 'max' => function($val, $opt){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| (is_numeric($val) && $val <= $opt[0])
 								);
 				
@@ -266,8 +266,8 @@ class Validation{
 			// 最小値
 			, 'min' => function($val, $opt){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| ( is_numeric($val) && $val >= $opt[0])
 								);
 							}
@@ -285,8 +285,8 @@ class Validation{
 			// 指定した正規表現にマッチするか
 			, 'match' => function($val, $opt){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| preg_match($opt[0], $val) === 1
 								);
 							}
@@ -294,8 +294,8 @@ class Validation{
 			// 指定した文字列と同じか
 			, 'eq' => function($val, $opt){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| $val === $opt[0]
 								);
 							}
@@ -303,15 +303,15 @@ class Validation{
 			// 指定した文字列と違うか
 			, 'ne' => function($val, $opt){
 								return(
-											is_null($val)
-										|| $val === ''
+			  								$val === ''
+			  							|| is_null($val)
 										|| $val !== $opt[0]
 								);
 							}
 			
 			// 指定したリスト内のいずれかと合致するか
 			, 'in'    => function($val, $opt){
-				if( is_null($val) || $val === "")
+				if( is_null($val) || $val === '')
 					return(true);
 				
 				foreach ($opt as $tmp) {
