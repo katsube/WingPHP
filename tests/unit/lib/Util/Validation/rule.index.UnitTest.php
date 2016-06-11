@@ -9,8 +9,6 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
     /**
      * SetUp
      * 
-     * @covers Validation::__construct
-     * @uses Validation::getRule
      */
     function setUp(){
         $v = new Validation();
@@ -267,6 +265,7 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array('https://www.wingphp.net/', true)
             , array('http://localhost/', true)
             , array('http://127.0.0.1/', true)
+
             , array('', true)
             , array(null, true)
             
@@ -690,6 +689,19 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array( 2015,  2, 29, false)
             , array( 2015, 15,  1, false)
             , array( 2015,  1, 32, false)
+            
+            , array( '2005', 1, 1, false)
+            , array( 2005, '1', 1, false)
+            , array( 2005, 1, '1', false)
+            , array( [], 1, 1, false)
+            , array( 2005, [], 1, false)
+            , array( 2005, 1, [], false)
+            , array( true, 1, 1, false)
+            , array( 2005, true, 1, false)
+            , array( 2005, 1, true, false)
+            , array( false, 1, 1, false)
+            , array( 2005, false, 1, false)
+            , array( 2005, 1, false, false)
         ));
     }
 
@@ -708,6 +720,19 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array(24,  0,  0, false)
             , array( 0, 60,  0, false)
             , array( 0,  0, 60, false)
+
+            , array( '23', 1, 1, false)
+            , array( 23, '1', 1, false)
+            , array( 23, 1, '1', false)
+            , array( [], 1, 1, false)
+            , array( 23, [], 1, false)
+            , array( 23, 1, [], false)
+            , array( true, 1, 1, false)
+            , array( 23, true, 1, false)
+            , array( 23, 1, true, false)
+            , array( false, 1, 1, false)
+            , array( 23, false, 1, false)
+            , array( 23, 1, false, false)
         ));
     }
 
