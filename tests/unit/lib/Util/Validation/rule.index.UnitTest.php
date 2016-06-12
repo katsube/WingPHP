@@ -274,6 +274,13 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array('//www.wingphp.net/?q=hello', false)
             , array('www.wingphp.net', false)
             , array('http://日本語ドメイン.net/', false)
+        
+            , array(1, false)
+            , array(0, false)
+            , array(0.12345, false)
+            , array([], false)
+            , array(true, false)
+            , array(false, false)
         ));
     }
 
@@ -303,6 +310,13 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array('@', false)
             , array('かつべ@gmail.com', false)
             , array('katsubemakito@じーめーる.com', false)
+
+            , array(1, false)
+            , array(0, false)
+            , array(0.12345, false)
+            , array([], false)
+            , array(true, false)
+            , array(false, false)
         ));
     }    
 
@@ -332,6 +346,13 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array('0.0.', false)
             , array('0.', false)
             , array('0', false)
+
+            , array(1, false)
+            , array(0, false)
+            , array(0.12345, false)
+            , array([], false)
+            , array(true, false)
+            , array(false, false)
         ));
     }
 
@@ -342,12 +363,12 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
     public function PostcdProvider(){
         return(array(
               array('1000002', true)
-            , array(1000002, true)
             , array('100-0002', true)
 
             , array('', true)
             , array(null, true)
 
+            , array(1000002, false)
             , array('-1000002', false)
             , array('1-000002', false)
             , array('10-00002', false)
@@ -356,6 +377,13 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array('100000-2', false)
             , array('1000002-', false)
             , array('１００−０００２', false)
+
+            , array(1, false)
+            , array(0, false)
+            , array(0.12345, false)
+            , array([], false)
+            , array(true, false)
+            , array(false, false)
         ));
     }
 
@@ -406,6 +434,13 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array('90-1234-5678', false)      //先頭が0から始まらない
             , array('090-1２34-5678', false)    //全角まじり
             , array('050-CDEF-GHJK', false)     //数字じゃない
+
+            , array(1, false)
+            , array(0, false)
+            , array(0.12345, false)
+            , array([], false)
+            , array(true, false)
+            , array(false, false)
         ));
     }
     
@@ -594,12 +629,19 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
         return(array(
               array('HelloWorld', '/^Hello/', true)
             , array('HelloWorld', '/^hello/i', true)
-            , array(12345, '/^12345$/', true)
+            , array('12345', '/^12345$/', true)
 
             , array('', '//', true)
             , array(null, '//', true)
 
             , array('HelloWorld!', '/d$/', false)
+            , array(12345, '/^12345$/', false)
+            , array(1, '', false)
+            , array(0, '', false)
+            , array(0.12345, '', false)
+            , array([], '', false)
+            , array(true, '', false)
+            , array(false, '', false)
         ));
     }
 

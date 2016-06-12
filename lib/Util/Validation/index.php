@@ -164,7 +164,7 @@ class Validation{
 			  					return(
 			  								$val === ''
 			  							|| is_null($val)
-			  							|| preg_match(Regex::URL, $val) === 1
+			  							|| (is_string($val) && preg_match(Regex::URL, $val) === 1)
 			  					);
 							}
 			//EMail
@@ -172,7 +172,7 @@ class Validation{
 								return(
 			  								$val === ''
 			  							|| is_null($val)
-										|| preg_match(Regex::EMAIL, $val) === 1
+										|| (is_string($val) && preg_match(Regex::EMAIL, $val) === 1)
 								); 
 							}
 			//IPv4
@@ -180,7 +180,7 @@ class Validation{
 								return(
 			  								$val === ''
 			  							|| is_null($val)
-										|| preg_match(Regex::IP4, $val) === 1
+										|| (is_string($val) && preg_match(Regex::IP4, $val) === 1)
 								);
 							}
 
@@ -189,7 +189,7 @@ class Validation{
 								return(
 			  								$val === ''
 			  							|| is_null($val)
-										|| preg_match(Regex::POST, $val) === 1
+										|| (is_string($val) && preg_match(Regex::POST, $val) === 1)
 								);
 							}
 
@@ -198,7 +198,7 @@ class Validation{
 								return(
 			  								$val === ''
 			  							|| is_null($val)
-										|| preg_match(Regex::TEL, $val) === 1
+										|| (is_string($val) && preg_match(Regex::TEL, $val) === 1)
 								);
 							}
 			
@@ -287,7 +287,7 @@ class Validation{
 								return(
 			  								$val === ''
 			  							|| is_null($val)
-										|| preg_match($opt[0], $val) === 1
+										|| (is_string($val) && preg_match($opt[0], $val) === 1)
 								);
 							}
 			
