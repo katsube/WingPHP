@@ -506,8 +506,12 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array('a', true)
             , array('1', true)
             , array('12345', true)
+            , array('-12345', true)
+            , array('12.345', true)
             , array(1, true)
             , array(12345, true)
+            , array(-12345, true)
+            , array(12.345, true)
             , array('Hello12345', true)
 
             , array('', true)
@@ -515,8 +519,6 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
 
             , array('Hello World', false)       //半角スペース
             , array('HelloWorld!', false)       //記号
-            , array('-12345', false)
-            , array('12.345', false)
             , array('Ａbcd', false)             //全角まじり
             , array('１2345', false)            //全角まじり
             , array(true, false)
