@@ -225,9 +225,17 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
      * Test check()
      * 
      * @covers Validation::check
+     * @dataProvider CheckProvider
      */
-    public function testCheck(){
+    public function testCheck($list, $data, $expected_flag, $expected_error){
+        $v = new Validation();
+        $v->addList($list);
+        $v->addData($data);
+        $result = $v->check();
+        $error  = $v->getError();
         
+        $this->assertEquals( $expected_flag, $result, print_r($result, true) );
+        $this->assertEquals( $expected_error, $error, print_r($error, true) );
     }
     
     /**
@@ -327,4 +335,151 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
         ));
         
     }
+
+    public function CheckProvider(){
+        return(array(
+            //list, data, result, error
+             
+             //ToDo: 未定義ルールなのでfalseになってほしい
+             //array(['foo'=>['xxxxx']], ['foo'=>1], false, [])
+            
+            
+            //------------------------
+            // require            
+            //------------------------
+              array(['foo'=>['require']], ['foo'=>1], true, [])
+            , array(['foo'=>['require']], ['foo'=>0], true, [])
+            , array(['foo'=>['require']], ['foo'=>0.12345], true, [])
+            , array(['foo'=>['require']], ['foo'=>'Hello'], true, [])
+            , array(['foo'=>['require']], ['foo'=>true], true, [])
+            , array(['foo'=>['require']], ['foo'=>false], true, [])
+            , array(['foo'=>['require']], ['foo'=>[1,2,3,4,5]], true, [])
+            , array(['foo'=>['require']], ['foo'=>['hoge'=>123, 'huga'=>456]], true, [])
+
+            , array(['foo'=>['require']], ['foo'=>null], false, ['foo'=>['require']])
+            , array(['foo'=>['require']], ['foo'=>''], false, ['foo'=>['require']])
+            , array(['foo'=>['require']], ['foo'=>[]], false, ['foo'=>['require']])
+        
+            //------------------------
+            // url
+            //------------------------
+            , array(['foo'=>['url']], ['foo'=>'http://wingphp.net/'], true, [])
+            , array(['foo'=>['url']], ['foo'=>'https://wingphp.net/'], true, [])
+            , array(['foo'=>['url']], ['foo'=>null], true, [])
+            , array(['foo'=>['url']], ['foo'=>''], true, [])
+
+            , array(['foo'=>['url']], ['foo'=>'foobar'], false, ['foo'=>['url']])
+            , array(['foo'=>['url']], ['foo'=>1], false, ['foo'=>['url']])
+            , array(['foo'=>['url']], ['foo'=>0], false, ['foo'=>['url']])
+            , array(['foo'=>['url']], ['foo'=>0.12345], false, ['foo'=>['url']])
+            , array(['foo'=>['url']], ['foo'=>[]], false, ['foo'=>['url']])
+            , array(['foo'=>['url']], ['foo'=>[1,2,3,4,5]], false, ['foo'=>['url']])
+            , array(['foo'=>['url']], ['foo'=>true], false, ['foo'=>['url']])
+            , array(['foo'=>['url']], ['foo'=>false], false, ['foo'=>['url']])
+
+            //------------------------
+            // email
+            //------------------------
+            , array(['foo'=>['email']], ['foo'=>'katsubemakito@gmail.com'], true, [])
+            , array(['foo'=>['email']], ['foo'=>null], true, [])
+            , array(['foo'=>['email']], ['foo'=>''], true, [])
+
+            , array(['foo'=>['email']], ['foo'=>'foobar'], false, ['foo'=>['email']])
+            , array(['foo'=>['email']], ['foo'=>'foobar@'], false, ['foo'=>['email']])
+            , array(['foo'=>['email']], ['foo'=>'@gmail.com'], false, ['foo'=>['email']])
+            , array(['foo'=>['email']], ['foo'=>1], false, ['foo'=>['email']])
+            , array(['foo'=>['email']], ['foo'=>0], false, ['foo'=>['email']])
+            , array(['foo'=>['email']], ['foo'=>0.12345], false, ['foo'=>['email']])
+            , array(['foo'=>['email']], ['foo'=>[]], false, ['foo'=>['email']])
+            , array(['foo'=>['email']], ['foo'=>[1,2,3,4,5]], false, ['foo'=>['email']])
+            , array(['foo'=>['email']], ['foo'=>true], false, ['foo'=>['email']])
+            , array(['foo'=>['email']], ['foo'=>false], false, ['foo'=>['email']])
+
+            //------------------------
+            // ip4
+            //------------------------
+            , array(['foo'=>['ip4']], ['foo'=>'192.168.0.1'], true, [])
+            , array(['foo'=>['ip4']], ['foo'=>null], true, [])
+            , array(['foo'=>['ip4']], ['foo'=>''], true, [])
+
+            , array(['foo'=>['ip4']], ['foo'=>'192.168.'], false, ['foo'=>['ip4']])
+            , array(['foo'=>['ip4']], ['foo'=>1], false, ['foo'=>['ip4']])
+            , array(['foo'=>['ip4']], ['foo'=>0], false, ['foo'=>['ip4']])
+            , array(['foo'=>['ip4']], ['foo'=>0.12345], false, ['foo'=>['ip4']])
+            , array(['foo'=>['ip4']], ['foo'=>[]], false, ['foo'=>['ip4']])
+            , array(['foo'=>['ip4']], ['foo'=>[1,2,3,4,5]], false, ['foo'=>['ip4']])
+            , array(['foo'=>['ip4']], ['foo'=>true], false, ['foo'=>['ip4']])
+            , array(['foo'=>['ip4']], ['foo'=>false], false, ['foo'=>['ip4']])
+
+            //------------------------
+            // postcd
+            //------------------------
+
+            //------------------------
+            // tel
+            //------------------------
+
+            //------------------------
+            // num
+            //------------------------
+
+            //------------------------
+            // alpha
+            //------------------------
+
+            //------------------------
+            // alnum
+            //------------------------
+
+            //------------------------
+            // bytemax
+            //------------------------
+
+            //------------------------
+            // bytemin
+            //------------------------
+
+            //------------------------
+            // max
+            //------------------------
+
+            //------------------------
+            // min
+            //------------------------
+
+            //------------------------
+            // match
+            //------------------------
+
+            //------------------------
+            // eq
+            //------------------------
+
+            //------------------------
+            // ne
+            //------------------------
+
+            //------------------------
+            // in
+            //------------------------
+
+            //------------------------
+            // date
+            //------------------------
+
+            //------------------------
+            // time
+            //------------------------
+
+            //------------------------
+            // grequire1
+            //------------------------
+
+            //------------------------
+            // gin
+            //------------------------
+        ));
+    }
+    
+    
 }
