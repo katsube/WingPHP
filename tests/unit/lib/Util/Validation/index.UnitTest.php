@@ -488,10 +488,34 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             //------------------------
             // alnum
             //------------------------
+            , array(['foo'=>['alnum']], ['foo'=>'abcdefg'], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>'ABCDEFG'], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>'HelloWorld'], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>'123abcdefg'], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>'123ABCDEFG'], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>'123HelloWorld'], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>'1234567890'], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>1234567890], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>1], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>0], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>0.12345], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>-10], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>-10.5], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>null], true, [])
+            , array(['foo'=>['alnum']], ['foo'=>''], true, [])
+
+            , array(['foo'=>['alnum']], ['foo'=>'HelloWorld!'], false, ['foo'=>['alnum']])
+            , array(['foo'=>['alnum']], ['foo'=>[]], false, ['foo'=>['alnum']])
+            , array(['foo'=>['alnum']], ['foo'=>[1,2,3,4,5]], false, ['foo'=>['alnum']])
+            , array(['foo'=>['alnum']], ['foo'=>true], false, ['foo'=>['alnum']])
+            , array(['foo'=>['alnum']], ['foo'=>false], false, ['foo'=>['alnum']])
 
             //------------------------
             // bytemax
             //------------------------
+            , array(['foo'=>[['bytemax',10]]], ['foo'=>'Hello'], true, [])
+            , array(['foo'=>[['bytemax',10]]], ['foo'=>null], true, [])
+            , array(['foo'=>[['bytemax',10]]], ['foo'=>''], true, [])
 
             //------------------------
             // bytemin
