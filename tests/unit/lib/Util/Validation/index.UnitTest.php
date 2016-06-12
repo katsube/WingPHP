@@ -414,10 +414,35 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             //------------------------
             // postcd
             //------------------------
+            , array(['foo'=>['postcd']], ['foo'=>'123-4567'], true, [])
+            , array(['foo'=>['postcd']], ['foo'=>'1234567'], true, [])
+            , array(['foo'=>['postcd']], ['foo'=>null], true, [])
+            , array(['foo'=>['postcd']], ['foo'=>''], true, [])
+
+            , array(['foo'=>['postcd']], ['foo'=>'123'], false, ['foo'=>['postcd']])
+            , array(['foo'=>['postcd']], ['foo'=>1], false, ['foo'=>['postcd']])
+            , array(['foo'=>['postcd']], ['foo'=>0], false, ['foo'=>['postcd']])
+            , array(['foo'=>['postcd']], ['foo'=>0.12345], false, ['foo'=>['postcd']])
+            , array(['foo'=>['postcd']], ['foo'=>[]], false, ['foo'=>['postcd']])
+            , array(['foo'=>['postcd']], ['foo'=>[1,2,3,4,5]], false, ['foo'=>['postcd']])
+            , array(['foo'=>['postcd']], ['foo'=>true], false, ['foo'=>['postcd']])
+            , array(['foo'=>['postcd']], ['foo'=>false], false, ['foo'=>['postcd']])
 
             //------------------------
             // tel
             //------------------------
+            , array(['foo'=>['tel']], ['foo'=>'03-1111-1111'], true, [])
+            , array(['foo'=>['tel']], ['foo'=>null], true, [])
+            , array(['foo'=>['tel']], ['foo'=>''], true, [])
+
+            , array(['foo'=>['tel']], ['foo'=>'1234567890'], false, ['foo'=>['tel']])
+            , array(['foo'=>['tel']], ['foo'=>1], false, ['foo'=>['tel']])
+            , array(['foo'=>['tel']], ['foo'=>0], false, ['foo'=>['tel']])
+            , array(['foo'=>['tel']], ['foo'=>0.12345], false, ['foo'=>['tel']])
+            , array(['foo'=>['tel']], ['foo'=>[]], false, ['foo'=>['tel']])
+            , array(['foo'=>['tel']], ['foo'=>[1,2,3,4,5]], false, ['foo'=>['tel']])
+            , array(['foo'=>['tel']], ['foo'=>true], false, ['foo'=>['tel']])
+            , array(['foo'=>['tel']], ['foo'=>false], false, ['foo'=>['tel']])
 
             //------------------------
             // num
