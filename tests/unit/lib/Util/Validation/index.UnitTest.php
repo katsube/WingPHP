@@ -447,10 +447,43 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             //------------------------
             // num
             //------------------------
+            , array(['foo'=>['num']], ['foo'=>'1234567890'], true, [])
+            , array(['foo'=>['num']], ['foo'=>'1'], true, [])
+            , array(['foo'=>['num']], ['foo'=>'0'], true, [])
+            , array(['foo'=>['num']], ['foo'=>'0.12345'], true, [])
+            , array(['foo'=>['num']], ['foo'=>'-10'], true, [])
+            , array(['foo'=>['num']], ['foo'=>'-10.5'], true, [])
+            , array(['foo'=>['num']], ['foo'=>1], true, [])
+            , array(['foo'=>['num']], ['foo'=>0], true, [])
+            , array(['foo'=>['num']], ['foo'=>0.12345], true, [])
+            , array(['foo'=>['num']], ['foo'=>-10], true, [])
+            , array(['foo'=>['num']], ['foo'=>-10.5], true, [])
+            , array(['foo'=>['num']], ['foo'=>null], true, [])
+            , array(['foo'=>['num']], ['foo'=>''], true, [])
+
+            , array(['foo'=>['num']], ['foo'=>[]], false, ['foo'=>['num']])
+            , array(['foo'=>['num']], ['foo'=>[1,2,3,4,5]], false, ['foo'=>['num']])
+            , array(['foo'=>['num']], ['foo'=>true], false, ['foo'=>['num']])
+            , array(['foo'=>['num']], ['foo'=>false], false, ['foo'=>['num']])
 
             //------------------------
             // alpha
             //------------------------
+            , array(['foo'=>['alpha']], ['foo'=>'abcdefg'], true, [])
+            , array(['foo'=>['alpha']], ['foo'=>'ABCDEFG'], true, [])
+            , array(['foo'=>['alpha']], ['foo'=>'HelloWorld'], true, [])
+            , array(['foo'=>['alpha']], ['foo'=>null], true, [])
+            , array(['foo'=>['alpha']], ['foo'=>''], true, [])
+
+            , array(['foo'=>['alpha']], ['foo'=>'HelloWorld!'], false, ['foo'=>['alpha']])
+            , array(['foo'=>['alpha']], ['foo'=>'1234567890'], false, ['foo'=>['alpha']])
+            , array(['foo'=>['alpha']], ['foo'=>1], false, ['foo'=>['alpha']])
+            , array(['foo'=>['alpha']], ['foo'=>0], false, ['foo'=>['alpha']])
+            , array(['foo'=>['alpha']], ['foo'=>0.12345], false, ['foo'=>['alpha']])
+            , array(['foo'=>['alpha']], ['foo'=>[]], false, ['foo'=>['alpha']])
+            , array(['foo'=>['alpha']], ['foo'=>[1,2,3,4,5]], false, ['foo'=>['alpha']])
+            , array(['foo'=>['alpha']], ['foo'=>true], false, ['foo'=>['alpha']])
+            , array(['foo'=>['alpha']], ['foo'=>false], false, ['foo'=>['alpha']])
 
             //------------------------
             // alnum
