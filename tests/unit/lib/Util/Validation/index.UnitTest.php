@@ -461,6 +461,7 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['num']], ['foo'=>null],         true, [])
             , array(['foo'=>['num']], ['foo'=>''],           true, [])
 
+            , array(['foo'=>['num']], ['foo'=>'10,000'],     false, ['foo'=>['num']])
             , array(['foo'=>['num']], ['foo'=>[]],           false, ['foo'=>['num']])
             , array(['foo'=>['num']], ['foo'=>[1,2,3,4,5]],  false, ['foo'=>['num']])
             , array(['foo'=>['num']], ['foo'=>true],         false, ['foo'=>['num']])
@@ -477,6 +478,7 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
 
             , array(['foo'=>['alpha']], ['foo'=>'HelloWorld!'], false, ['foo'=>['alpha']])
             , array(['foo'=>['alpha']], ['foo'=>'1234567890'],  false, ['foo'=>['alpha']])
+            , array(['foo'=>['alpha']], ['foo'=>'10,000'],      false, ['foo'=>['alpha']])
             , array(['foo'=>['alpha']], ['foo'=>1],             false, ['foo'=>['alpha']])
             , array(['foo'=>['alpha']], ['foo'=>0],             false, ['foo'=>['alpha']])
             , array(['foo'=>['alpha']], ['foo'=>0.12345],       false, ['foo'=>['alpha']])
@@ -505,6 +507,7 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['alnum']], ['foo'=>''],              true, [])
 
             , array(['foo'=>['alnum']], ['foo'=>'HelloWorld!'],   false, ['foo'=>['alnum']])
+            , array(['foo'=>['alnum']], ['foo'=>'10,000'],        false, ['foo'=>['alnum']])
             , array(['foo'=>['alnum']], ['foo'=>[]],              false, ['foo'=>['alnum']])
             , array(['foo'=>['alnum']], ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['alnum']])
             , array(['foo'=>['alnum']], ['foo'=>true],            false, ['foo'=>['alnum']])
@@ -514,20 +517,57 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             // bytemax
             //------------------------
             , array(['foo'=>[['bytemax',10]]], ['foo'=>'Hello'], true, [])
+            , array(['foo'=>[['bytemax', 5]]], ['foo'=>'Hello'], true, [])
             , array(['foo'=>[['bytemax',10]]], ['foo'=>null],    true, [])
             , array(['foo'=>[['bytemax',10]]], ['foo'=>''],      true, [])
+
+            , array(['foo'=>[['bytemax', 5]]], ['foo'=>'HelloWorld!'],   false, ['foo'=>['bytemax']])
+            , array(['foo'=>[['bytemax',10]]], ['foo'=>[]],              false, ['foo'=>['bytemax']])
+            , array(['foo'=>[['bytemax',10]]], ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['bytemax']])
+            , array(['foo'=>[['bytemax',10]]], ['foo'=>true],            false, ['foo'=>['bytemax']])
+            , array(['foo'=>[['bytemax',10]]], ['foo'=>false],           false, ['foo'=>['bytemax']])
 
             //------------------------
             // bytemin
             //------------------------
+            , array(['foo'=>[['bytemin', 1]]], ['foo'=>'Hello'], true, [])
+            , array(['foo'=>[['bytemin', 5]]], ['foo'=>'Hello'], true, [])
+            , array(['foo'=>[['bytemin', 1]]], ['foo'=>null],    true, [])
+            , array(['foo'=>[['bytemin', 1]]], ['foo'=>''],      true, [])
+
+            , array(['foo'=>[['bytemin',99]]], ['foo'=>'HelloWorld!'],   false, ['foo'=>['bytemin']])
+            , array(['foo'=>[['bytemin', 1]]], ['foo'=>[]],              false, ['foo'=>['bytemin']])
+            , array(['foo'=>[['bytemin', 1]]], ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['bytemin']])
+            , array(['foo'=>[['bytemin', 1]]], ['foo'=>true],            false, ['foo'=>['bytemin']])
+            , array(['foo'=>[['bytemin', 1]]], ['foo'=>false],           false, ['foo'=>['bytemin']])
 
             //------------------------
             // max
             //------------------------
+            , array(['foo'=>[['max',10]]], ['foo'=>5],       true, [])
+            , array(['foo'=>[['max', 5]]], ['foo'=>5],       true, [])
+            , array(['foo'=>[['max',10]]], ['foo'=>null],    true, [])
+            , array(['foo'=>[['max',10]]], ['foo'=>''],      true, [])
+
+            , array(['foo'=>[['max', 5]]], ['foo'=>'HelloWorld!'],   false, ['foo'=>['max']])
+            , array(['foo'=>[['max',10]]], ['foo'=>[]],              false, ['foo'=>['max']])
+            , array(['foo'=>[['max',10]]], ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['max']])
+            , array(['foo'=>[['max',10]]], ['foo'=>true],            false, ['foo'=>['max']])
+            , array(['foo'=>[['max',10]]], ['foo'=>false],           false, ['foo'=>['max']])
 
             //------------------------
             // min
             //------------------------
+            , array(['foo'=>[['min', 1]]], ['foo'=>10],      true, [])
+            , array(['foo'=>[['min', 5]]], ['foo'=> 5],      true, [])
+            , array(['foo'=>[['min', 1]]], ['foo'=>null],    true, [])
+            , array(['foo'=>[['min', 1]]], ['foo'=>''],      true, [])
+
+            , array(['foo'=>[['min',99]]], ['foo'=>'HelloWorld!'],   false, ['foo'=>['min']])
+            , array(['foo'=>[['min', 1]]], ['foo'=>[]],              false, ['foo'=>['min']])
+            , array(['foo'=>[['min', 1]]], ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['min']])
+            , array(['foo'=>[['min', 1]]], ['foo'=>true],            false, ['foo'=>['min']])
+            , array(['foo'=>[['min', 1]]], ['foo'=>false],           false, ['foo'=>['min']])
 
             //------------------------
             // match
