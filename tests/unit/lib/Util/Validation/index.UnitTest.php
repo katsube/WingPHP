@@ -572,14 +572,51 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             //------------------------
             // match
             //------------------------
+            , array(['foo'=>[['match', '/^Hello/']]],  ['foo'=>'HelloWorld'],   true, [])
+            , array(['foo'=>[['match', '/^Hello$/']]], ['foo'=>'Hello'],        true, [])
+            , array(['foo'=>[['match', '/foo/']]],     ['foo'=>null],           true, [])
+            , array(['foo'=>[['match', '/bar/']]],     ['foo'=>''],             true, [])
+
+            , array(['foo'=>[['match', '/^Hello/']]],  ['foo'=>'bar'],           false, ['foo'=>['match']])
+            , array(['foo'=>[['match', []]]],          ['foo'=>[]],              false, ['foo'=>['match']])
+            , array(['foo'=>[['match', [1,2,3,4,5]]]], ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['match']])
+            , array(['foo'=>[['match', true]]],        ['foo'=>true],            false, ['foo'=>['match']])
+            , array(['foo'=>[['match', false]]],       ['foo'=>false],           false, ['foo'=>['match']])
 
             //------------------------
             // eq
             //------------------------
+            , array(['foo'=>[['eq', 'Hello']]],       ['foo'=>'Hello'],         true, [])
+            , array(['foo'=>[['eq', 'foo']]],         ['foo'=>null],            true, [])
+            , array(['foo'=>[['eq', 'bar']]],         ['foo'=>''],              true, [])
+            , array(['foo'=>[['eq', []]]],            ['foo'=>[]],              true, [])
+            , array(['foo'=>[['eq', [1,2,3,4,5]]]],   ['foo'=>[1,2,3,4,5]],     true, [])
+            , array(['foo'=>[['eq', true]]],          ['foo'=>true],            true, [])
+            , array(['foo'=>[['eq', false]]],         ['foo'=>false],           true, [])
+
+            , array(['foo'=>[['eq', 'Hello']]],       ['foo'=>'World'],         false, ['foo'=>['eq']])
+            , array(['foo'=>[['eq', []]]],            ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['eq']])
+            , array(['foo'=>[['eq', [1,2,3,4,5]]]],   ['foo'=>[]],              false, ['foo'=>['eq']])
+            , array(['foo'=>[['eq', true]]],          ['foo'=>false],           false, ['foo'=>['eq']])
+            , array(['foo'=>[['eq', false]]],         ['foo'=>true],            false, ['foo'=>['eq']])
 
             //------------------------
             // ne
             //------------------------
+            , array(['foo'=>[['ne', 'Hello']]],       ['foo'=>'World'],         true, [])
+            , array(['foo'=>[['ne', []]]],            ['foo'=>[1,2,3,4,5]],     true, [])
+            , array(['foo'=>[['ne', [1,2,3,4,5]]]],   ['foo'=>[]],              true, [])
+            , array(['foo'=>[['ne', true]]],          ['foo'=>false],           true, [])
+            , array(['foo'=>[['ne', false]]],         ['foo'=>true],            true, [])
+            , array(['foo'=>[['ne', 'foo']]],         ['foo'=>null],            true, [])
+            , array(['foo'=>[['ne', 'bar']]],         ['foo'=>''],              true, [])
+
+            , array(['foo'=>[['ne', 'Hello']]],       ['foo'=>'Hello'],         false, ['foo'=>['ne']])
+            , array(['foo'=>[['ne', []]]],            ['foo'=>[]],              false, ['foo'=>['ne']])
+            , array(['foo'=>[['ne', [1,2,3,4,5]]]],   ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['ne']])
+            , array(['foo'=>[['ne', true]]],          ['foo'=>true],            false, ['foo'=>['ne']])
+            , array(['foo'=>[['ne', false]]],         ['foo'=>false],           false, ['foo'=>['ne']])
+
 
             //------------------------
             // in
