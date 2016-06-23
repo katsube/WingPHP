@@ -314,9 +314,18 @@ class Validation{
 				if( is_null($val) || $val === '')
 					return(true);
 				
-				foreach ($opt as $tmp) {
-					if( $val === $tmp )
+				if(is_array($opt[0]))
+					$list = $opt[0];
+				else{
+					$list = array($opt[0]);	
+				}
+					
+					
+				$len = count($list);
+				for($i=0; $i<$len; $i++){
+					if( $val === $list[$i] ){
 						return(true);
+					}
 				}
 				
 				return(false);

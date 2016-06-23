@@ -359,7 +359,7 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['require']], ['foo'=>null],  false, ['foo'=>['require']])
             , array(['foo'=>['require']], ['foo'=>''],    false, ['foo'=>['require']])
             , array(['foo'=>['require']], ['foo'=>[]],    false, ['foo'=>['require']])
-        
+
             //------------------------
             // url
             //------------------------
@@ -617,10 +617,29 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['ne', true]]],          ['foo'=>true],            false, ['foo'=>['ne']])
             , array(['foo'=>[['ne', false]]],         ['foo'=>false],           false, ['foo'=>['ne']])
 
-
             //------------------------
             // in
             //------------------------
+            , array(['foo'=>[['in', [1,2,3]]]],             ['foo'=>2],         true, [])
+            , array(['foo'=>[['in', [1,2,3]]]],             ['foo'=>3],         true, [])
+            , array(['foo'=>[['in', [1.2,2.3,3.5]]]],       ['foo'=>1.2],       true, [])
+            , array(['foo'=>[['in', [1.2,2.3,3.5]]]],       ['foo'=>2.3],       true, [])
+            , array(['foo'=>[['in', [1.2,2.3,3.5]]]],       ['foo'=>3.5],       true, [])
+            , array(['foo'=>[['in', ['Hello', 'World']]]],  ['foo'=>'Hello'],   true, [])
+            , array(['foo'=>[['in', ['Hello', 'World']]]],  ['foo'=>'World'],   true, [])
+            , array(['foo'=>[['in', [true, false]]]],       ['foo'=>true],      true, [])
+            , array(['foo'=>[['in', [true, false]]]],       ['foo'=>false],     true, [])
+
+            , array(['foo'=>[['in', [1,2,3]]]],             ['foo'=>100],       false, ['foo'=>['in']])
+            , array(['foo'=>[['in', [1,2,3]]]],             ['foo'=>200],       false, ['foo'=>['in']])
+            , array(['foo'=>[['in', [1,2,3]]]],             ['foo'=>300],       false, ['foo'=>['in']])
+            , array(['foo'=>[['in', [1.2,2.3,3.5]]]],       ['foo'=>1.21],      false, ['foo'=>['in']])
+            , array(['foo'=>[['in', [1.2,2.3,3.5]]]],       ['foo'=>2.31],      false, ['foo'=>['in']])
+            , array(['foo'=>[['in', [1.2,2.3,3.5]]]],       ['foo'=>3.51],      false, ['foo'=>['in']])
+            , array(['foo'=>[['in', ['Hello', 'World']]]],  ['foo'=>'foo'],     false, ['foo'=>['in']])
+            , array(['foo'=>[['in', ['Hello', 'World']]]],  ['foo'=>'bar'],     false, ['foo'=>['in']])
+            , array(['foo'=>[['in', [true, false]]]],       ['foo'=>1],         false, ['foo'=>['in']])
+            , array(['foo'=>[['in', [true, false]]]],       ['foo'=>'foo'],     false, ['foo'=>['in']])
 
             //------------------------
             // date
