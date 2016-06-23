@@ -80,7 +80,7 @@ class SampleController extends BaseController{
 					, 'match'   => array(['match', '/^He/'])
 					, 'eq'      => array(['eq', 'XYLITOL'])
 					, 'ne'      => array(['ne', 'XYLITOL'])
-					, 'in'      => array(['in', '雪', '月', '花'])
+					, 'in'      => array(['in', ['雪', '月', '花']])
 					, 'num'     => array('num')
 					, 'alpha'   => array('alpha')
 					, 'alnum'   => array('alnum')
