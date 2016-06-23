@@ -629,6 +629,7 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['in', ['Hello', 'World']]]],  ['foo'=>'World'],   true, [])
             , array(['foo'=>[['in', [true, false]]]],       ['foo'=>true],      true, [])
             , array(['foo'=>[['in', [true, false]]]],       ['foo'=>false],     true, [])
+            , array(['foo'=>[['in', 1]]],                   ['foo'=>1],         true, [])
 
             , array(['foo'=>[['in', [1,2,3]]]],             ['foo'=>100],       false, ['foo'=>['in']])
             , array(['foo'=>[['in', [1,2,3]]]],             ['foo'=>200],       false, ['foo'=>['in']])
@@ -640,6 +641,7 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['in', ['Hello', 'World']]]],  ['foo'=>'bar'],     false, ['foo'=>['in']])
             , array(['foo'=>[['in', [true, false]]]],       ['foo'=>1],         false, ['foo'=>['in']])
             , array(['foo'=>[['in', [true, false]]]],       ['foo'=>'foo'],     false, ['foo'=>['in']])
+            , array(['foo'=>[['in', 1]]],                   ['foo'=>2],         false, ['foo'=>['in']])
 
             //------------------------
             // date

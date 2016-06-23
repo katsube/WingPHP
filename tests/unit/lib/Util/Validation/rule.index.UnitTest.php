@@ -704,6 +704,7 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array(true, [[true, false]], true)
             , array(false, [[true, false]], true)
             , array([], [[[], [1,2,3], ['a','b','c']]], true)
+            , array('fizz', ['fizz'], true)
 
             , array('', 'foo', true)
             , array(null, 'foo', true)
@@ -713,6 +714,7 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
             , array('hoge', [[true, false]], false)
             , array('huga', [[true, false]], false)
             , array([], [[[1,2,3], ['a','b','c']]], false)
+            , array('fizz', ['buzz'], false)
         ));
     }
 
