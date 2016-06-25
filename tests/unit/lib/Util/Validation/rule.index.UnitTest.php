@@ -808,29 +808,29 @@ class UtilValidationRuleClosureUnitTest extends PHPUnit_Framework_TestCase
      */
     public function GinProvider(){
         return(array(
-              array([], [], true)
-            , array([1], [1], true)
-            , array([''], [''], true)
-            , array(['Hello'], ['Hello'], true)
-            , array([0], [0], true)
-            , array([false], [false], true)
-            , array([null], [null], true)
-            , array([123.456], [123.456], true)
-            , array([1,2,3], [1,2,3], true)
-            , array(['Hello', 'World', 'Foo', 'Bar'], ['Hello', 'World', 'Foo', 'Bar'], true)
-            , array(['Foo'], ['Bar', 'Hello', 'World', 'Foo'], true)
+              array([], [[]], true)
+            , array([1], [[1]], true)
+            , array([''], [['']], true)
+            , array(['Hello'], [['Hello']], true)
+            , array([0], [[0]], true)
+            , array([false], [[false]], true)
+            , array([null], [[null]], true)
+            , array([123.456], [[123.456]], true)
+            , array([1,2,3], [[1,2,3]], true)
+            , array(['Hello', 'World', 'Foo', 'Bar'], [['Hello', 'World', 'Foo', 'Bar']], true)
+            , array(['Foo'], [['Bar', 'Hello', 'World', 'Foo']], true)
 
             , array('', [], true)
             , array(null, [], true)
 
-            , array([1], [0], false)
-            , array(['Hello'], ['hello'], false)
-            , array(['Hello'], ['World'], false)
-            , array([false], [true], false)
-            , array([null], [''], false)
-            , array([123.4567], [123.456], false)
-            , array([1,2,3], [4,5,6], false)
-            , array(['Hello', 'World', 'Foo', 'Bar'], ['Hello', 'World', 'Foo'], false)
+            , array([1], [[0]], false)
+            , array(['Hello'], [['hello']], false)
+            , array(['Hello'], [['World']], false)
+            , array([false], [[true]], false)
+            , array([null], [['']], false)
+            , array([123.4567], [[123.456]], false)
+            , array([1,2,3], [[4,5,6]], false)
+            , array(['Hello', 'World', 'Foo', 'Bar'], [['Hello', 'World', 'Foo']], false)
         ));
     }
 
