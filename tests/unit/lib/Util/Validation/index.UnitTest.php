@@ -222,6 +222,16 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
     }
     
     /**
+     * Test check() - 404
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProvider404
+     */
+    public function testCheck404($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
      * Test check() - Require
      * 
      * @covers Validation::check
@@ -431,6 +441,16 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
         $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
     }
 
+    /**
+     * Test check() - 複合テスト
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderComposite
+     */
+    public function testCheckComposite($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
     private function _CheckLogic($list, $data, $expected_flag, $expected_error){
         $v = new Validation();
         $v->addList($list);
@@ -541,13 +561,12 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
         
     }
 
-    public function CheckProvider(){
+    public function CheckProvider404(){
+        // 無効な検証名を渡すと、検証リストに登録されないため
+        // その項目はtrueとなる
         return(array(
-            //list, data, result, error
-             
-             //ToDo: 未定義ルールなのでfalseになってほしい
-             //array(['foo'=>['xxxxx']], ['foo'=>1], false, [])
-            
+              array(['foo'=>['NotFound']],      ['foo'=>1], true, [])
+            , array(['foo'=>[['NotFound', 1]]], ['foo'=>1], true, [])
         ));
     }
 
@@ -1046,6 +1065,14 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['gin', [true]]]],    ['foo'=>[false]],   false, ['foo'=>['gin']])
             , array(['foo'=>[['gin', [false]]]],   ['foo'=>[true]],    false, ['foo'=>['gin']])
             , array(['foo'=>[['gin', [null]]]],    ['foo'=>['']],      false, ['foo'=>['gin']])
+        ));
+    }
+    
+    
+    public function CheckProviderComposite(){
+        return(array(
+            
+        
         ));
     }
 }
