@@ -393,14 +393,14 @@ class Validation{
 				if(is_null($val) || $val === '')
 					return(true);
 
-				if(!is_array($val) || !is_array($opt) )
+				if(!is_array($val) || !is_array($opt) || !is_array($opt[0]) )
 					return(false);
 
 				$len = count($val);
 				for ($i=0; $i < $len; $i++){
 					$value = $val[$i];
 					$flag  = false;
-					foreach($opt as $tmp){
+					foreach($opt[0] as $tmp){
 						if($tmp === $value){
 							$flag = true;
 							break;
