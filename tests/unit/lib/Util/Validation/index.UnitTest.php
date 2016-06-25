@@ -418,7 +418,6 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
      * @dataProvider CheckProviderGRequire1
      */
     public function testCheckGRequire1($list, $data, $expected_flag, $expected_error){
-        $this->markTestIncomplete('実装中');
         $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
     }
 
@@ -429,7 +428,6 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
      * @dataProvider CheckProviderGIn
      */
     public function testCheckGIn($list, $data, $expected_flag, $expected_error){
-        $this->markTestIncomplete('実装中');
         $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
     }
 
@@ -985,6 +983,23 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             //------------------------
             // grequire1
             //------------------------
+              array(['foo'=>['grequire1']], ['foo'=>[   1,     2,    3]], true, [])
+            , array(['foo'=>['grequire1']], ['foo'=>[   1,  null, null]], true, [])
+            , array(['foo'=>['grequire1']], ['foo'=>[   1,     1, null]], true, [])
+            , array(['foo'=>['grequire1']], ['foo'=>[null,     1,    1]], true, [])
+            , array(['foo'=>['grequire1']], ['foo'=>[null,  null,    1]], true, [])
+            , array(['foo'=>['grequire1']], ['foo'=>[true]],              true, [])
+            , array(['foo'=>['grequire1']], ['foo'=>[false]],             true, [])
+            , array(['foo'=>['grequire1']], ['foo'=>[[]]],                true, [])
+            , array(['foo'=>['grequire1']], ['foo'=>null],                true, [])
+            , array(['foo'=>['grequire1']], ['foo'=>''],                  true, [])
+            
+            , array(['foo'=>['grequire1']], ['foo'=>[]],                 false, ['foo'=>['grequire1']])
+            , array(['foo'=>['grequire1']], ['foo'=>[null]],             false, ['foo'=>['grequire1']])
+            , array(['foo'=>['grequire1']], ['foo'=>[null, null, null]], false, ['foo'=>['grequire1']])
+            , array(['foo'=>['grequire1']], ['foo'=>'string'],           false, ['foo'=>['grequire1']])
+            , array(['foo'=>['grequire1']], ['foo'=>true],               false, ['foo'=>['grequire1']])
+            , array(['foo'=>['grequire1']], ['foo'=>false],              false, ['foo'=>['grequire1']])
         ));
     }
 
@@ -993,6 +1008,44 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             //------------------------
             // gin
             //------------------------
+              array(['foo'=>[['gin', [1,2,3]]]], ['foo'=>[1]],     true, [])
+            , array(['foo'=>[['gin', [1,2,3]]]], ['foo'=>[2]],     true, [])
+            , array(['foo'=>[['gin', [1,2,3]]]], ['foo'=>[3]],     true, [])
+            , array(['foo'=>[['gin', [1,2,3]]]], ['foo'=>[1,2]],   true, [])
+            , array(['foo'=>[['gin', [1,2,3]]]], ['foo'=>[2,3]],   true, [])
+            , array(['foo'=>[['gin', [1,2,3]]]], ['foo'=>[1,3]],   true, [])
+            , array(['foo'=>[['gin', [1,2,3]]]], ['foo'=>[1,2,3]], true, [])
+
+            , array(['foo'=>[['gin', ['foo', 'bar', 'hoge']]]], ['foo'=>['foo']],                true, []) 
+            , array(['foo'=>[['gin', ['foo', 'bar', 'hoge']]]], ['foo'=>['bar']],                true, [])
+            , array(['foo'=>[['gin', ['foo', 'bar', 'hoge']]]], ['foo'=>['hoge']],               true, [])
+            , array(['foo'=>[['gin', ['foo', 'bar', 'hoge']]]], ['foo'=>['foo', 'bar']],         true, [])
+            , array(['foo'=>[['gin', ['foo', 'bar', 'hoge']]]], ['foo'=>['bar', 'hoge']],        true, [])
+            , array(['foo'=>[['gin', ['foo', 'bar', 'hoge']]]], ['foo'=>['foo', 'hoge']],        true, [])
+            , array(['foo'=>[['gin', ['foo', 'bar', 'hoge']]]], ['foo'=>['foo', 'bar', 'hoge']], true, [])
+
+            , array(['foo'=>[['gin', []]]],       ['foo'=>[]],       true, [])
+            , array(['foo'=>[['gin', [0]]]],      ['foo'=>[0]],      true, [])
+            , array(['foo'=>[['gin', [1]]]],      ['foo'=>[1]],      true, [])
+            , array(['foo'=>[['gin', [1.2345]]]], ['foo'=>[1.2345]], true, [])
+            , array(['foo'=>[['gin', [true]]]],   ['foo'=>[true]],   true, [])
+            , array(['foo'=>[['gin', [false]]]],  ['foo'=>[false]],  true, [])
+            , array(['foo'=>[['gin', [null]]]],   ['foo'=>[null]],   true, [])
+ 
+            , array(['foo'=>[['gin', [1,2,3]]]], ['foo'=>null],  true, [])
+            , array(['foo'=>[['gin', [1,2,3]]]], ['foo'=>''],    true, [])
+        
+            , array(['foo'=>[['gin', [1,2,3]]]],              ['foo'=>[4,5,6]],                false, ['foo'=>['gin']])
+            , array(['foo'=>[['gin', ['foo','bar','hoge']]]], ['foo'=>['xxx', 'yyy', 'zzzz']], false, ['foo'=>['gin']])
+
+            , array(['foo'=>[['gin', [1]]]],       ['foo'=>[0]],       false, ['foo'=>['gin']])
+            , array(['foo'=>[['gin', [0]]]],       ['foo'=>[1]],       false, ['foo'=>['gin']])
+            , array(['foo'=>[['gin', [1.23]]]],    ['foo'=>[1.234]],   false, ['foo'=>['gin']])
+            , array(['foo'=>[['gin', [1.234]]]],   ['foo'=>[1.23]],    false, ['foo'=>['gin']])
+            , array(['foo'=>[['gin', ['hello']]]], ['foo'=>['Hello']], false, ['foo'=>['gin']])
+            , array(['foo'=>[['gin', [true]]]],    ['foo'=>[false]],   false, ['foo'=>['gin']])
+            , array(['foo'=>[['gin', [false]]]],   ['foo'=>[true]],    false, ['foo'=>['gin']])
+            , array(['foo'=>[['gin', [null]]]],    ['foo'=>['']],      false, ['foo'=>['gin']])
         ));
     }
 }
