@@ -222,12 +222,218 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
     }
     
     /**
-     * Test check()
+     * Test check() - Require
      * 
      * @covers Validation::check
-     * @dataProvider CheckProvider
+     * @dataProvider CheckProviderRequire
      */
-    public function testCheck($list, $data, $expected_flag, $expected_error){
+    public function testCheckRequire($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - URL
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderURL
+     */
+    public function testCheckURL($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - Email
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderEmail
+     */
+    public function testCheckEmail($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - IP4
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderIP4
+     */
+    public function testCheckIP4($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - PostCD
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderPostCD
+     */
+    public function testCheckPostCD($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - Tel
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderTel
+     */
+    public function testCheckTel($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - Num
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderNum
+     */
+    public function testCheckNum($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - Alpha
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderAlpha
+     */
+    public function testCheckAlpha($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - Alnum
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderAlnum
+     */
+    public function testCheckAlnum($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - ByteMax
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderByteMax
+     */
+    public function testCheckByteMax($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - ByteMin
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderByteMin
+     */
+    public function testCheckByteMin($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - Max
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderMax
+     */
+    public function testCheckMax($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - Min
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderMin
+     */
+    public function testCheckMin($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - Match
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderMatch
+     */
+    public function testCheckMatch($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - Eq
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderEq
+     */
+    public function testCheckEq($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - Ne
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderNe
+     */
+    public function testCheckNe($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - In
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderIn
+     */
+    public function testCheckIn($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - Date
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderDate
+     */
+    public function testCheckDate($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - Time
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderTime
+     */
+    public function testCheckTime($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - GRequire1
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderGRequire1
+     */
+    public function testCheckGRequire1($list, $data, $expected_flag, $expected_error){
+        $this->markTestIncomplete('実装中');
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    /**
+     * Test check() - GIn
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProviderGIn
+     */
+    public function testCheckGIn($list, $data, $expected_flag, $expected_error){
+        $this->markTestIncomplete('実装中');
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
+    }
+
+    private function _CheckLogic($list, $data, $expected_flag, $expected_error){
         $v = new Validation();
         $v->addList($list);
         $v->addData($data);
@@ -237,6 +443,9 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( $expected_flag, $result, print_r($result, true) );
         $this->assertEquals( $expected_error, $error, print_r($error, true) );
     }
+    
+    
+    
     
     /**
      * Test setError2Scratch()
@@ -265,8 +474,6 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
         
     }
 
-    
-    
     
     
     
@@ -343,7 +550,11 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
              //ToDo: 未定義ルールなのでfalseになってほしい
              //array(['foo'=>['xxxxx']], ['foo'=>1], false, [])
             
-            
+        ));
+    }
+
+    public function CheckProviderRequire(){
+        return(array(
             //------------------------
             // require            
             //------------------------
@@ -360,11 +571,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['require']], ['foo'=>null],  false, ['foo'=>['require']])
             , array(['foo'=>['require']], ['foo'=>''],    false, ['foo'=>['require']])
             , array(['foo'=>['require']], ['foo'=>[]],    false, ['foo'=>['require']])
+        ));
+    }
 
+    public function CheckProviderURL(){
+        return(array(
             //------------------------
             // url
             //------------------------
-            , array(['foo'=>['url']], ['foo'=>'http://wingphp.net/'],  true, [])
+              array(['foo'=>['url']], ['foo'=>'http://wingphp.net/'],  true, [])
             , array(['foo'=>['url']], ['foo'=>'https://wingphp.net/'], true, [])
             , array(['foo'=>['url']], ['foo'=>null],                   true, [])
             , array(['foo'=>['url']], ['foo'=>''],                     true, [])
@@ -378,10 +593,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['url']], ['foo'=>true],        false, ['foo'=>['url']])
             , array(['foo'=>['url']], ['foo'=>false],       false, ['foo'=>['url']])
 
+        ));
+    }
+
+    public function CheckProviderEmail(){
+        return(array(
             //------------------------
             // email
             //------------------------
-            , array(['foo'=>['email']], ['foo'=>'katsubemakito@gmail.com'], true, [])
+              array(['foo'=>['email']], ['foo'=>'katsubemakito@gmail.com'], true, [])
             , array(['foo'=>['email']], ['foo'=>null],                      true, [])
             , array(['foo'=>['email']], ['foo'=>''],                        true, [])
 
@@ -395,11 +615,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['email']], ['foo'=>[1,2,3,4,5]],  false, ['foo'=>['email']])
             , array(['foo'=>['email']], ['foo'=>true],         false, ['foo'=>['email']])
             , array(['foo'=>['email']], ['foo'=>false],        false, ['foo'=>['email']])
+        ));
+    }
 
+    public function CheckProviderIP4(){
+        return(array(
             //------------------------
             // ip4
             //------------------------
-            , array(['foo'=>['ip4']], ['foo'=>'192.168.0.1'], true, [])
+              array(['foo'=>['ip4']], ['foo'=>'192.168.0.1'], true, [])
             , array(['foo'=>['ip4']], ['foo'=>null],          true, [])
             , array(['foo'=>['ip4']], ['foo'=>''],            true, [])
 
@@ -411,11 +635,16 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['ip4']], ['foo'=>[1,2,3,4,5]],   false, ['foo'=>['ip4']])
             , array(['foo'=>['ip4']], ['foo'=>true],          false, ['foo'=>['ip4']])
             , array(['foo'=>['ip4']], ['foo'=>false],         false, ['foo'=>['ip4']])
+        ));
+    }
 
+
+    public function CheckProviderPostCD(){
+        return(array(
             //------------------------
             // postcd
             //------------------------
-            , array(['foo'=>['postcd']], ['foo'=>'123-4567'],  true, [])
+              array(['foo'=>['postcd']], ['foo'=>'123-4567'],  true, [])
             , array(['foo'=>['postcd']], ['foo'=>'1234567'],   true, [])
             , array(['foo'=>['postcd']], ['foo'=>null],        true, [])
             , array(['foo'=>['postcd']], ['foo'=>''],          true, [])
@@ -428,11 +657,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['postcd']], ['foo'=>[1,2,3,4,5]], false, ['foo'=>['postcd']])
             , array(['foo'=>['postcd']], ['foo'=>true],        false, ['foo'=>['postcd']])
             , array(['foo'=>['postcd']], ['foo'=>false],       false, ['foo'=>['postcd']])
+        ));
+    }
 
+    public function CheckProviderTel(){
+        return(array(
             //------------------------
             // tel
             //------------------------
-            , array(['foo'=>['tel']], ['foo'=>'03-1111-1111'], true, [])
+              array(['foo'=>['tel']], ['foo'=>'03-1111-1111'], true, [])
             , array(['foo'=>['tel']], ['foo'=>null],           true, [])
             , array(['foo'=>['tel']], ['foo'=>''],             true, [])
 
@@ -444,11 +677,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['tel']], ['foo'=>[1,2,3,4,5]],    false, ['foo'=>['tel']])
             , array(['foo'=>['tel']], ['foo'=>true],           false, ['foo'=>['tel']])
             , array(['foo'=>['tel']], ['foo'=>false],          false, ['foo'=>['tel']])
+        ));
+    }
 
+    public function CheckProviderNum(){
+        return(array(
             //------------------------
             // num
             //------------------------
-            , array(['foo'=>['num']], ['foo'=>'1234567890'], true, [])
+              array(['foo'=>['num']], ['foo'=>'1234567890'], true, [])
             , array(['foo'=>['num']], ['foo'=>'1'],          true, [])
             , array(['foo'=>['num']], ['foo'=>'0'],          true, [])
             , array(['foo'=>['num']], ['foo'=>'0.12345'],    true, [])
@@ -467,11 +704,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['num']], ['foo'=>[1,2,3,4,5]],  false, ['foo'=>['num']])
             , array(['foo'=>['num']], ['foo'=>true],         false, ['foo'=>['num']])
             , array(['foo'=>['num']], ['foo'=>false],        false, ['foo'=>['num']])
+        ));
+    }
 
+    public function CheckProviderAlpha(){
+        return(array(
             //------------------------
             // alpha
             //------------------------
-            , array(['foo'=>['alpha']], ['foo'=>'abcdefg'],     true, [])
+              array(['foo'=>['alpha']], ['foo'=>'abcdefg'],     true, [])
             , array(['foo'=>['alpha']], ['foo'=>'ABCDEFG'],     true, [])
             , array(['foo'=>['alpha']], ['foo'=>'HelloWorld'],  true, [])
             , array(['foo'=>['alpha']], ['foo'=>null],          true, [])
@@ -487,11 +728,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['alpha']], ['foo'=>[1,2,3,4,5]],   false, ['foo'=>['alpha']])
             , array(['foo'=>['alpha']], ['foo'=>true],          false, ['foo'=>['alpha']])
             , array(['foo'=>['alpha']], ['foo'=>false],         false, ['foo'=>['alpha']])
+        ));
+    }
 
+    public function CheckProviderAlnum(){
+        return(array(
             //------------------------
             // alnum
             //------------------------
-            , array(['foo'=>['alnum']], ['foo'=>'abcdefg'],       true, [])
+              array(['foo'=>['alnum']], ['foo'=>'abcdefg'],       true, [])
             , array(['foo'=>['alnum']], ['foo'=>'ABCDEFG'],       true, [])
             , array(['foo'=>['alnum']], ['foo'=>'HelloWorld'],    true, [])
             , array(['foo'=>['alnum']], ['foo'=>'123abcdefg'],    true, [])
@@ -513,11 +758,16 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['alnum']], ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['alnum']])
             , array(['foo'=>['alnum']], ['foo'=>true],            false, ['foo'=>['alnum']])
             , array(['foo'=>['alnum']], ['foo'=>false],           false, ['foo'=>['alnum']])
+        ));
+    }
 
+
+    public function CheckProviderByteMax(){
+        return(array(
             //------------------------
             // bytemax
             //------------------------
-            , array(['foo'=>[['bytemax',10]]], ['foo'=>'Hello'], true, [])
+              array(['foo'=>[['bytemax',10]]], ['foo'=>'Hello'], true, [])
             , array(['foo'=>[['bytemax', 5]]], ['foo'=>'Hello'], true, [])
             , array(['foo'=>[['bytemax',10]]], ['foo'=>null],    true, [])
             , array(['foo'=>[['bytemax',10]]], ['foo'=>''],      true, [])
@@ -527,11 +777,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['bytemax',10]]], ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['bytemax']])
             , array(['foo'=>[['bytemax',10]]], ['foo'=>true],            false, ['foo'=>['bytemax']])
             , array(['foo'=>[['bytemax',10]]], ['foo'=>false],           false, ['foo'=>['bytemax']])
+        ));
+    }
 
+    public function CheckProviderByteMin(){
+        return(array(
             //------------------------
             // bytemin
             //------------------------
-            , array(['foo'=>[['bytemin', 1]]], ['foo'=>'Hello'], true, [])
+              array(['foo'=>[['bytemin', 1]]], ['foo'=>'Hello'], true, [])
             , array(['foo'=>[['bytemin', 5]]], ['foo'=>'Hello'], true, [])
             , array(['foo'=>[['bytemin', 1]]], ['foo'=>null],    true, [])
             , array(['foo'=>[['bytemin', 1]]], ['foo'=>''],      true, [])
@@ -542,10 +796,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['bytemin', 1]]], ['foo'=>true],            false, ['foo'=>['bytemin']])
             , array(['foo'=>[['bytemin', 1]]], ['foo'=>false],           false, ['foo'=>['bytemin']])
 
+        ));
+    }
+
+    public function CheckProviderMax(){
+        return(array(
             //------------------------
             // max
             //------------------------
-            , array(['foo'=>[['max',10]]], ['foo'=>5],       true, [])
+              array(['foo'=>[['max',10]]], ['foo'=>5],       true, [])
             , array(['foo'=>[['max', 5]]], ['foo'=>5],       true, [])
             , array(['foo'=>[['max',10]]], ['foo'=>null],    true, [])
             , array(['foo'=>[['max',10]]], ['foo'=>''],      true, [])
@@ -555,11 +814,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['max',10]]], ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['max']])
             , array(['foo'=>[['max',10]]], ['foo'=>true],            false, ['foo'=>['max']])
             , array(['foo'=>[['max',10]]], ['foo'=>false],           false, ['foo'=>['max']])
+        ));
+    }
 
+    public function CheckProviderMin(){
+        return(array(
             //------------------------
             // min
             //------------------------
-            , array(['foo'=>[['min', 1]]], ['foo'=>10],      true, [])
+              array(['foo'=>[['min', 1]]], ['foo'=>10],      true, [])
             , array(['foo'=>[['min', 5]]], ['foo'=> 5],      true, [])
             , array(['foo'=>[['min', 1]]], ['foo'=>null],    true, [])
             , array(['foo'=>[['min', 1]]], ['foo'=>''],      true, [])
@@ -569,11 +832,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['min', 1]]], ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['min']])
             , array(['foo'=>[['min', 1]]], ['foo'=>true],            false, ['foo'=>['min']])
             , array(['foo'=>[['min', 1]]], ['foo'=>false],           false, ['foo'=>['min']])
+        ));
+    }
 
+    public function CheckProviderMatch(){
+        return(array(
             //------------------------
             // match
             //------------------------
-            , array(['foo'=>[['match', '/^Hello/']]],  ['foo'=>'HelloWorld'],   true, [])
+              array(['foo'=>[['match', '/^Hello/']]],  ['foo'=>'HelloWorld'],   true, [])
             , array(['foo'=>[['match', '/^Hello$/']]], ['foo'=>'Hello'],        true, [])
             , array(['foo'=>[['match', '/foo/']]],     ['foo'=>null],           true, [])
             , array(['foo'=>[['match', '/bar/']]],     ['foo'=>''],             true, [])
@@ -583,11 +850,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['match', [1,2,3,4,5]]]], ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['match']])
             , array(['foo'=>[['match', true]]],        ['foo'=>true],            false, ['foo'=>['match']])
             , array(['foo'=>[['match', false]]],       ['foo'=>false],           false, ['foo'=>['match']])
+        ));
+    }
 
+    public function CheckProviderEq(){
+        return(array(
             //------------------------
             // eq
             //------------------------
-            , array(['foo'=>[['eq', 'Hello']]],       ['foo'=>'Hello'],         true, [])
+              array(['foo'=>[['eq', 'Hello']]],       ['foo'=>'Hello'],         true, [])
             , array(['foo'=>[['eq', 'foo']]],         ['foo'=>null],            true, [])
             , array(['foo'=>[['eq', 'bar']]],         ['foo'=>''],              true, [])
             , array(['foo'=>[['eq', []]]],            ['foo'=>[]],              true, [])
@@ -600,11 +871,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['eq', [1,2,3,4,5]]]],   ['foo'=>[]],              false, ['foo'=>['eq']])
             , array(['foo'=>[['eq', true]]],          ['foo'=>false],           false, ['foo'=>['eq']])
             , array(['foo'=>[['eq', false]]],         ['foo'=>true],            false, ['foo'=>['eq']])
+        ));
+    }
 
+    public function CheckProviderNe(){
+        return(array(
             //------------------------
             // ne
             //------------------------
-            , array(['foo'=>[['ne', 'Hello']]],       ['foo'=>'World'],         true, [])
+              array(['foo'=>[['ne', 'Hello']]],       ['foo'=>'World'],         true, [])
             , array(['foo'=>[['ne', []]]],            ['foo'=>[1,2,3,4,5]],     true, [])
             , array(['foo'=>[['ne', [1,2,3,4,5]]]],   ['foo'=>[]],              true, [])
             , array(['foo'=>[['ne', true]]],          ['foo'=>false],           true, [])
@@ -617,11 +892,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['ne', [1,2,3,4,5]]]],   ['foo'=>[1,2,3,4,5]],     false, ['foo'=>['ne']])
             , array(['foo'=>[['ne', true]]],          ['foo'=>true],            false, ['foo'=>['ne']])
             , array(['foo'=>[['ne', false]]],         ['foo'=>false],           false, ['foo'=>['ne']])
+        ));
+    }
 
+    public function CheckProviderIn(){
+        return(array(
             //------------------------
             // in
             //------------------------
-            , array(['foo'=>[['in', [1,2,3]]]],             ['foo'=>2],         true, [])
+              array(['foo'=>[['in', [1,2,3]]]],             ['foo'=>2],         true, [])
             , array(['foo'=>[['in', [1,2,3]]]],             ['foo'=>3],         true, [])
             , array(['foo'=>[['in', [1.2,2.3,3.5]]]],       ['foo'=>1.2],       true, [])
             , array(['foo'=>[['in', [1.2,2.3,3.5]]]],       ['foo'=>2.3],       true, [])
@@ -643,11 +922,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['in', [true, false]]]],       ['foo'=>1],         false, ['foo'=>['in']])
             , array(['foo'=>[['in', [true, false]]]],       ['foo'=>'foo'],     false, ['foo'=>['in']])
             , array(['foo'=>[['in', 1]]],                   ['foo'=>2],         false, ['foo'=>['in']])
+        ));
+    }
 
+    public function CheckProviderDate(){
+        return(array(
             //------------------------
             // date
             //------------------------
-            , array(['foo'=>[['date', 10,  5]]],  ['foo'=> 1979], true, [])
+              array(['foo'=>[['date', 10,  5]]],  ['foo'=> 1979], true, [])
             , array(['foo'=>[['date',  1,  1]]],  ['foo'=>    1], true, [])
             , array(['foo'=>[['date', 12, 31]]],  ['foo'=>32767], true, [])
             , array(['foo'=>[['date',  2, 29]]],  ['foo'=> 2016], true, [])
@@ -667,11 +950,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['date',   10,    5]]],   ['foo'=> 1979.0], false, ['foo'=>['date']])
             , array(['foo'=>[['date',   10.0,  5]]],   ['foo'=> 1979],   false, ['foo'=>['date']])
             , array(['foo'=>[['date',   10,    5.0]]], ['foo'=> 1979],   false, ['foo'=>['date']])
+        ));
+    }
 
+    public function CheckProviderTime(){
+        return(array(
             //------------------------
             // time
             //------------------------
-            , array(['foo'=>[['time', 10,  5]]],  ['foo'=>   10], true, [])
+              array(['foo'=>[['time', 10,  5]]],  ['foo'=>   10], true, [])
             , array(['foo'=>[['time',  0,  0]]],  ['foo'=>    0], true, [])
             , array(['foo'=>[['time', 59, 59]]],  ['foo'=>   23], true, [])
             , array(['foo'=>[['time',  1,  1]]],  ['foo'=> null], true, [])
@@ -690,16 +977,22 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>[['time',   10,    5]]],   ['foo'=>   10.0], false, ['foo'=>['time']])
             , array(['foo'=>[['time',   10.0,  5]]],   ['foo'=>   10],   false, ['foo'=>['time']])
             , array(['foo'=>[['time',   10,    5.0]]], ['foo'=>   10],   false, ['foo'=>['time']])
+        ));
+    }
 
+    public function CheckProviderGRequire1(){
+        return(array(
             //------------------------
             // grequire1
             //------------------------
+        ));
+    }
 
+    public function CheckProviderGIn(){
+        return(array(
             //------------------------
             // gin
             //------------------------
         ));
     }
-    
-    
 }
