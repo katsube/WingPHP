@@ -348,6 +348,7 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             // require            
             //------------------------
               array(['foo'=>['require']], ['foo'=>1],                          true, [])
+
             , array(['foo'=>['require']], ['foo'=>0],                          true, [])
             , array(['foo'=>['require']], ['foo'=>0.12345],                    true, [])
             , array(['foo'=>['require']], ['foo'=>'Hello'],                    true, [])
@@ -646,10 +647,49 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             //------------------------
             // date
             //------------------------
+            , array(['foo'=>[['date', 10,  5]]],  ['foo'=> 1979], true, [])
+            , array(['foo'=>[['date',  1,  1]]],  ['foo'=>    1], true, [])
+            , array(['foo'=>[['date', 12, 31]]],  ['foo'=>32767], true, [])
+            , array(['foo'=>[['date',  2, 29]]],  ['foo'=> 2016], true, [])
+            , array(['foo'=>[['date',  1,  1]]],  ['foo'=> null], true, [])
+            , array(['foo'=>[['date',  1,  1]]],  ['foo'=>   ''], true, [])
+
+            , array(['foo'=>[['date',    2,   29]]],   ['foo'=> 1979],   false, ['foo'=>['date']])
+            , array(['foo'=>[['date',   10,    5]]],   ['foo'=>'1979'],  false, ['foo'=>['date']])
+            , array(['foo'=>[['date',  '10',   5]]],   ['foo'=> 1979],   false, ['foo'=>['date']])
+            , array(['foo'=>[['date',   10,   '5']]],  ['foo'=> 1979],   false, ['foo'=>['date']])
+            , array(['foo'=>[['date',   10,    5]]],   ['foo'=> true],   false, ['foo'=>['date']])
+            , array(['foo'=>[['date', true,    5]]],   ['foo'=> 1979],   false, ['foo'=>['date']])
+            , array(['foo'=>[['date',   10, true]]],   ['foo'=> 1979],   false, ['foo'=>['date']])
+            , array(['foo'=>[['date',   10,    5]]],   ['foo'=>   []],   false, ['foo'=>['date']])
+            , array(['foo'=>[['date',   [],    5]]],   ['foo'=> 1979],   false, ['foo'=>['date']])
+            , array(['foo'=>[['date',   10,    []]]],  ['foo'=> 1979],   false, ['foo'=>['date']])
+            , array(['foo'=>[['date',   10,    5]]],   ['foo'=> 1979.0], false, ['foo'=>['date']])
+            , array(['foo'=>[['date',   10.0,  5]]],   ['foo'=> 1979],   false, ['foo'=>['date']])
+            , array(['foo'=>[['date',   10,    5.0]]], ['foo'=> 1979],   false, ['foo'=>['date']])
 
             //------------------------
             // time
             //------------------------
+            , array(['foo'=>[['time', 10,  5]]],  ['foo'=>   10], true, [])
+            , array(['foo'=>[['time',  0,  0]]],  ['foo'=>    0], true, [])
+            , array(['foo'=>[['time', 59, 59]]],  ['foo'=>   23], true, [])
+            , array(['foo'=>[['time',  1,  1]]],  ['foo'=> null], true, [])
+            , array(['foo'=>[['time',  1,  1]]],  ['foo'=>   ''], true, [])
+
+            , array(['foo'=>[['time',    0,    0]]],   ['foo'=>   24],   false, ['foo'=>['time']])
+            , array(['foo'=>[['time',   10,    5]]],   ['foo'=>  '10'],  false, ['foo'=>['time']])
+            , array(['foo'=>[['time',  '10',   5]]],   ['foo'=>   10],   false, ['foo'=>['time']])
+            , array(['foo'=>[['time',   10,   '5']]],  ['foo'=>   10],   false, ['foo'=>['time']])
+            , array(['foo'=>[['time',   10,    5]]],   ['foo'=> true],   false, ['foo'=>['time']])
+            , array(['foo'=>[['time', true,    5]]],   ['foo'=>   10],   false, ['foo'=>['time']])
+            , array(['foo'=>[['time',   10, true]]],   ['foo'=>   10],   false, ['foo'=>['time']])
+            , array(['foo'=>[['time',   10,    5]]],   ['foo'=>   []],   false, ['foo'=>['time']])
+            , array(['foo'=>[['time',   [],    5]]],   ['foo'=>   10],   false, ['foo'=>['time']])
+            , array(['foo'=>[['time',   10,    []]]],  ['foo'=>   10],   false, ['foo'=>['time']])
+            , array(['foo'=>[['time',   10,    5]]],   ['foo'=>   10.0], false, ['foo'=>['time']])
+            , array(['foo'=>[['time',   10.0,  5]]],   ['foo'=>   10],   false, ['foo'=>['time']])
+            , array(['foo'=>[['time',   10,    5.0]]], ['foo'=>   10],   false, ['foo'=>['time']])
 
             //------------------------
             // grequire1
