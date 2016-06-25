@@ -1,6 +1,7 @@
 <?php
 require_once('define.php');
 require_once('../lib/Util/Validation/index.php');
+require_once('../lib/Util/Validation/Message.php');
 
 class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
 {
@@ -462,16 +463,22 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( $expected_error, $error, print_r($error, true) );
     }
     
-    
-    
-    
+
     /**
      * Test setError2Scratch()
      * 
      * @covers Validation::setError2Scratch
+     * @dataProvider SetError2ScratchProvider
      */
-    public function testSetError2Scratch(){
-        
+    public function testSetError2Scratch($mode, $list, $data, $expected){
+        $v = new Validation($mode);
+        $v->addList($list);
+        $v->addData($data);
+        $v->check();
+        $v->setError2Scratch();
+
+        global $Scratch;
+        $this->assertEquals($expected, $Scratch, print_r($Scratch, true));
     }
     
     /**
@@ -548,7 +555,7 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
                 , array([1234=>'foo'], false, [])
                 , array(['1234'=>'foo'], false, [])
                 
-                , array(['foo'=>1234], true, ['foo'=>1234])
+                , array(['foo'=>1234],    true, ['foo'=>1234])
                 , array(['foo'=>'hello'], true, ['foo'=>'hello'])
                 , array(['foo'=>null],    true, ['foo'=>null])
                 , array(['foo'=>''],      true, ['foo'=>''])
@@ -1074,10 +1081,66 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
               array(['foo'=>['require', 'alnum']], ['foo'=>'HelloWorld'], true,  [])
             , array(['foo'=>['require', 'alnum']], ['foo'=>null],         false, ['foo'=>['require']])
 
-            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'abcdefg'], true, [])
+            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'abcdefg'],        true,  [])
             , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'abcdefghijklmn'], false, ['foo'=>['bytemax']])
-            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'abc'], false, ['foo'=>['bytemin']])
-            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'あ'], false, ['foo'=>['alnum', 'bytemin']])
+            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'abc'],            false, ['foo'=>['bytemin']])
+            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'あ'],             false, ['foo'=>['alnum', 'bytemin']])
+        ));
+    }
+    
+    public function SetError2ScratchProvider(){
+        $vmsg = new ValidationMessage();
+
+        return(array(
+            array(
+                  'self'
+                , ['foo'=>['require']] 
+                , ['foo'=>null]
+                , [
+                      'form' => []
+                    , 'self' => [
+                              'error'    => ['foo'=>['require']]
+                            , 'errormsg' => $vmsg->gets(['require'])
+                        ]
+                  ]
+            )
+            , array(
+                  'form'
+                , ['foo'=>['require']] 
+                , ['foo'=>null]
+                , [
+                      'form' => [
+                              'error'    => ['foo'=>['require']]
+                            , 'errormsg' => $vmsg->gets(['require'])
+                        
+                        ]
+                    , 'self' => []
+                  ]
+            )
+            , array(
+                  'self'
+                , ['foo'=>['require', ['max', 3], 'alnum'] ]
+                , ['foo'=>'あいうえお']
+                , [
+                      'form' => []
+                    , 'self' => [
+                              'error'    => ['foo'=>['max', 'alnum']]
+                            , 'errormsg' => $vmsg->gets(['max', 'alnum'])
+                        ]
+                  ]
+            )
+            , array(
+                  'form'
+                , ['foo'=>['require', ['max', 3], 'alnum'] ]
+                , ['foo'=>'あいうえお']
+                , [
+                      'form' => [
+                              'error'    => ['foo'=>['max', 'alnum']]
+                            , 'errormsg' => $vmsg->gets(['max', 'alnum'])
+                        ]
+                    , 'self' => []
+                  ]
+            )
         ));
     }
 }

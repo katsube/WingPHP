@@ -219,5 +219,6 @@ class Routing{
  * @name $Scratch
  */
 $Scratch = array(
-	'form' => array()
+	  'form' => array()
+	, 'self' => array()
 );
