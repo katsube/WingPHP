@@ -485,9 +485,15 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
      * Test getError()
      * 
      * @covers Validation::getError
+     * @dataProvider GetErrorProvider
      */
-    public function testGetError(){
-        
+    public function testGetError($list, $data, $expected){
+        $v = new Validation();
+        $v->addList($list);
+        $v->addData($data);
+        $v->check();
+
+        $this->assertEquals($expected, $v->getError());        
     }
     
     /**
@@ -1095,6 +1101,30 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             array(
                   'self'
                 , ['foo'=>['require']] 
+                , ['foo'=>'bar']
+                , [
+                      'form' => []
+                    , 'self' => [
+                              'error'    => []
+                            , 'errormsg' => []
+                        ]
+                  ]
+            )
+            , array(
+                  'form'
+                , ['foo'=>['require']] 
+                , ['foo'=>'bar']
+                , [
+                      'form' => [
+                              'error'    => []
+                            , 'errormsg' => []
+                        ]
+                    , 'self' => []
+                  ]
+            )
+            , array(
+                  'self'
+                , ['foo'=>['require']] 
                 , ['foo'=>null]
                 , [
                       'form' => []
@@ -1141,6 +1171,18 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
                     , 'self' => []
                   ]
             )
+        ));
+    }
+    
+    public function GetErrorProvider(){
+        return(array(
+              array(['foo'=>['require', 'alnum']], ['foo'=>'HelloWorld'], [])
+            , array(['foo'=>['require', 'alnum']], ['foo'=>null],         ['foo'=>['require']])
+
+            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'abcdefg'],        [])
+            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'abcdefghijklmn'], ['foo'=>['bytemax']])
+            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'abc'],            ['foo'=>['bytemin']])
+            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'あ'],             ['foo'=>['alnum', 'bytemin']])
         ));
     }
 }
