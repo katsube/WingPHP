@@ -1071,8 +1071,13 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
     
     public function CheckProviderComposite(){
         return(array(
-            
-        
+              array(['foo'=>['require', 'alnum']], ['foo'=>'HelloWorld'], true,  [])
+            , array(['foo'=>['require', 'alnum']], ['foo'=>null],         false, ['foo'=>['require']])
+
+            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'abcdefg'], true, [])
+            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'abcdefghijklmn'], false, ['foo'=>['bytemax']])
+            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'abc'], false, ['foo'=>['bytemin']])
+            , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'あ'], false, ['foo'=>['alnum', 'bytemin']])
         ));
     }
 }
