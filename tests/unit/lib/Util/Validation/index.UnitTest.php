@@ -233,6 +233,17 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test check() - 404 force
+     * 
+     * @covers Validation::check
+     * @dataProvider CheckProvider404force
+     */
+    public function testCheck404force($list, $data, $expected_flag, $expected_error){
+        $this->_CheckLogic($list, $data, $expected_flag, $expected_error, true);
+    }
+
+
+    /**
      * Test check() - Require
      * 
      * @covers Validation::check
@@ -452,9 +463,14 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
         $this->_CheckLogic($list, $data, $expected_flag, $expected_error);
     }
 
-    private function _CheckLogic($list, $data, $expected_flag, $expected_error){
+    /**
+     * check() 共通メソッド
+     * 
+     * @covers Validation::check
+     */
+    private function _CheckLogic($list, $data, $expected_flag, $expected_error, $force_addlist=false){
         $v = new Validation();
-        $v->addList($list);
+        $v->addList($list, $force_addlist);
         $v->addData($data);
         $result = $v->check();
         $error  = $v->getError();
@@ -500,9 +516,18 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
      * Test addError()
      * 
      * @covers Validation::addError
+     * @dataProvider AddErrorProvider
      */
-    public function testAddError(){
-        
+    public function testAddError($list, $data, $adderror, $expected){
+        $v = new Validation();
+        $v->addList($list);
+        $v->addData($data);
+        $v->check();
+
+        $v->addError($adderror[0], $adderror[1]);
+        $error = $v->getError();
+
+        $this->assertEquals($expected, $error);
     }
 
     
@@ -580,6 +605,14 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
         return(array(
               array(['foo'=>['NotFound']],      ['foo'=>1], true, [])
             , array(['foo'=>[['NotFound', 1]]], ['foo'=>1], true, [])
+        ));
+    }
+
+    public function CheckProvider404force(){
+        // 強制的に無効な検証名を渡すとfalseになる
+        return(array(
+              array(['foo'=>['NotFound']],      ['foo'=>1], false, ['foo'=>['_404']])
+            , array(['foo'=>[['NotFound', 1]]], ['foo'=>1], false, ['foo'=>['_404']])
         ));
     }
 
@@ -1185,4 +1218,14 @@ class UtilValidationUnitTest extends PHPUnit_Framework_TestCase
             , array(['foo'=>['alnum', ['bytemin', 5], ['bytemax', 10]]], ['foo'=>'あ'],             ['foo'=>['alnum', 'bytemin']])
         ));
     }
+
+    public function AddErrorProvider(){
+        //$list, $data, $adderror, $expected
+        return(array(
+                array([], [], ['foo', 'alnum'], ['foo'=>['alnum']])
+              , array(['foo'=>['require']], ['foo'=>null], ['foo', 'alnum'], ['foo'=>['require', 'alnum']])
+              , array(['foo'=>['require']], ['foo'=>null], ['bar', 'alnum'], ['foo'=>['require'], 'bar'=>['alnum']])
+        ));
+    }
+    
 }
