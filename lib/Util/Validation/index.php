@@ -445,17 +445,18 @@ class Validation{
 	 *   - 複数記入した場合はand条件になる。
 	 * 2回目以降呼び出された場合は、既存のリストに追加される。
 	 *
-	 * @param  array   $list 追加する検証リスト
+	 * @param  array    $list   追加する検証リスト
+	 * @param  boolean  $force  trueを指定すると$listの検証を行わない
 	 * @return boolean
 	 * @access public
 	 */
-	public function addList($list=null){
-		if($this->_validList($list)){
-			$this->list = array_merge($this->list, $list);
-			return(true);
+	public function addList($list=null, $force=false){
+		if($force === false && !$this->_validList($list)){
+			return(false);
 		}
-
-		return(false);
+		
+		$this->list = array_merge($this->list, $list);
+		return(true);
 	}
 
 
@@ -638,7 +639,8 @@ class Validation{
 						$ret = $rule[$func]($data, $opt);
 					}
 					else{
-						$ret = false;
+						$func = '_404';
+						$ret  = false;
 					}
 				}
 				//------------------------------
