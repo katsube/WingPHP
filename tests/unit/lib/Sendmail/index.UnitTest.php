@@ -1,11 +1,9 @@
 <?php
 require_once('define.php');
-require_once('../lib/Util/Validation/index.php');
+require_once('../lib/Sendmail/index.php');
 
-class UtilSendmailUnitTest extends PHPUnit_Framework_TestCase
+class SendmailUnitTest extends PHPUnit_Framework_TestCase
 {
-    
-    
     /**
      * Test Constructer
      * 
