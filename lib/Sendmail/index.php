@@ -113,11 +113,15 @@ class Sendmail {
 	 * ■ Public ■
 	 *--------------------------------------------
 	 * - headers
+	 * - getHeaders
 	 * - body
 	 * - doit
 	 * - setLanguage
+	 * - getLanguage
 	 * - setEncording
+	 * - getEncording
 	 * - setLogging
+	 * - isLogging
 	 *--------------------------------------------*/
     /**
      * set mail headers
@@ -143,6 +147,41 @@ class Sendmail {
         return(true);
     }
     
+    /**
+     * get mail headers
+     * 
+     * @param  string  $name  特定の項目がほしい場合に指定
+     * @param  boolean $null  null項目
+     * @return boolean
+     * @access public
+     */
+    public function getHeaders($name=null, $null=false){
+        //-----------------------
+        //項目指定
+        //-----------------------
+        if( $name !== null ){
+            if( array_key_exists($name, $this->header) ){
+                return($this->header[$name]);
+            }
+            else{
+                return(false);
+            }
+        }
+        //-----------------------
+        // 全て取得
+        //-----------------------
+        else{
+            $head = array();
+            foreach($this->header as $key => $value){
+                if( $null === false && $value === null )
+                    continue;
+                else
+                    $head[$key] = $value;
+            }
+        
+            return($head);
+        }
+    }
 
     /**
      * set mail body string
@@ -218,7 +257,17 @@ class Sendmail {
     
         return(false);
     }
-    
+
+    /**
+     * get Language
+     * 
+     * @return string
+     * @access public
+     */
+    public function getLanguage(){
+        return($this->language);
+    }
+
     /**
      * set Internal Encording
      * 
@@ -236,6 +285,16 @@ class Sendmail {
     }
 
     /**
+     * get Internal Encording
+     * 
+     * @return string
+     * @access public
+     */
+    public function getEncording(){
+        return($this->encode);
+    }
+
+    /**
      * set Logging Flag
      * 
      * @param  boolean  $flag
@@ -249,6 +308,16 @@ class Sendmail {
         }
     
         return(false);
+    }
+
+    /**
+     * get Logging Flag
+     * 
+     * @return boolean
+     * @access public
+     */
+    public function isLogging(){
+        return($this->logging);
     }
 
 
