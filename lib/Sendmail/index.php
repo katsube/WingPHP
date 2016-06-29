@@ -131,7 +131,7 @@ class Sendmail {
      * @access public
      */
     public function headers($opt){
-        if( ! is_array($opt) ){
+        if( ! is_hash($opt) ){
             return(false);
         }
 
