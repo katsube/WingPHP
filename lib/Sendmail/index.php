@@ -135,13 +135,15 @@ class Sendmail {
             return(false);
         }
 
-        foreach($opt as $key => $value){
-            if( array_key_exists($key, $this->header) ){
-                $this->header[$key] = $value;
-            }
-            else{
+        // check key
+        foreach(array_keys($opt) as $key){
+            if( ! array_key_exists($key, $this->header) ){
                 return(false);
-            }
+            }            
+        }
+
+        foreach($opt as $key => $value){
+            $this->header[$key] = $value;
         }
     
         return(true);
