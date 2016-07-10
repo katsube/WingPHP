@@ -159,7 +159,10 @@ $Conf = array(
 		  'language' => 'Japanese'	//mb_language
 		, 'encode'   => 'UTF-8'		//mb_internal_encoding
 		, 'header'   => array(
-			'From' => 'info@example.com'
+			  'From'         => 'info@example.com'
+			, 'Content-type' => 'text/plain'
+			, 'MIME-Version' => '1.0'
+			, 'X-Mailer'     => 'WingPHP Sendmail library'
 		
 			#他のヘッダー(Sender, Reply-toなど)もここに記述すると反映されます。
 		)

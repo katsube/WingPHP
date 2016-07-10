@@ -63,10 +63,10 @@ class Sendmail {
                             , 'In-Reply-To'  => null
                             , 'References'   => null
                             , 'Message-ID'   => null
-                            , 'Precedence'   => null                        //list > junk > bulk
-                            , 'Content-type' => 'text/plain'
-                            , 'MIME-Version' => '1.0'
-                            , 'X-Mailer'     => 'WingPHP Sendmail library'
+                            , 'Precedence'   => null        //list > junk > bulk
+                            , 'Content-type' => null
+                            , 'MIME-Version' => null
+                            , 'X-Mailer'     => null
                         );
 
     private $body = null;
